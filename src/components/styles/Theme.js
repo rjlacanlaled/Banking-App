@@ -1,36 +1,33 @@
-const theme =  {
+export let theme = lightTheme;
+
+export const lightTheme = {
     colors: {
         body: {
-            fontColorLight: "black",
-            fontColorDark: "white",
-            backgroundColorLight: "white",
-            backgroundColorDark: "gray"
+            fontColor: 'black',
+            backgroundColor: 'white',
         },
         primaryButton: {
-            fontColorLight: "black",
-            fontColorDark: "white",
-            backgroundColorLight: "white",
-            backgroundColorDark: "black",
-            borderColorLight: "white",
-            borderColorDark: "black",
-            hoverFontColorLight: "gray",
-            hoverFontColorDark: "white",
-            hoverBackgroundColorLight: "black",
-            hoverBackgroundColorDark: "white",
-            hoverBorderColorLight: "black",
-            hoverBorderColorDark: "white"
+            fontColor: 'black',
+            backgroundColor: 'white',
         },
-        secondaryButton: {
+        secondaryButton: {},
+        primaryInput: {},
+        secondaryInput: {},
+    },
+};
 
+export const darkTheme = {
+    colors: {
+        body: {
+            fontColor: 'black',
+            backgroundColor: 'white',
         },
-        primaryInput: {
-
+        primaryButton: {
+            fontColor: 'black',
+            backgroundColor: 'white',
         },
-        secondaryInput: {
-
-        }
-    }
-}
-
-
-export default theme;
+        secondaryButton: {},
+        primaryInput: {},
+        secondaryInput: {},
+    },
+};

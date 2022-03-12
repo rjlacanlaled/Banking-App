@@ -5,6 +5,8 @@ const GlobalStyles = createGlobalStyle`
 
     * {
         box-sizing: border-box;
+        margin: 0;
+        padding: 0;
     }
 
     body {
@@ -15,3 +17,5 @@ const GlobalStyles = createGlobalStyle`
         list-style: none;
     }
 `;
+
+export default GlobalStyles;
