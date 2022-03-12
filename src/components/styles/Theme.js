@@ -27,8 +27,10 @@ const theme =  {
 
         },
         secondaryInput: {
-            
+
         }
     }
 }
 
+
+export default theme;
