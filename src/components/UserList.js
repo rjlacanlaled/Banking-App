@@ -1,5 +1,13 @@
+import styled from "styled-components"
+
 export default function UserList() {
   return (
-    <div>UserList</div>
+   <Wrapper>
+
+   </Wrapper>
   )
 }
+
+const Wrapper = styled.div`
+
+`;
