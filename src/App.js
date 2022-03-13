@@ -2,7 +2,7 @@ import './App.css';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './components/styles/Theme';
 import GlobalStyles from './components/styles/Global';
-import SideBar from './features/sidebar/Sidebar';
+import SideBar from './components/Sidebar';
 
 export default function App() {
     return (

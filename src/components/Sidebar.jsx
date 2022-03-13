@@ -58,7 +58,8 @@ const SideBarIconContainer = () => {
 };
 
 const ClickIcon = styled.img`
-   height: 30%;
+   width: 100%;
+   height: 100%;
    margin: 0 10px 0 20px;
 `;
 
