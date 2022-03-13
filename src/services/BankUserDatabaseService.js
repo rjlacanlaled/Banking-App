@@ -1,17 +1,17 @@
-import { BANK_USER_LIST_KEY } from '../model/BankUser';
+import BankUser, { BANK_USER_LIST_KEY } from '../model/BankUser';
 
-export function getUserList() {
+BankUser.prototype.getUserList = () => {
     const userList = JSON.parse(localStorage.getItem(BANK_USER_LIST_KEY));
     if (!userList) return {};
 
     return userList;
 }
 
-export function updateUserList(userList) {
+BankUser.prototype.updateUserList = (userList) => {
     localStorage.setItem(BANK_USER_LIST_KEY, JSON.stringify(userList));
 }
 
-export function getUser(id) {
+BankUser.prototype.getUser = (id) => {
     const userList = getUserList();
     if (!userList) return false;
 
@@ -19,19 +19,19 @@ export function getUser(id) {
     return user || false;
 }
 
-export function createUser(user) {
+BankUser.prototype.createUser = (user) => {
     if (!user) return false;
     let userList = getUserList();
 
     if (!userList) userList = {};
     userList[user.id] = user;
 
-    updateUserList(userList);
+    BankUser.updateUserList(userList);
 
     return true;
 }
 
-export function deleteUser(id) {
+BankUser.prototype.deleteUser = (id) => {
     if (!id) return false;
     const user = getUser(id);
 
@@ -40,12 +40,12 @@ export function deleteUser(id) {
     const userList = getUserList();
     delete userList[id];
 
-    updateUserList(userList);
+    BankUser.updateUserList(userList);
 
     return true;
 }
 
-export function editUser(id, newUserData) {
+BankUser.prototype.editUser = (id, newUserData) => {
     if (!newUserData) return false;
     const userList = getUserList();
     const user = userList[id];
@@ -55,7 +55,7 @@ export function editUser(id, newUserData) {
     user.lastName = newUserData.lastName;
     user.balance = newUserData.balance;
 
-    updateUserList(userList);
+    BankUser.updateUserList(userList);
 
     return user;
 }

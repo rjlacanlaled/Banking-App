@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SearchBar from "../components/SearchBar";
+import UserSearchBar from "../components/UserSearchBar";
 import { PrimaryButton } from "../components/styles/Buttons.styled";
 import UserList from "../components/UserList";
 
@@ -17,7 +17,7 @@ export default function UserManagement(props) {
                 <Title>Manage Users</Title>
                 <AddNewUserButton>+ New User</AddNewUserButton>
             </Header>
-            <SearchBar categories={categories} />
+            <UserSearchBar categories={categories} />
             <UserList />
         </Wrapper>
 
