@@ -54,8 +54,18 @@ export default function UserList(props) {
     );
 }
 
-const Wrapper = styled.div``;
-const UserTable = styled.table``;
-const TableRow = styled.tr``;
+const Wrapper = styled.div`
+    width: 100%;
+    height: 100%;
+`;
+const UserTable = styled.table`
+    border-collapse: collapse;
+    text-align: center;
+    width: 100%;
+`;
+const TableRow = styled.tr`
+    border: 1px solid black;
+`;
 const TableHeader = styled.th``;
-const TableData = styled.td``;
+const TableData = styled.td`
+`;
