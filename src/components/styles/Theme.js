@@ -1,10 +1,8 @@
-export let theme = lightTheme;
-
 export const lightTheme = {
     colors: {
         body: {
             fontColor: 'black',
-            backgroundColor: 'white',
+            backgroundColor: 'blue',
         },
         primaryButton: {
             fontColor: 'black',
@@ -31,3 +29,5 @@ export const darkTheme = {
         secondaryInput: {},
     },
 };
+
+export let theme = lightTheme;
