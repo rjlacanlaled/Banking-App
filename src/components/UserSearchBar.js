@@ -21,9 +21,8 @@ const Wrapper = styled.div`
     gap: 5px;
 `;
 
-const SearchButton = styled(PrimaryButton)`
+const SearchButton = styled(PrimaryButton)` 
     padding: 10px 20px 10px 20px;
-
 `;
 
 const Key = styled.input`

@@ -1,61 +1,72 @@
-import BankUser, { BANK_USER_LIST_KEY } from '../model/BankUser';
+import { BANK_USER_ID_KEY, BANK_USER_LIST_KEY } from '../model/BankUser';
 
-BankUser.prototype.getUserList = () => {
+export function getLastUserId() {
+    const userId = localStorage.getItem(BANK_USER_ID_KEY);
+    return parseInt(userId) || 0;
+}
+
+export function incrementUserId() {
+    localStorage.setItem(BANK_USER_ID_KEY, getLastUserId() + 1);
+}
+
+export function getUserList() {
     const userList = JSON.parse(localStorage.getItem(BANK_USER_LIST_KEY));
-    if (!userList) return {};
+    if (!userList) return [];
 
     return userList;
 }
 
-BankUser.prototype.updateUserList = (userList) => {
+export function updateUserList(userList) {
     localStorage.setItem(BANK_USER_LIST_KEY, JSON.stringify(userList));
 }
 
-BankUser.prototype.getUser = (id) => {
+export function getUser(id) {
     const userList = getUserList();
     if (!userList) return false;
 
-    const user = userList[id];
+    const user = userList[userList.findIndex(user => user.id === id)];
     return user || false;
 }
 
-BankUser.prototype.createUser = (user) => {
+export function createUser(user) {
     if (!user) return false;
     let userList = getUserList();
 
     if (!userList) userList = {};
-    userList[user.id] = user;
+    user.id = getLastUserId() + 1;
+    userList.push(user);
 
-    BankUser.updateUserList(userList);
+    updateUserList(userList);
+    incrementUserId();
 
     return true;
 }
 
-BankUser.prototype.deleteUser = (id) => {
+export function deleteUser(id) {
     if (!id) return false;
     const user = getUser(id);
 
     if (!user) return 'User not found!';
 
-    const userList = getUserList();
-    delete userList[id];
+    let userList = getUserList();
+    userList = userList.filter(userListItem => userListItem.id !== user.id);
 
-    BankUser.updateUserList(userList);
+    updateUserList(userList);
 
-    return true;
+    return user;
 }
 
-BankUser.prototype.editUser = (id, newUserData) => {
+export function editUser(id, newUserData) {
     if (!newUserData) return false;
     const userList = getUserList();
-    const user = userList[id];
+    const user = userList[userList.findIndex(list => list.id === id)];
 
     if (!user) return 'User not found!';
     user.firstName = newUserData.firstName;
     user.lastName = newUserData.lastName;
     user.balance = newUserData.balance;
 
-    BankUser.updateUserList(userList);
+    updateUserList(userList);
 
     return user;
 }
