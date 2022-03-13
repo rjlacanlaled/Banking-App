@@ -2,15 +2,19 @@ export const lightTheme = {
     colors: {
         body: {
             fontColor: 'black',
-            backgroundColor: 'blue',
+            backgroundColor: 'white',
         },
         primaryButton: {
-            fontColor: 'black',
-            backgroundColor: 'white',
+            fontColor: 'white',
+            backgroundColor: '#5DBA7D',
         },
         secondaryButton: {},
         primaryInput: {},
         secondaryInput: {},
+        tableHeader: {
+            fontColor: "white",
+            backgroundColor: "#2C8BBA",
+        }
     },
 };
 

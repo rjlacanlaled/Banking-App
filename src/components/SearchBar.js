@@ -6,7 +6,7 @@ export default function SearchBar(props) {
             <Key type='text' />
             <Category name="search-category">
                 {props.categories.map(category => {
-                    return <CategoryOption value={category}>{category}</CategoryOption>
+                    return <CategoryOption key={category} value={category}>{category}</CategoryOption>
                 })}
             </Category>
             <SearchButton>Search</SearchButton>
@@ -14,8 +14,9 @@ export default function SearchBar(props) {
     );
 }
 
-const Wrapper = styled.div``;
-
+const Wrapper = styled.div`
+    display: flex;
+`;
 const Key = styled.input``;
 const Category = styled.select``;
 const CategoryOption = styled.option``;

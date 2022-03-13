@@ -20,7 +20,7 @@ export default function UserManagement(props) {
 }
 
 const Wrapper = styled.div`
-
-
-
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 `;

@@ -31,24 +31,28 @@ export default function UserList(props) {
     return (
         <Wrapper>
             <UserTable>
-                <TableRow>
-                    <TableHeader>ID</TableHeader>
-                    <TableHeader>Lastname</TableHeader>
-                    <TableHeader>FirstName</TableHeader>
-                    <TableHeader>Balance</TableHeader>
-                    <TableHeader>Actions</TableHeader>
-                </TableRow>
-                {sampleData.map(({ id, firstName, lastName, balance }) => {
-                    return (
-                        <TableRow>
-                            <TableData>{id}</TableData>
-                            <TableData>{lastName}</TableData>
-                            <TableData>{firstName}</TableData>
-                            <TableData>{balance}</TableData>
-                            <TableData>buttons-here</TableData>
-                        </TableRow>
-                    );
-                })}
+                <TableHead>
+                    <TableRow>
+                        <TableHeader>ID</TableHeader>
+                        <TableHeader>Lastname</TableHeader>
+                        <TableHeader>FirstName</TableHeader>
+                        <TableHeader>Balance</TableHeader>
+                        <TableHeader>Actions</TableHeader>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {sampleData.map(({ id, firstName, lastName, balance }) => {
+                        return (
+                            <TableRow key={id}>
+                                <TableData>{id}</TableData>
+                                <TableData>{lastName}</TableData>
+                                <TableData>{firstName}</TableData>
+                                <TableData>{balance}</TableData>
+                                <TableData>buttons-here</TableData>
+                            </TableRow>
+                        );
+                    })}
+                </TableBody>
             </UserTable>
         </Wrapper>
     );
@@ -66,6 +70,10 @@ const UserTable = styled.table`
 const TableRow = styled.tr`
     border: 1px solid black;
 `;
-const TableHeader = styled.th``;
-const TableData = styled.td`
+const TableHead = styled.thead`
+    color: ${props => props.theme.colors.tableHeader.fontColor};
+    background-color: ${props => props.theme.colors.tableHeader.backgroundColor};
 `;
+const TableHeader = styled.th``;
+const TableData = styled.td``;
+const TableBody = styled.tbody``;
