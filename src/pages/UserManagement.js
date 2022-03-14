@@ -5,28 +5,31 @@ import UserList from '../components/UserList';
 import { useEffect, useState } from 'react';
 import { createUser, deleteUser, findUser, getUserList } from '../services/BankUserDatabaseService';
 import BankUser, { BANK_USER_LIST_KEY } from '../model/BankUser';
+import AddUser from '../components/AddUser';
 
 const categories = ['id', 'firstName', 'lastName', 'balance'];
 
 export default function UserManagement(props) {
     const [userList, setUserList] = useState(getUserList);
-    
-    const handleAddUser = (e) => {
-        //localStorage.setItem(BANK_USER_LIST_KEY, null);
-        const user = new BankUser("rj", "lacanlale", "07/23/1995", 1000);
-        createUser(user);
-        setUserList(getUserList());
-    }
-    
+    const [showAddUser, setShowAddUser] = useState(false);
+
+    const handleAddUser = e => {
+        setShowAddUser(true);
+    };
+
     const handleUserSearch = (key, category) => {
         if (key === '') return setUserList(getUserList());
 
         const filteredUserList = findUser(key, category);
         setUserList(filteredUserList);
-    }
+    };
 
     return (
         <Wrapper>
+            <AddUserModal showAddUser={showAddUser}>
+                <AddUser setShowAddUser={setShowAddUser} />
+            </AddUserModal>
+
             <Header>
                 <Title>Manage Users</Title>
                 <AddNewUserButton onClick={handleAddUser}>+ New User</AddNewUserButton>
@@ -55,4 +58,16 @@ const Header = styled.div`
 
 const Title = styled.h1``;
 
-const AddNewUserButton = styled(PrimaryButton)``;
+const AddNewUserButton = styled(PrimaryButton)`
+    padding: 5px;
+`;
+
+const AddUserModal = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: ${({showAddUser}) => showAddUser ? 'flex' : 'none'};
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0,0,0, 0.8);
+`;

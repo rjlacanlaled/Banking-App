@@ -5,7 +5,9 @@ import { FiCheckSquare, FiXSquare } from 'react-icons/fi';
 import { AiOutlineTransaction } from 'react-icons/ai';
 import { deleteUser, editUser, getUserList } from '../services/BankUserDatabaseService';
 import { useState } from 'react';
-import { InputFloat, InputName, InputNumber, InputText } from './styles/TextBoxes.styled';
+import { formatFloat, formatName } from '../services/InputFormatService';
+import { MAX_BALANCE_DIGITS, MAX_NAME_CHARS } from '../model/BankUser';
+import { Input } from './styles/Inputs.styled';
 
 function UserTableItem({ user: { id, lastName, firstName, balance }, setUserList }) {
     const [editable, setEditable] = useState(false);
@@ -15,7 +17,6 @@ function UserTableItem({ user: { id, lastName, firstName, balance }, setUserList
 
     const handleDeleteUser = () => {
         // show confirmation dialog
-
 
         // handle delete user in a different function
         deleteUser(id);
@@ -39,44 +40,35 @@ function UserTableItem({ user: { id, lastName, firstName, balance }, setUserList
         setNewBalance(balance);
     };
 
-    const handleFirstNameChange = value => {
+    const handleFirstNameChange = e => {
+        if (e.target.value.length > MAX_NAME_CHARS) return;
+        const value = formatName(e.target.value);
         setNewFirstName(value);
-    }
+    };
 
-    const handleLastNameChange = value => {
+    const handleLastNameChange = e => {
+        if (e.target.value.length > MAX_NAME_CHARS) return;
+        const value = formatName(e.target.value);
         setNewLastName(value);
-    }
+    };
 
-    const handleBalanceChange = value => {
+    const handleBalanceChange = e => {
+        if (e.target.value.length > MAX_NAME_CHARS) return;
+        const value = formatFloat(e.target.value);
         setNewBalance(value);
-    }
+    };
 
     return (
         <TableRow key={id}>
             <TableData>{id}</TableData>
             <TableData>
-                <InputName
-                    disabled={!editable}
-                    value={newLastName}
-                    setValue={handleLastNameChange}
-                    maxCharacters={12}
-                ></InputName>
+                <Input disabled={!editable} value={newLastName} onChange={handleLastNameChange}></Input>
             </TableData>
             <TableData>
-                <InputName
-                    disabled={!editable}
-                    value={newFirstName}
-                    setValue={handleFirstNameChange}
-                    maxCharacters={12}
-                ></InputName>
+                <Input disabled={!editable} value={newFirstName} onChange={handleFirstNameChange}></Input>
             </TableData>
             <TableData>
-                <InputFloat
-                    disabled={!editable}
-                    value={newBalance}
-                    setValue={handleBalanceChange}
-                    maxDigits={15}
-                ></InputFloat>
+                <Input disabled={!editable} value={newBalance} onChange={handleBalanceChange}></Input>
             </TableData>
             <TableData>
                 {editable ? (
@@ -169,9 +161,6 @@ const TableContainer = styled.table`
 `;
 
 const TableRow = styled.tr`
-    border: 1px solid black;
-    opacity: 0.8;
-
     :nth-child(even) {
         background-color: ${props => props.theme.colors.tableHeader.backgroundColor};
         color: ${props => props.theme.colors.tableHeader.fontColor};

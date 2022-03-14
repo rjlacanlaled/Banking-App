@@ -29,6 +29,7 @@ export function getUser(id) {
 }
 
 export function createUser(user) {
+    console.log(user);
     if (!user) return false;
     let userList = getUserList();
 

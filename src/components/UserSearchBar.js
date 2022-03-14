@@ -1,47 +1,31 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { MAX_BALANCE_DIGITS, MAX_NAME_CHARS } from '../model/BankUser';
+import { formatFloat, formatInteger, formatName } from '../services/InputFormatService';
 import { PrimaryButton } from './styles/Buttons.styled';
-import { InputFloat, InputInteger, InputName, InputText } from './styles/TextBoxes.styled';
-
-function getSearchCategoryInputComponent(category, searchKey, handleSearchKeyChange) {
-    switch (category) {
-        case 'id':
-            return (
-                <InputInteger
-                    placeholder='Enter search key'
-                    value={searchKey}
-                    setValue={handleSearchKeyChange}
-                    maxDigits={12}
-                />
-            );
-        case 'balance':
-            return (
-                <InputFloat
-                    placeholder='Enter search key'
-                    value={searchKey}
-                    setValue={handleSearchKeyChange}
-                    maxDigits={12}
-                />
-            );
-        case 'lastName':
-        case 'firstName':
-        default:
-            return (
-                <InputName
-                    placeholder='Enter search key'
-                    value={searchKey}
-                    setValue={handleSearchKeyChange}
-                    maxCharacters={12}
-                />
-            );
-    }
-}
+import { Input } from './styles/Inputs.styled';
 
 export default function SearchBar(props) {
     const [searchKey, setSearchKey] = useState('');
     const [chosenCategory, setChosenCategory] = useState('id');
 
-    const handleSearchKeyChange = value => {
+    const handleSearchKeyChange = e => {
+
+        let value;
+        switch (chosenCategory) {
+            case 'id':
+                if (e.target.value > MAX_BALANCE_DIGITS) return;
+                value = formatInteger(e.target.value);
+                break;
+            case 'balance':
+                if (e.target.value > MAX_BALANCE_DIGITS) return;
+                value = formatFloat(e.target.value);
+                break;
+            default:
+                if (e.target.value > MAX_NAME_CHARS) return;
+                value = formatName(e.target.value);
+        }
+
         setSearchKey(value);
     };
 
@@ -51,7 +35,7 @@ export default function SearchBar(props) {
 
     return (
         <Wrapper>
-            {getSearchCategoryInputComponent(chosenCategory, searchKey, handleSearchKeyChange)}
+            <Input value={searchKey} onChange={handleSearchKeyChange} />
             <Category name='search-category' value={chosenCategory} onChange={handleCategoryChange}>
                 {props.categories.map(category => {
                     return (
@@ -68,7 +52,7 @@ export default function SearchBar(props) {
 
 const Wrapper = styled.div`
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 5px;
 `;
 
@@ -78,3 +62,4 @@ const SearchButton = styled(PrimaryButton)`
 
 const Category = styled.select``;
 const CategoryOption = styled.option``;
+

@@ -1,8 +1,15 @@
 export const lightTheme = {
     colors: {
+        main: {
+            themeColor: '#2C8BBA',
+        },
         body: {
             fontColor: 'black',
             backgroundColor: 'white',
+        },
+        form: {
+            fontColor: 'white',
+            backgroundColor: '#2C8BBA'
         },
         primaryButtonHover: {
             fontColor: 'white',
@@ -32,6 +39,10 @@ export const lightTheme = {
             backgroundColor: '#2C8BBA',
             fontColor: 'white',
         },
+        inputText: {
+            backgroundColor: 'transparent',
+            fontColor: 'black'
+        }
     },
 };
 
