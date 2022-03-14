@@ -66,7 +66,53 @@ export function editUser(id, newUserData) {
     user.lastName = newUserData.lastName;
     user.balance = newUserData.balance;
 
+    alert(newUserData.lastName, newUserData.firstName);
+
+    alert('updated user!');
+
     updateUserList(userList);
 
     return user;
+}
+
+export function findFirstName(firstName) {
+    const userList = getUserList();
+    if (!userList.length) return [];
+
+    const filteredUserList = userList.filter(user => user.firstName.match(`${firstName}`));
+
+    return filteredUserList;
+}
+
+export function findLastName(lastName) {
+    const userList = getUserList();
+    if (!userList.length) return [];
+
+    const filteredUserList = userList.filter(user => user.lastName.match(`${lastName}`));
+
+    return filteredUserList;
+}
+
+export function findBalance(balance) {
+    const userList = getUserList();
+    if (!userList.length) return [];
+
+    const filteredUserList = userList.filter(user => user.balance >= balance);
+
+    return filteredUserList;
+}
+
+export function findUser(key, category) {
+    switch (category) {
+        case 'id':
+            return getUser(key);
+        case 'balance':
+            return findBalance(key);
+        case 'lastName':
+            return findLastName(key);
+        case 'firstName':
+            return findFirstName(key);
+        default:
+            return [];
+    }
 }

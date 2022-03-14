@@ -3,7 +3,7 @@ import UserSearchBar from '../components/UserSearchBar';
 import { PrimaryButton } from '../components/styles/Buttons.styled';
 import UserList from '../components/UserList';
 import { useEffect, useState } from 'react';
-import { createUser, deleteUser, getUserList } from '../services/BankUserDatabaseService';
+import { createUser, deleteUser, findUser, getUserList } from '../services/BankUserDatabaseService';
 import BankUser, { BANK_USER_LIST_KEY } from '../model/BankUser';
 
 const categories = ['id', 'firstName', 'lastName', 'balance'];
@@ -11,20 +11,27 @@ const categories = ['id', 'firstName', 'lastName', 'balance'];
 export default function UserManagement(props) {
     const [userList, setUserList] = useState(getUserList);
     
-    const addUserHandler = (e) => {
+    const handleAddUser = (e) => {
         //localStorage.setItem(BANK_USER_LIST_KEY, null);
         const user = new BankUser("rj", "lacanlale", "07/23/1995", 1000);
         createUser(user);
         setUserList(getUserList());
+    }
+    
+    const handleUserSearch = (key, category) => {
+        if (key === '') return setUserList(getUserList());
+
+        const filteredUserList = findUser(key, category);
+        setUserList(filteredUserList);
     }
 
     return (
         <Wrapper>
             <Header>
                 <Title>Manage Users</Title>
-                <AddNewUserButton onClick={addUserHandler}>+ New User</AddNewUserButton>
+                <AddNewUserButton onClick={handleAddUser}>+ New User</AddNewUserButton>
             </Header>
-            <UserSearchBar categories={categories} />
+            <UserSearchBar categories={categories} searchUser={handleUserSearch} />
             <UserList setUserList={setUserList} userList={userList} />
         </Wrapper>
     );

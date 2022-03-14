@@ -1,22 +1,114 @@
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { FaUserEdit } from 'react-icons/fa';
 import { TiUserDelete } from 'react-icons/ti';
+import { FiCheckSquare, FiXSquare } from 'react-icons/fi';
 import { AiOutlineTransaction } from 'react-icons/ai';
 import { deleteUser, editUser, getUserList } from '../services/BankUserDatabaseService';
-import BankUser from '../model/BankUser';
+import { useState } from 'react';
+import { InputFloat, InputName, InputNumber, InputText } from './styles/TextBoxes.styled';
+
+function UserTableItem({ user: { id, lastName, firstName, balance }, setUserList }) {
+    const [editable, setEditable] = useState(false);
+    const [newLastName, setNewLastName] = useState(lastName);
+    const [newFirstName, setNewFirstName] = useState(firstName);
+    const [newBalance, setNewBalance] = useState(balance);
+
+    const handleDeleteUser = () => {
+        // show confirmation dialog
+
+
+        // handle delete user in a different function
+        deleteUser(id);
+        setUserList(getUserList());
+    };
+
+    const handleEditUser = () => {
+        setEditable(true);
+    };
+
+    const handleConfirmEdit = () => {
+        setEditable(false);
+        editUser(id, { firstName: newFirstName, lastName: newLastName, balance: newBalance });
+        setUserList(getUserList());
+    };
+
+    const handleExitEdit = () => {
+        setEditable(false);
+        setNewFirstName(firstName);
+        setNewLastName(lastName);
+        setNewBalance(balance);
+    };
+
+    const handleFirstNameChange = value => {
+        setNewFirstName(value);
+    }
+
+    const handleLastNameChange = value => {
+        setNewLastName(value);
+    }
+
+    const handleBalanceChange = value => {
+        setNewBalance(value);
+    }
+
+    return (
+        <TableRow key={id}>
+            <TableData>{id}</TableData>
+            <TableData>
+                <InputName
+                    disabled={!editable}
+                    value={newLastName}
+                    setValue={handleLastNameChange}
+                    maxCharacters={12}
+                ></InputName>
+            </TableData>
+            <TableData>
+                <InputName
+                    disabled={!editable}
+                    value={newFirstName}
+                    setValue={handleFirstNameChange}
+                    maxCharacters={12}
+                ></InputName>
+            </TableData>
+            <TableData>
+                <InputFloat
+                    disabled={!editable}
+                    value={newBalance}
+                    setValue={handleBalanceChange}
+                    maxDigits={15}
+                ></InputFloat>
+            </TableData>
+            <TableData>
+                {editable ? (
+                    <EditActionGroup handleConfirmEdit={handleConfirmEdit} handleExitEdit={handleExitEdit} />
+                ) : (
+                    <RegularActionGroup handleEditUser={handleEditUser} handleDeleteUser={handleDeleteUser} />
+                )}
+            </TableData>
+        </TableRow>
+    );
+}
+
+function RegularActionGroup({ handleEditUser, handleDeleteUser }) {
+    return (
+        <TableActionGroup>
+            <StyledFaUserEdit onClick={handleEditUser} />
+            <StyledTiUserDelete onClick={handleDeleteUser} />
+            <StyledAiOutlineTransaction />
+        </TableActionGroup>
+    );
+}
+
+function EditActionGroup({ handleConfirmEdit, handleExitEdit }) {
+    return (
+        <TableActionGroup>
+            <StyledFiCheckSquare onClick={handleConfirmEdit} />
+            <StyledFiXSquare onClick={handleExitEdit} />
+        </TableActionGroup>
+    );
+}
 
 function UserTable(props) {
-
-    const handleDeleteUser = (id) => {
-        deleteUser(id);
-        props.setUserList(getUserList());
-    }
-
-    const handleEditUser = (id) => {
-        editUser(id, new BankUser("new", "lastname", "zzz", "5000"));
-        props.setUserList(getUserList());
-    }
-
     return (
         <TableContainer>
             <TableHead>
@@ -29,22 +121,8 @@ function UserTable(props) {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {props.userList.map(({ id, firstName, lastName, balance }) => {
-                    return (
-                        <TableRow key={id}>
-                            <TableData>{id}</TableData>
-                            <TableData>{lastName}</TableData>
-                            <TableData>{firstName}</TableData>
-                            <TableData>{balance}</TableData>
-                            <TableData>
-                                <TableActionGroup>
-                                    <StyledFaUserEdit onClick={() => handleEditUser(id)} />
-                                    <StyledTiUserDelete onClick={() => handleDeleteUser(id)} />
-                                    <StyledAiOutlineTransaction />
-                                </TableActionGroup>
-                            </TableData>
-                        </TableRow>
-                    );
+                {props.userList.map(user => {
+                    return <UserTableItem key={user.id} setUserList={props.setUserList} user={user} />;
                 })}
             </TableBody>
         </TableContainer>
@@ -66,7 +144,7 @@ function UserData(props) {
 export default function UserList(props) {
     return (
         <Wrapper>
-            <UserData userList={props.userList} setUserList={props.setUserList}/>
+            <UserData userList={props.userList} setUserList={props.setUserList} />
         </Wrapper>
     );
 }
@@ -79,7 +157,7 @@ const Wrapper = styled.div`
 const UserDataContainer = styled.div`
     display: flex;
     justify-content: center;
-    align-items: ${({userList}) => !userList.length ? 'center' : 'flex-start'};
+    align-items: ${({ userList }) => (!userList.length ? 'center' : 'flex-start')};
     width: 100%;
     height: 100%;
 `;
@@ -95,7 +173,7 @@ const TableRow = styled.tr`
     opacity: 0.8;
 
     :nth-child(even) {
-        background-color: ${(props) => props.theme.colors.tableHeader.backgroundColor};
+        background-color: ${props => props.theme.colors.tableHeader.backgroundColor};
         color: ${props => props.theme.colors.tableHeader.fontColor};
     }
 `;
@@ -133,5 +211,13 @@ const StyledTiUserDelete = styled(TiUserDelete)`
 `;
 
 const StyledAiOutlineTransaction = styled(AiOutlineTransaction)`
+    cursor: pointer;
+`;
+
+const StyledFiXSquare = styled(FiXSquare)`
+    cursor: pointer;
+`;
+
+const StyledFiCheckSquare = styled(FiCheckSquare)`
     cursor: pointer;
 `;
