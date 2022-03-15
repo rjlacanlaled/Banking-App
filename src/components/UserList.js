@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { formatFloat, formatName } from '../services/InputFormatService';
 import { MAX_BALANCE_DIGITS, MAX_NAME_CHARS } from '../model/BankUser';
 import { Input } from './styles/Inputs.styled';
-import DeleteUserConfirmation from './styles/DeleteUserConfirmation';
+import DeleteUserConfirmation from './DeleteUserConfirmation';
 import { validBalance, validFirstName, validLastName } from '../services/BankInputValidationService';
 
 function UserTableItem({
