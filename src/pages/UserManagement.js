@@ -7,7 +7,7 @@ import { createUser, deleteUser, findUser, getUserList } from '../services/BankU
 import BankUser, { BANK_USER_LIST_KEY } from '../model/BankUser';
 import AddUser from '../components/AddUser';
 import AddUserConfirmation from '../components/AddUserConfirmation';
-import DeleteUserConfirmation from '../components/styles/DeleteUserConfirmation';
+import DeleteUserConfirmation from '../components/DeleteUserConfirmation';
 
 const categories = ['id', 'firstName', 'lastName', 'balance'];
 
@@ -54,6 +54,8 @@ const Wrapper = styled.div`
 
     height: 100vh;
     width: 100vw;
+
+    overflow: auto;
 `;
 
 const Header = styled.div`
