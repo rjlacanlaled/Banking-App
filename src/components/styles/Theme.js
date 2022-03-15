@@ -1,8 +1,15 @@
 export const lightTheme = {
     colors: {
+        main: {
+            themeColor: '#2C8BBA',
+        },
         body: {
             fontColor: 'black',
             backgroundColor: 'white',
+        },
+        form: {
+            fontColor: 'white',
+            backgroundColor: '#2C8BBA'
         },
         primaryButtonHover: {
             fontColor: 'white',
@@ -26,12 +33,25 @@ export const lightTheme = {
         },
         tableHeader: {
             fontColor: 'white',
-            backgroundColor: '#2C8BBA',
+            backgroundColor: 'black',
+        },
+        tableData: {
+            oddStripeColor: '#19196B',
+            evenStripeColor: '#2C8BBA'
         },
         mainTitleDiv: {
             backgroundColor: '#2C8BBA',
             fontColor: 'white',
         },
+        inputText: {
+            backgroundColor: 'transparent',
+            fontColor: 'black'
+        },
+        errorText: {
+            backgroundColor: '#f8d7d9',
+            fontColor: '#721c23'
+        }
+    
     },
 };
 

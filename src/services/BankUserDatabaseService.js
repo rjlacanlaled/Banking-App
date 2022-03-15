@@ -24,11 +24,12 @@ export function getUser(id) {
     const userList = getUserList();
     if (!userList) return false;
 
-    const user = userList[userList.findIndex(user => user.id === id)];
+    const user = userList[userList.findIndex(user => user.id == id)];
     return user || false;
 }
 
 export function createUser(user) {
+    console.log(user);
     if (!user) return false;
     let userList = getUserList();
 
@@ -69,4 +70,47 @@ export function editUser(id, newUserData) {
     updateUserList(userList);
 
     return user;
+}
+
+export function findFirstName(firstName) {
+    const userList = getUserList();
+    if (!userList.length) return [];
+
+    const filteredUserList = userList.filter(user => user.firstName.match(`${firstName}`));
+
+    return filteredUserList;
+}
+
+export function findLastName(lastName) {
+    const userList = getUserList();
+    if (!userList.length) return [];
+
+    const filteredUserList = userList.filter(user => user.lastName.match(`${lastName}`));
+
+    return filteredUserList;
+}
+
+export function findBalance(balance) {
+    const userList = getUserList();
+    if (!userList.length) return [];
+
+    const filteredUserList = userList.filter(user => user.balance >= balance);
+
+    return filteredUserList;
+}
+
+export function findUser(key, category) {
+    switch (category) {
+        case 'id':
+            const user = getUser(key);
+            return user ? [user] : [];
+        case 'balance':
+            return findBalance(key);
+        case 'lastName':
+            return findLastName(key);
+        case 'firstName':
+            return findFirstName(key);
+        default:
+            return [];
+    }
 }
