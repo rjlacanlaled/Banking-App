@@ -79,13 +79,28 @@ function UserTableItem({
         <TableRow key={id}>
             <TableData>{id}</TableData>
             <TableData>
-                <StyledInput invalid={invalidLastName} disabled={!editable} value={newLastName} onChange={handleLastNameChange} />
+                <StyledInput
+                    invalid={invalidLastName}
+                    disabled={!editable}
+                    value={newLastName}
+                    onChange={handleLastNameChange}
+                />
             </TableData>
             <TableData>
-                <StyledInput invalid={invalidFirstName}  disabled={!editable} value={newFirstName} onChange={handleFirstNameChange} />
+                <StyledInput
+                    invalid={invalidFirstName}
+                    disabled={!editable}
+                    value={newFirstName}
+                    onChange={handleFirstNameChange}
+                />
             </TableData>
             <TableData>
-                <StyledInput invalid={invalidBalance}  disabled={!editable} value={newBalance} onChange={handleBalanceChange} />
+                <StyledInput
+                    invalid={invalidBalance}
+                    disabled={!editable}
+                    value={newBalance}
+                    onChange={handleBalanceChange}
+                />
             </TableData>
             <TableData>
                 {editable ? (
@@ -170,7 +185,7 @@ export default function UserList(props) {
     const confirmDeleteUser = () => {
         deleteUser(userToDelete);
         props.setUserList(getUserList());
-    }
+    };
 
     return (
         <Wrapper>
@@ -192,6 +207,9 @@ export default function UserList(props) {
 }
 
 const Wrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
     max-height: 500px;
@@ -222,7 +240,7 @@ const TableRow = styled.tr`
     :nth-child(even) {
         background-color: ${props => props.theme.colors.tableData.evenStripeColor}55;
     }
-    
+
     border-bottom: 0.5px solid white;
 `;
 
@@ -262,7 +280,7 @@ const StyledInput = styled(Input)`
     border-style: none;
     outline: ${({ disabled }) => (disabled ? 'none' : '1px solid white')};
     border-radius: 5px;
-    background-color: ${({invalid, theme}) => invalid ? theme.colors.errorText.fontColor : 'transparent'};
+    background-color: ${({ invalid, theme }) => (invalid ? theme.colors.errorText.fontColor : 'transparent')};
     padding: 5px;
     color: white;
     font-weight: 600;

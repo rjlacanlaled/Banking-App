@@ -50,12 +50,15 @@ export default function UserManagement(props) {
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 10px;
 
     height: 100vh;
     width: 100vw;
 
     overflow: auto;
+
+    background-color: ${({theme}) => theme.colors.main.themeColor};
 `;
 
 const Header = styled.div`
@@ -64,6 +67,11 @@ const Header = styled.div`
     background-color: ${props => props.theme.colors.mainTitleDiv.backgroundColor};
     color: ${props => props.theme.colors.mainTitleDiv.fontColor};
     padding: 30px;
+    width: 100%;
+
+    overflow: auto;
+
+    border-bottom: 2px solid white;
 `;
 
 const Title = styled.h1``;

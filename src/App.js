@@ -12,10 +12,10 @@ export default function App() {
             <ThemeProvider theme={theme}>
                 <GlobalStyles />
                 <Main>
-                    
+                    <SideBar />
                     <Routes>
                         <Route path='/' />
-                        <Route path='/login' element={<Login />}/>
+                        <Route path='/login' element={<Login />} />
                         <Route path='/users' element={<UserManagement />} />
                         <Route path='/transactions' />
                     </Routes>
@@ -26,4 +26,8 @@ export default function App() {
 }
 
 const Main = styled.div`
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 `;

@@ -54,7 +54,7 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: flex-end;
     gap: 5px;
-    padding-right: 30px;
+    width: 80%;
 `;
 
 const SearchButton = styled(PrimaryButton)`
