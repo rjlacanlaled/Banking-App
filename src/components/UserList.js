@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { formatFloat, formatName } from '../services/InputFormatService';
 import { MAX_BALANCE_DIGITS, MAX_NAME_CHARS } from '../model/BankUser';
 import { Input } from './styles/Inputs.styled';
-import DeleteUserConfirmation from './styles/DeleteUserConfirmation';
+import DeleteUserConfirmation from './DeleteUserConfirmation';
 import { validBalance, validFirstName, validLastName } from '../services/BankInputValidationService';
 
 function UserTableItem({
@@ -26,13 +26,8 @@ function UserTableItem({
     const [newBalance, setNewBalance] = useState(balance);
 
     const handleDeleteUser = () => {
-        // show confirmation dialog
-
         setUserToDelete(id);
         setShowDeleteUserConfirmation(true);
-        // handle delete user in a different function
-        // deleteUser(id);
-        // setUserList(getUserList());
     };
 
     const handleEditUser = () => {
@@ -200,7 +195,7 @@ const Wrapper = styled.div`
     width: 100%;
     height: 100%;
     max-height: 500px;
-    overflow-y: auto;
+    overflow: auto;
     background-color: ${props => props.theme.colors.main.themeColor};
 `;
 
@@ -210,14 +205,14 @@ const UserDataContainer = styled.div`
     align-items: ${({ userList }) => (!userList.length ? 'center' : 'flex-start')};
     width: 100%;
     height: 100%;
-    padding: 30px;
+    padding: 0 10% 0 10%;
     text-transform: uppercase;
 `;
 
 const TableContainer = styled.table`
     border-collapse: collapse;
-    text-align: center;
     width: 100%;
+    min-width: max-content;
 
     background-color: ${props => props.theme.colors.tableData.oddStripeColor};
 `;
@@ -232,7 +227,7 @@ const TableRow = styled.tr`
 `;
 
 const TableHead = styled.thead`
-
+    text-align: left;
 `;
 
 const TableHeader = styled.th`
@@ -255,6 +250,7 @@ const TableActionGroup = styled.div`
     justify-content: center;
     align-items: center;
     gap: 5%;
+    max-width: 75px;
 `;
 
 const NoUserMessage = styled.h1`
@@ -270,7 +266,7 @@ const StyledInput = styled(Input)`
     padding: 5px;
     color: white;
     font-weight: 600;
-    text-align: center;
+
     transition: all 0.5s;
     text-transform: uppercase;
 `;
@@ -298,7 +294,8 @@ const StyledFiCheckSquare = styled(FiCheckSquare)`
 const DeleteUserModal = styled.div`
     position: absolute;
     width: 100%;
-    height: 500px;
+    height: 100%;
+    max-height: 500px;
     display: ${({ showDeleteUserConfirmation }) => (showDeleteUserConfirmation ? 'flex' : 'none')};
     justify-content: center;
     align-items: center;

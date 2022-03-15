@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { NegativeButton, PrimaryButton } from './Buttons.styled';
+import { NegativeButton, PrimaryButton } from './styles/Buttons.styled';
 
 export default function DeleteUserConfirmation(props) {
     const handleCancelButton = () => {
