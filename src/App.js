@@ -1,5 +1,4 @@
-import './App.css';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { theme } from './components/styles/Theme';
 import GlobalStyles from './components/styles/Global';
 import UserManagement from './pages/UserManagement';
@@ -10,15 +9,18 @@ export default function App() {
         <BrowserRouter>
             <ThemeProvider theme={theme}>
                 <GlobalStyles />
-                <div className='App'>
+                <Main>
                     <Routes>
-                      <Route path="/login" /> 
-                      <Route path="/users" element={<UserManagement />}/>
-                      <Route path="/transactions" /> 
-                      <Route path="/" />
+                        <Route path='/' />
+                        <Route path='/login' />
+                        <Route path='/users' element={<UserManagement />} />
+                        <Route path='/transactions' />
                     </Routes>
-                </div>
+                </Main>
             </ThemeProvider>
         </BrowserRouter>
     );
 }
+
+const Main = styled.div`
+`;
