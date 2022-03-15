@@ -6,12 +6,15 @@ import { useEffect, useState } from 'react';
 import { createUser, deleteUser, findUser, getUserList } from '../services/BankUserDatabaseService';
 import BankUser, { BANK_USER_LIST_KEY } from '../model/BankUser';
 import AddUser from '../components/AddUser';
+import AddUserConfirmation from '../components/AddUserConfirmation';
+import DeleteUserConfirmation from '../components/styles/DeleteUserConfirmation';
 
 const categories = ['id', 'firstName', 'lastName', 'balance'];
 
 export default function UserManagement(props) {
     const [userList, setUserList] = useState(getUserList);
     const [showAddUser, setShowAddUser] = useState(false);
+    const [showAddUserConfirmation, setShowAddUserConfirmation] = useState(false);
 
     const handleAddUser = e => {
         setShowAddUser(true);
@@ -27,8 +30,12 @@ export default function UserManagement(props) {
     return (
         <Wrapper>
             <AddUserModal showAddUser={showAddUser}>
-                <AddUser setShowAddUser={setShowAddUser} />
+                <AddUser setShowAddUser={setShowAddUser} setShowAddUserConfirmation={setShowAddUserConfirmation} />
             </AddUserModal>
+
+            <AddUserConfirmationModal showAddUserConfirmation={showAddUserConfirmation}>
+                <AddUserConfirmation />
+            </AddUserConfirmationModal>
 
             <Header>
                 <Title>Manage Users</Title>
@@ -54,20 +61,27 @@ const Header = styled.div`
     justify-content: space-between;
     background-color: ${props => props.theme.colors.mainTitleDiv.backgroundColor};
     color: ${props => props.theme.colors.mainTitleDiv.fontColor};
+    padding: 30px;
 `;
 
 const Title = styled.h1``;
 
 const AddNewUserButton = styled(PrimaryButton)`
-    padding: 5px;
+    padding: 10px;
 `;
 
 const AddUserModal = styled.div`
+    z-index: 10;
     position: absolute;
     width: 100%;
     height: 100%;
-    display: ${({showAddUser}) => showAddUser ? 'flex' : 'none'};
+    display: ${({ showAddUser }) => (showAddUser ? 'flex' : 'none')};
     justify-content: center;
     align-items: center;
-    background-color: rgb(0,0,0, 0.8);
+    background-color: rgb(0, 0, 0, 0.8);
+`;
+
+const AddUserConfirmationModal = styled(AddUserModal)`
+    z-index: 10;
+    display: ${({ showAddUserConfirmation }) => (showAddUserConfirmation ? 'flex' : 'none')};
 `;

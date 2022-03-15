@@ -10,8 +10,19 @@ export default function AddUserConfirmation() {
   )
 }
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 2%;
+    border: 3px solid ${props => props.theme.colors.main.themeColor};
+    border-radius: 20px;
+    background-color: white;
+`;
 const Message = styled.h1``;
 const AnimatedCheck = styled.img`
-
+    max-width: 400px;
+    max-height: 400px;
 `;

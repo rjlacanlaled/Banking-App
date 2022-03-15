@@ -24,7 +24,7 @@ export function getUser(id) {
     const userList = getUserList();
     if (!userList) return false;
 
-    const user = userList[userList.findIndex(user => user.id === id)];
+    const user = userList[userList.findIndex(user => user.id == id)];
     return user || false;
 }
 
@@ -67,10 +67,6 @@ export function editUser(id, newUserData) {
     user.lastName = newUserData.lastName;
     user.balance = newUserData.balance;
 
-    alert(newUserData.lastName, newUserData.firstName);
-
-    alert('updated user!');
-
     updateUserList(userList);
 
     return user;
@@ -106,7 +102,8 @@ export function findBalance(balance) {
 export function findUser(key, category) {
     switch (category) {
         case 'id':
-            return getUser(key);
+            const user = getUser(key);
+            return user ? [user] : [];
         case 'balance':
             return findBalance(key);
         case 'lastName':

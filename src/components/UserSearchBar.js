@@ -14,15 +14,15 @@ export default function SearchBar(props) {
         let value;
         switch (chosenCategory) {
             case 'id':
-                if (e.target.value > MAX_BALANCE_DIGITS) return;
+                if (e.target.value.length > MAX_BALANCE_DIGITS) return;
                 value = formatInteger(e.target.value);
                 break;
             case 'balance':
-                if (e.target.value > MAX_BALANCE_DIGITS) return;
+                if (e.target.value.length > MAX_BALANCE_DIGITS) return;
                 value = formatFloat(e.target.value);
                 break;
             default:
-                if (e.target.value > MAX_NAME_CHARS) return;
+                if (e.target.value.length  > MAX_NAME_CHARS) return;
                 value = formatName(e.target.value);
         }
 
@@ -35,7 +35,7 @@ export default function SearchBar(props) {
 
     return (
         <Wrapper>
-            <Input value={searchKey} onChange={handleSearchKeyChange} />
+            <StyledInput value={searchKey} onChange={handleSearchKeyChange} placeholder='Enter search keyword'/>
             <Category name='search-category' value={chosenCategory} onChange={handleCategoryChange}>
                 {props.categories.map(category => {
                     return (
@@ -52,14 +52,21 @@ export default function SearchBar(props) {
 
 const Wrapper = styled.div`
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
     gap: 5px;
+    padding-right: 30px;
 `;
 
 const SearchButton = styled(PrimaryButton)`
     padding: 10px 20px 10px 20px;
 `;
 
-const Category = styled.select``;
+const Category = styled.select`
+    padding: 10px;
+`;
 const CategoryOption = styled.option``;
+
+const StyledInput = styled(Input)`
+    padding: 10px;
+`;
 

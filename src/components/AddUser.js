@@ -36,10 +36,14 @@ export default function AddUser(props) {
         console.log('here');
         // validate input before submitting
         let err = [...validFirstName(firstName), ...validLastName(lastName), ...validBalance(balance)];
-        if (err.length) return setErrors(err); 
+        if (err.length) return setErrors(err);
         createUser(new BankUser(firstName, lastName, balance));
-        e.target.submit();
-        // show confirmation
+        props.setShowAddUser(false);
+        props.setShowAddUserConfirmation(true);
+        setTimeout(() => {
+            props.setShowAddUserConfirmation(false);
+            e.target.submit();
+        }, 2000);
     };
 
     const handleAddUserCancel = () => {
@@ -55,8 +59,7 @@ export default function AddUser(props) {
             <FormTitle>Add User</FormTitle>
             <ErrorBox hasError={errors.length > 0}>
                 {errors.map(error => {
-    
-                    return <ErrorMessage key={error}>{error}</ErrorMessage>
+                    return <ErrorMessage key={error}>{error}</ErrorMessage>;
                 })}
             </ErrorBox>
             <Form onSubmit={handleFormSubmit}>
@@ -129,15 +132,15 @@ const StyledNegativeButton = styled(NegativeButton)`
 `;
 
 const ErrorBox = styled.ul`
-    display: ${({hasError}) => hasError ? 'block' : 'none'};
+    display: ${({ hasError }) => (hasError ? 'block' : 'none')};
     padding: 10px;
     margin: 10px 0 10px 0;
-    border: 1px solid #721C23;
+    border: 1px solid #721c23;
     border-radius: 5px;
-    background-color: #F8D7D9;
+    background-color: #f8d7d9;
 `;
 const ErrorMessage = styled.li`
-    color: #721C23;
+    color: #721c23;
     list-style-type: square;
     list-style-position: inside;
-`;    
+`;

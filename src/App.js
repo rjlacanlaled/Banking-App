@@ -11,8 +11,7 @@ export default function App() {
         <ThemeProvider theme={theme}>
             <GlobalStyles />
             <div className='App'>
-              {/* <UserManagement /> */}
-              <AddUserConfirmation />
+              <UserManagement />
             </div>
         </ThemeProvider>
     );
