@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { theme } from './Theme';
 
 const GlobalStyles = createGlobalStyle`
 
@@ -10,6 +11,8 @@ const GlobalStyles = createGlobalStyle`
 
     body {
         font-family: 'Roboto', sans-serif;
+        background-color: ${theme.colors.body.backgroundColor};
+        color: ${theme.colors.body.fontColor}
     }
 
     li {
