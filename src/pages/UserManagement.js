@@ -54,6 +54,8 @@ const Wrapper = styled.div`
 
     height: 100vh;
     width: 100vw;
+
+    overflow: auto;
 `;
 
 const Header = styled.div`
