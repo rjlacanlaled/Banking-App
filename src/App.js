@@ -6,10 +6,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import SideBar from './components/Sidebar';
 import { useState } from 'react';
+import { bankInputFormatter } from './services/bank-input-format-service';
+import { bankInputValidator } from './services/bank-input-validation-service';
+
+const inputFormatter = bankInputFormatter;
+const inputValidator = bankInputValidator;
 
 export default function App() {
-
-  const [loggedIn, setLoggedIn] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(false);
 
     return (
         <BrowserRouter>
@@ -20,7 +24,10 @@ export default function App() {
                     <Routes>
                         <Route path='/' />
                         <Route path='/login' element={<Login />} />
-                        <Route path='/users' element={<UserManagement />} />
+                        <Route
+                            path='/users'
+                            element={<UserManagement inputFormatter={inputFormatter} inputValidator={inputValidator} />}
+                        />
                         <Route path='/transactions' />
                         <Route path='/withdraw' />
                     </Routes>
@@ -31,8 +38,8 @@ export default function App() {
 }
 
 const Main = styled.div`
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
 `;

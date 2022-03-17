@@ -1,17 +1,16 @@
 import styled from 'styled-components';
 import { PrimaryButton } from '../components/styles/Buttons.styled';
 import { useEffect, useState } from 'react';
-import { createUser, deleteUser, editUser, findUser, getUserList } from '../services/bank-user-database-service';
-import BankUser, { BANK_USER_KEYS, BANK_USER_LIST_KEY } from '../model/BankUser';
+import { deleteUser, editUser, getUserList } from '../services/bank-user-database-service';
+import { BANK_USER_KEYS } from '../model/BankUser';
 import AddUser from '../components/AddUser';
 import ConfirmationMessage from '../components/ConfirmationMessage';
 import DataTable from '../components/DataTable';
 import { Modal } from '../components/styles/Modal.styled';
 import Confirmation from '../components/Confirmation';
 import { displayModalForDuration } from '../utils/modal-util';
-import { bankInputFormatter } from '../services/bank-input-format-service';
 
-export default function UserManagement(props) {
+export default function UserManagement({ inputFormatter, inputValidator }) {
     const [userList, setUserList] = useState(getUserList());
     const [chosenId, setChosenId] = useState(0);
 
@@ -19,6 +18,7 @@ export default function UserManagement(props) {
     const [showAddUserConfirmationMessage, setShowAddUserConfirmationMessage] = useState(false);
     const [showDeleteUserConfirmation, setShowDeleteUserConfirmation] = useState(false);
     const [showDeleteUserConfirmationMessage, setShowDeleteUserConfirmationMessage] = useState(false);
+
 
     const handleAddUser = e => {
         setShowAddUserConfirmation(true);
@@ -57,10 +57,14 @@ export default function UserManagement(props) {
             </Header>
 
             {userList.length && (
-                <DataTable headers={BANK_USER_KEYS} data={userList} 
-                onDelete={handleDelete} 
-                onEdit={handleEdit}
-                inputHandler={(input) => bankInputFormatter(input)} />
+                <DataTable
+                    headers={BANK_USER_KEYS}
+                    data={userList}
+                    onDelete={handleDelete}
+                    onEdit={handleEdit}
+                    inputFormatter={inputFormatter}
+                    inputValidator={inputValidator}
+                />
             )}
 
             <Modal show={showAddUserConfirmation}>

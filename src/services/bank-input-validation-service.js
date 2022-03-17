@@ -15,4 +15,10 @@ export const validBalance = balance => {
     if (balance < 0) errors.push('Balance cannot be negative!');
     if (!balance.length) errors.push('Balance cannot be empty!');
     return errors;
-}
+};
+
+export const bankInputValidator = {
+    firstName: validFirstName,
+    lastName: validLastName,
+    balance: validBalance,
+};
