@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import BankUser, { MAX_BALANCE_DIGITS, MAX_NAME_CHARS } from '../model/BankUser';
-import { validBalance, validFirstName, validLastName } from '../services/BankInputValidationService';
-import { createUser } from '../services/BankUserDatabaseService';
-import { formatFloat, formatName } from '../services/InputFormatService';
+import { validBalance, validFirstName, validLastName } from '../services/bank-input-validation-service';
+import { createUser } from '../services/bank-user-database-service';
+import { formatFloat, formatName } from '../utils/input-format-util';
+import ErrorBox from './ErrorBox';
 import { NegativeButton, PrimaryButton } from './styles/Buttons.styled';
 import { Input } from './styles/Inputs.styled';
 
-export default function AddUser(props) {
+export default function AddUser({onConfirm}) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [balance, setBalance] = useState('');
@@ -33,47 +34,41 @@ export default function AddUser(props) {
 
     const handleFormSubmit = e => {
         e.preventDefault();
-        console.log('here');
-        // validate input before submitting
         let err = [...validFirstName(firstName), ...validLastName(lastName), ...validBalance(balance)];
         if (err.length) return setErrors(err);
         createUser(new BankUser(firstName, lastName, balance));
-        props.setShowAddUser(false);
-        props.setShowAddUserConfirmation(true);
-        setTimeout(() => {
-            props.setShowAddUserConfirmation(false);
-            e.target.submit();
-        }, 2000);
+        resetInput();
+        onConfirm(true);
     };
 
     const handleAddUserCancel = () => {
+        resetInput();
+        onConfirm(false);
+    };
+
+    const resetInput = () => {
         setFirstName('');
         setLastName('');
         setBalance('');
         setErrors([]);
-        props.setShowAddUser(false);
-    };
+    }
 
     return (
         <Container>
             <FormTitle>Add User</FormTitle>
-            <ErrorBox hasError={errors.length > 0}>
-                {errors.map(error => {
-                    return <ErrorMessage key={error}>{error}</ErrorMessage>;
-                })}
-            </ErrorBox>
-            <Form onSubmit={handleFormSubmit}>
+            <ErrorBox errors={errors}/>
+            <Form>
                 <Label>First Name</Label>
                 <StyledInput onChange={handleFirstNameChange} value={firstName} placeholder='Enter first name' />
                 <Label>Last Name</Label>
                 <StyledInput onChange={handleLastNameChange} value={lastName} placeholder='Enter last name' />
                 <Label>Balance</Label>
                 <StyledInput onChange={handleBalanceChange} value={balance} placeholder='Enter account balance' />
-                <ButtonContainer>
-                    <StyledPrimaryButton type='submit'>Submit</StyledPrimaryButton>
+            </Form>
+            <ButtonContainer>
+                    <StyledPrimaryButton onClick={handleFormSubmit}>Submit</StyledPrimaryButton>
                     <StyledNegativeButton onClick={handleAddUserCancel}>Cancel</StyledNegativeButton>
                 </ButtonContainer>
-            </Form>
         </Container>
     );
 }
@@ -109,6 +104,9 @@ const FormTitle = styled.h1`
 
 const ButtonContainer = styled.div`
     display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
     gap: 10px;
 `;
 
@@ -125,22 +123,8 @@ const Label = styled.label`
 `;
 
 const StyledPrimaryButton = styled(PrimaryButton)`
-    padding: 5px;
+    padding: 10px 20px 10px 20px;
 `;
 const StyledNegativeButton = styled(NegativeButton)`
-    padding: 5px;
-`;
-
-const ErrorBox = styled.ul`
-    display: ${({ hasError }) => (hasError ? 'block' : 'none')};
-    padding: 10px;
-    margin: 10px 0 10px 0;
-    border: 1px solid #721c23;
-    border-radius: 5px;
-    background-color: #f8d7d9;
-`;
-const ErrorMessage = styled.li`
-    color: #721c23;
-    list-style-type: square;
-    list-style-position: inside;
+    padding: 10px 20px 10px 20px;
 `;

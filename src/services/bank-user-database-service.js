@@ -29,7 +29,6 @@ export function getUser(id) {
 }
 
 export function createUser(user) {
-    console.log(user);
     if (!user) return false;
     let userList = getUserList();
 
@@ -57,15 +56,15 @@ export function deleteUser(id) {
     return user;
 }
 
-export function editUser(id, newUserData) {
-    if (!newUserData) return false;
+export function editUser(updatedUser) {
+    if (!updatedUser) return false;
     const userList = getUserList();
-    const user = userList[userList.findIndex(list => list.id === id)];
+    const user = userList[userList.findIndex(list => list.id === updatedUser.id)];
 
     if (!user) return 'User not found!';
-    user.firstName = newUserData.firstName;
-    user.lastName = newUserData.lastName;
-    user.balance = newUserData.balance;
+    user.firstName = updatedUser.firstName;
+    user.lastName = updatedUser.lastName;
+    user.balance = updatedUser.balance;
 
     updateUserList(userList);
 

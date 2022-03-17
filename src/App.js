@@ -5,8 +5,12 @@ import UserManagement from './pages/UserManagement';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import SideBar from './components/Sidebar';
+import { useState } from 'react';
 
 export default function App() {
+
+  const [loggedIn, setLoggedIn] = useState(false);
+
     return (
         <BrowserRouter>
             <ThemeProvider theme={theme}>
@@ -18,6 +22,7 @@ export default function App() {
                         <Route path='/login' element={<Login />} />
                         <Route path='/users' element={<UserManagement />} />
                         <Route path='/transactions' />
+                        <Route path='/withdraw' />
                     </Routes>
                 </Main>
             </ThemeProvider>

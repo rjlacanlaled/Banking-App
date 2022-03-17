@@ -48,7 +48,7 @@ export default function SideBar() {
         //    </SideBarDashboard>
         //    <SideBarDeposit>
         //       <ClickIcon src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Instagram_verifed.png" />
-        //       <Link to='/deposit'>Deposit</Link>
+        //       <Link to='/deposit'>Deposit credit/debit</Link>
         //    </SideBarDeposit>
         //    <SideBarWithdraw>
         //       <ClickIcon src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Instagram_verifed.png" />
