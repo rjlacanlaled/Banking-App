@@ -5,6 +5,7 @@ import {
 } from '../services/bank-transaction-database-service';
 import { createUser, deleteUser, editUser, getUser, getUserList } from '../services/bank-user-database-service';
 import BankTransaction from './bank-transaction';
+import TransactionTypes from './enums/transaction-types';
 
 export default class BankApp {
     constructor(userDatabaseKey, transactionDatabaseKey, inputFormatter, inputValidator) {
@@ -38,17 +39,11 @@ export default class BankApp {
         this.updateAccount(toAccount);
 
         this.createTransaction(
-            new BankTransaction(
-                new Date().toString(),
-                TransactionTypes.Transfer,
-                amount,
-                fromId,
-                toId
-            )
+            new BankTransaction(new Date().toString(), TransactionTypes.Transfer, amount, fromId, toId)
         );
 
         return true;
-    }
+    };
 
     withdraw = (id, amount) => {
         if (amount < 1) return 'Withdraw amount must be greater than 0';
@@ -56,11 +51,37 @@ export default class BankApp {
 
         if (!account) return 'Account does not exist!';
 
-    }
+        const balance = parseFloat(account.balance);
+
+        if (balance < amount) return 'Balance is less than the withdraw amount!';
+
+        balance -= amount;
+        account.balance = balance;
+        this.updateAccount(account);
+
+        this.createTransaction(
+            new BankTransaction(new Date().toString(), TransactionTypes.Withdraw, amount, account, 'cash')
+        );
+        return true;
+    };
 
     deposit = (id, amount) => {
         if (amount < 1) return 'Deposit amount must be greater than 0';
-    }
+        const account = this.getAccount(id);
+
+        if (!account) return 'Account does not exist!';
+
+        const balance = parseFloat(account.balance);
+        balance += amount;
+
+        account.balance = balance;
+        this.updateAccount(account);
+
+        this.createTransaction(
+            new BankTransaction(new Date().toString(), TransactionTypes.Deposit, amount, 'cash', account)
+        );
+        return true;
+    };
 
     createAccount = user => {
         createUser(user, this.userDatabaseKey);
