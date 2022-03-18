@@ -58,6 +58,7 @@ export default class BankApp {
         this.createTransaction(
             new BankTransaction(new Date().toString(), TransactionTypes.Withdraw, amount, account, 'cash')
         );
+        
         return true;
     };
 
