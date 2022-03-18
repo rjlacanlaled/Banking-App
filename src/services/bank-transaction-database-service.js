@@ -22,6 +22,28 @@ export const createBankTransaction = (transaction, databaseKey) => {
     return true;
 };
 
+export function deleteBankTransaction(id, databaseKey) {
+    if (!id) return false;
+    const user = getUser(id, databaseKey);
+
+    if (!user) return 'User not found!';
+
+    let userList = getUserList(databaseKey);
+    userList = userList.filter(userListItem => userListItem.id !== user.id);
+
+    updateUserList(userList, databaseKey);
+
+    return user;
+}
+
+export function getBankTransaction(id, databaseKey) {
+    const transactions = getBankTransactions(databaseKey);
+    if (!transactions) return false;
+
+    const transaction = userList[userList.findIndex(user => user.id == id)];
+    return user || false;
+}
+
 function incrementTransactionId(databaseKey) {
     localStorage.setItem(databaseKey.concat('id'), getLastTransactionId() + 1);
 }

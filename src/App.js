@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import SideBar from './components/Sidebar';
 import { useState } from 'react';
 import { bankApp } from './model/bank-app-main';
+import TransactionHistory from './pages/TransactionHistory';
 
 export default function App() {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -34,7 +35,7 @@ export default function App() {
                                 />
                             }
                         />
-                        <Route path='/transactions' />
+                        <Route path='/transactions' element={<TransactionHistory transactions={bank.transactions} remove={bank.removeTransaction}/>} />
                         <Route path='/withdraw' />
                     </Routes>
                 </Main>

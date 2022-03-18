@@ -8,6 +8,7 @@ import DataTable from '../components/DataTable';
 import { Modal } from '../components/styles/Modal.styled';
 import Confirmation from '../components/Confirmation';
 import { displayModalForDuration } from '../utils/modal-util';
+import { PageTitle, PageTitleContainer } from '../components/styles/Titles.styled';
 
 export default function UserManagement({ users, create, update, remove, formatter, validator }) {
     const [userList, setUserList] = useState(users);
@@ -21,7 +22,6 @@ export default function UserManagement({ users, create, update, remove, formatte
     useEffect(() => {
         setUserList(users);
     }, [users]);
-
 
     const handleAddUser = () => {
         setShowAddUserConfirmation(true);
@@ -52,21 +52,19 @@ export default function UserManagement({ users, create, update, remove, formatte
 
     return (
         <Wrapper>
-            <Header>
-                <Title>Manage Users</Title>
+            <PageTitleContainer>
+                <PageTitle>Manage Users</PageTitle>
                 <AddNewUserButton onClick={handleAddUser}>+ New User</AddNewUserButton>
-            </Header>
+            </PageTitleContainer>
 
-            {userList.length && (
-                <DataTable
-                    headers={BANK_USER_KEYS}
-                    data={userList}
-                    onDelete={handleDelete}
-                    onEdit={handleEdit}
-                    inputFormatter={formatter}
-                    inputValidator={validator}
-                />
-            )}
+            <DataTable
+                headers={BANK_USER_KEYS}
+                data={userList}
+                onDelete={handleDelete}
+                onEdit={handleEdit}
+                inputFormatter={formatter}
+                inputValidator={validator}
+            />
 
             <Modal show={showAddUserConfirmation}>
                 <AddUser onConfirm={handleConfirmAddUser} />
@@ -103,21 +101,6 @@ const Wrapper = styled.div`
 
     background-color: ${({ theme }) => theme.colors.main.themeColor};
 `;
-
-const Header = styled.div`
-    display: flex;
-    justify-content: space-between;
-    background-color: ${props => props.theme.colors.mainTitleDiv.backgroundColor};
-    color: ${props => props.theme.colors.mainTitleDiv.fontColor};
-    padding: 1% 10% 1% 10%;
-    width: 100%;
-
-    overflow: auto;
-
-    border-bottom: 2px solid white;
-`;
-
-const Title = styled.h1``;
 
 const AddNewUserButton = styled(PrimaryButton)`
     padding: 10px;
