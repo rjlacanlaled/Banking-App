@@ -7,6 +7,7 @@ export function getLastUserId() {
 
 export function incrementUserId() {
     localStorage.setItem(BANK_USER_ID_KEY, getLastUserId() + 1);
+    console.log(localStorage.setItem(BANK_USER_ID_KEY, getLastUserId() + 1))
 }
 
 export function getUserList() {

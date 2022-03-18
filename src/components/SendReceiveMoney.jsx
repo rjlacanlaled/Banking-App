@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { theme } from "./styles/Theme";
+import { getUser, getUserList } from "../services/BankUserDatabaseService";
+
 
 export default function SendReceiveMoney() {
    return (
@@ -34,14 +36,13 @@ export default function SendReceiveMoney() {
                      <h3>Make a Transfer</h3>
                   </StepTitle>
                   <StepAction>
-                     <SelectOptions>
-                        <option value={Step1Options.value}>
-                           {Step1Options[0].label}
-                        </option>
-                        <option value={Step1Options[1].value}>
-                           {Step1Options[1].label}
-                        </option>
-                     </SelectOptions>
+                     <UserSelection>
+                        {getUserList().map(({ firstName, lastName }) => {
+                           return (
+                              <Option>{firstName} {lastName}</Option>
+                           )
+                        })}
+                     </UserSelection>
                   </StepAction>
                </Step1>
             </MakeATransferContainer>
@@ -52,14 +53,14 @@ export default function SendReceiveMoney() {
                      <h3>Transfer To</h3>
                   </StepTitle>
                   <StepAction>
-                     <SelectOptions>
+                     <UserSelection>
                         <option value={Step2Options[0].value}>
                            {Step2Options[0].label}
                         </option>
                         <option value={Step2Options[1].value}>
                            {Step2Options[1].label}
                         </option>
-                     </SelectOptions>
+                     </UserSelection>
                   </StepAction>
                </Step2>
             </TransferToContainer>
@@ -70,14 +71,14 @@ export default function SendReceiveMoney() {
                      <h3>Transfer From</h3>
                   </StepTitle>
                   <StepAction>
-                     <SelectOptions>
+                     <UserSelection>
                         <option value={Step2Options[0].value}>
                            {Step2Options[0].label}
                         </option>
                         <option value={Step2Options[1].value}>
                            {Step2Options[1].label}
                         </option>
-                     </SelectOptions>
+                     </UserSelection>
                      <ViewBalance>View Balance</ViewBalance>
                   </StepAction>
                </Step3>
@@ -143,6 +144,8 @@ const TransferFundsTitle = styled.div`
    padding: 10px 10px;
 `;
 
+const Option = styled.option``;
+
 const PayBillsContainer = styled(TransferFundsContainer)``;
 
 const PayBillsTitle = styled(TransferFundsTitle)``;
@@ -198,7 +201,7 @@ const StepAction = styled.div`
    width: 100%;
    height: 50%;
 `;
-const SelectOptions = styled.select`
+const UserSelection = styled.select`
    outline: none;
    width: 30%;
    margin: 0 0 0 20px;
