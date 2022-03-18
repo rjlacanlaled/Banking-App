@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import SideBar from './components/Sidebar';
 import { useState } from 'react';
-import { bankApp } from './model/bank-app-main';
+import { bankApp } from './model/bank-app-test';
 import TransactionHistory from './pages/TransactionHistory';
 
 export default function App() {

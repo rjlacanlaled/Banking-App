@@ -5,7 +5,9 @@ export default class LocalStorageDatabase {
 
     getId = () => {
         const userId = localStorage.getItem(this.key.concat('id'));
-        return parseInt(userId) + 1 || 1;
+        const id = userId ? parseInt(userId) + 1 : 1;
+        localStorage.setItem(this.key.concat('id'), id);
+        return id;
     };
 
     getAll = () => {
@@ -15,26 +17,26 @@ export default class LocalStorageDatabase {
         return list;
     };
 
-    updateList = list => {
-        localStorage.setItem(this.key, JSON.stringify(list));
+    updateDatabase = data => {
+        localStorage.setItem(this.key, JSON.stringify(data));
     };
 
     get = id => {
         const list = this.getAll();
         if (!list) return false;
 
-        const item = list[item.findIndex(listItem => listItem.id == id)];
+        const item = list[list.findIndex(listItem => listItem.id == id)];
         return item || false;
     };
 
     create = item => {
         if (!item) return false;
-        let list = this.getAll();
+        let database = this.getAll();
 
-        list.id = this.getId();
-        list.push(item);
+        item.id = this.getId();
+        database.push(item);
 
-        updateList(list);
+        this.updateDatabase(database);
 
         return item;
     };
@@ -45,24 +47,24 @@ export default class LocalStorageDatabase {
 
         if (!item) return;
 
-        let list = this.getAll();
-        list = list.filter(listItem => listItem.id !== item.id);
+        let database = this.getAll();
+        database = database.filter(databaseItem => databaseItem.id !== item.id);
 
-        this.updateList(list);
+        this.updateDatabase(database);
 
         return item;
     };
 
-    edit = updatedItem => {
+    update = updatedItem => {
         if (!updatedItem) return;
-        const list = this.getAll();
-        const item = list[userList.findIndex(listItem => listItem.id === updatedItem.id)];
+        const database = this.getAll();
+        let index = database.findIndex(databaseItem => databaseItem.id === updatedItem.id);
 
-        if (!item) return;
-        item = updatedItem;
+        if (!index) return;
+        database[index] = updatedItem;
 
-        this.updateList(list);
+        this.updateDatabase(database);
 
-        return item;
+        return true;
     };
 }

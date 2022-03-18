@@ -67,7 +67,7 @@ export default function UserManagement({ users, create, update, remove, formatte
             />
 
             <Modal show={showAddUserConfirmation}>
-                <AddUser onConfirm={handleConfirmAddUser} />
+                <AddUser onConfirm={handleConfirmAddUser} validator={validator} formatter={formatter}/>
             </Modal>
 
             <Modal show={showAddUserConfirmationMessage}>

@@ -1,12 +1,14 @@
+import BankInputFormatter from './bank-input-formatter';
 import BankTransaction from './bank-transaction';
+import BankValidator from './bank-validator';
 import { TransactionTypes } from './enums/transaction-types';
 
 export default class BankApp {
-    constructor(userDatabase, transactionDatabase, inputFormatter, inputValidator) {
+    constructor(userDatabase, transactionDatabase) {
         this.userDatabase = userDatabase;
         this.transactionDatabase = transactionDatabase;
-        this.inputFormatter = inputFormatter;
-        this.inputValidator = inputValidator;
+        this.inputFormatter = new BankInputFormatter();
+        this.inputValidator = new BankValidator();
         this.users = userDatabase.getAll();
         this.transactions = transactionDatabase.getAll();
     }
@@ -103,7 +105,7 @@ export default class BankApp {
     };
 
     getAccounts = () => {
-       this.userDatabase.getAll();
+       return this.userDatabase.getAll();
     };
 
     updateUsers = () => {
