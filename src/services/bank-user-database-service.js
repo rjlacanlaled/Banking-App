@@ -1,10 +1,10 @@
 export function getLastUserId(databaseKey) {
-    const userId = localStorage.getItem(databaseKey);
+    const userId = localStorage.getItem(databaseKey.concat('id'));
     return parseInt(userId) || 0;
 }
 
 export function incrementUserId(databaseKey) {
-    localStorage.setItem(databaseKey.concat('id'), getLastUserId() + 1);
+    localStorage.setItem(databaseKey.concat('id'), getLastUserId(databaseKey) + 1);
 }
 
 export function getUserList(databaseKey) {
@@ -67,13 +67,4 @@ export function editUser(updatedUser, databaseKey) {
     updateUserList(userList, databaseKey);
 
     return user;
-}
-
-export function findFirstName(firstName) {
-    const userList = getUserList();
-    if (!userList.length) return [];
-
-    const filteredUserList = userList.filter(user => user.firstName.match(`${firstName}`));
-
-    return filteredUserList;
 }

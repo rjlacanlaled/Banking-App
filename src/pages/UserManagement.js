@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { PrimaryButton } from '../components/styles/Buttons.styled';
 import { useEffect, useState } from 'react';
-import { deleteUser, editUser, getUserList } from '../services/bank-user-database-service';
 import { BANK_USER_KEYS } from '../model/bank-user';
 import AddUser from '../components/AddUser';
 import ConfirmationMessage from '../components/ConfirmationMessage';
@@ -10,8 +9,8 @@ import { Modal } from '../components/styles/Modal.styled';
 import Confirmation from '../components/Confirmation';
 import { displayModalForDuration } from '../utils/modal-util';
 
-export default function UserManagement({ inputFormatter, inputValidator }) {
-    const [userList, setUserList] = useState(getUserList());
+export default function UserManagement({ bank }) {
+    const [userList, setUserList] = useState(bank.users);
     const [chosenId, setChosenId] = useState(0);
 
     const [showAddUserConfirmation, setShowAddUserConfirmation] = useState(false);
@@ -19,21 +18,24 @@ export default function UserManagement({ inputFormatter, inputValidator }) {
     const [showDeleteUserConfirmation, setShowDeleteUserConfirmation] = useState(false);
     const [showDeleteUserConfirmationMessage, setShowDeleteUserConfirmationMessage] = useState(false);
 
+    useEffect(() => {
+        setUserList(bank.users);
+    }, [bank.users]);
 
-    const handleAddUser = e => {
+
+    const handleAddUser = () => {
         setShowAddUserConfirmation(true);
     };
 
-    const handleConfirmAddUser = confirmed => {
+    const handleConfirmAddUser = (confirmed, user) => {
         if (!confirmed) return setShowAddUserConfirmation(false);
+        bank.createAccount(user);
         setShowAddUserConfirmation(false);
         displayModalForDuration(setShowAddUserConfirmationMessage, 1500);
-        setUserList(getUserList());
     };
 
     const handleEdit = user => {
-        editUser(user);
-        setUserList(getUserList());
+        bank.updateAccount(user);
     };
 
     const handleDelete = id => {
@@ -43,8 +45,7 @@ export default function UserManagement({ inputFormatter, inputValidator }) {
 
     const handleConfirmDeleteUser = confirmed => {
         if (!confirmed) return setShowDeleteUserConfirmation(false);
-        deleteUser(chosenId);
-        setUserList(getUserList());
+        bank.deleteAccount(chosenId);
         setShowDeleteUserConfirmation(false);
         displayModalForDuration(setShowDeleteUserConfirmationMessage, 1500);
     };
@@ -62,8 +63,8 @@ export default function UserManagement({ inputFormatter, inputValidator }) {
                     data={userList}
                     onDelete={handleDelete}
                     onEdit={handleEdit}
-                    inputFormatter={inputFormatter}
-                    inputValidator={inputValidator}
+                    inputFormatter={bank.inputFormatter}
+                    inputValidator={bank.inputValidator}
                 />
             )}
 

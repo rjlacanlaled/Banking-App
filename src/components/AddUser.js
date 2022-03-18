@@ -36,9 +36,8 @@ export default function AddUser({onConfirm}) {
         e.preventDefault();
         let err = [...validFirstName(firstName), ...validLastName(lastName), ...validBalance(balance)];
         if (err.length) return setErrors(err);
-        createUser(new BankUser(firstName, lastName, balance));
         resetInput();
-        onConfirm(true);
+        onConfirm(true, new BankUser(firstName, lastName, balance));
     };
 
     const handleAddUserCancel = () => {

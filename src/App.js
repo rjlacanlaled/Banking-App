@@ -6,14 +6,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import SideBar from './components/Sidebar';
 import { useState } from 'react';
-import { bankInputFormatter } from './services/bank-input-format-service';
-import { bankInputValidator } from './services/bank-input-validation-service';
-
-const inputFormatter = bankInputFormatter;
-const inputValidator = bankInputValidator;
+import { bankApp } from './model/bank-app-main';
 
 export default function App() {
     const [loggedIn, setLoggedIn] = useState(false);
+    const [bank, setBank] = useState(bankApp);
 
     return (
         <BrowserRouter>
@@ -24,10 +21,7 @@ export default function App() {
                     <Routes>
                         <Route path='/' />
                         <Route path='/login' element={<Login />} />
-                        <Route
-                            path='/users'
-                            element={<UserManagement inputFormatter={inputFormatter} inputValidator={inputValidator} />}
-                        />
+                        <Route path='/users' element={<UserManagement bank={bank} />} />
                         <Route path='/transactions' />
                         <Route path='/withdraw' />
                     </Routes>
