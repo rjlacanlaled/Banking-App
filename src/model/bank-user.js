@@ -1,4 +1,4 @@
-import User from "./user";
+import User from "./User";
 
 export const MAX_NAME_CHARS = 18;
 export const MAX_BALANCE_DIGITS = 16;
