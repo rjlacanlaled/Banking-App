@@ -6,7 +6,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import SideBar from './components/Sidebar';
 import { useState } from 'react';
-import { bankApp } from './model/bank-app-main';
+import { bankApp } from './model/bank-app-test';
+import TransactionHistory from './pages/TransactionHistory';
 
 export default function App() {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -21,8 +22,20 @@ export default function App() {
                     <Routes>
                         <Route path='/' />
                         <Route path='/login' element={<Login />} />
-                        <Route path='/users' element={<UserManagement bank={bank} />} />
-                        <Route path='/transactions' />
+                        <Route
+                            path='/users'
+                            element={
+                                <UserManagement
+                                    users={bank.users}
+                                    create={bank.createAccount}
+                                    update={bank.updateAccount}
+                                    remove={bank.deleteAccount}
+                                    validator={bank.inputValidator}
+                                    formatter={bank.inputFormatter}
+                                />
+                            }
+                        />
+                        <Route path='/transactions' element={<TransactionHistory transactions={bank.transactions} remove={bank.removeTransaction}/>} />
                         <Route path='/withdraw' />
                     </Routes>
                 </Main>

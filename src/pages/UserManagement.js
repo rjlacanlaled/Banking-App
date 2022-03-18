@@ -8,9 +8,10 @@ import DataTable from '../components/DataTable';
 import { Modal } from '../components/styles/Modal.styled';
 import Confirmation from '../components/Confirmation';
 import { displayModalForDuration } from '../utils/modal-util';
+import { PageTitle, PageTitleContainer } from '../components/styles/Titles.styled';
 
-export default function UserManagement({ bank }) {
-    const [userList, setUserList] = useState(bank.users);
+export default function UserManagement({ users, create, update, remove, formatter, validator }) {
+    const [userList, setUserList] = useState(users);
     const [chosenId, setChosenId] = useState(0);
 
     const [showAddUserConfirmation, setShowAddUserConfirmation] = useState(false);
@@ -19,9 +20,8 @@ export default function UserManagement({ bank }) {
     const [showDeleteUserConfirmationMessage, setShowDeleteUserConfirmationMessage] = useState(false);
 
     useEffect(() => {
-        setUserList(bank.users);
-    }, [bank.users]);
-
+        setUserList(users);
+    }, [users]);
 
     const handleAddUser = () => {
         setShowAddUserConfirmation(true);
@@ -29,13 +29,13 @@ export default function UserManagement({ bank }) {
 
     const handleConfirmAddUser = (confirmed, user) => {
         if (!confirmed) return setShowAddUserConfirmation(false);
-        bank.createAccount(user);
+        create(user);
         setShowAddUserConfirmation(false);
         displayModalForDuration(setShowAddUserConfirmationMessage, 1500);
     };
 
     const handleEdit = user => {
-        bank.updateAccount(user);
+        update(user);
     };
 
     const handleDelete = id => {
@@ -45,31 +45,29 @@ export default function UserManagement({ bank }) {
 
     const handleConfirmDeleteUser = confirmed => {
         if (!confirmed) return setShowDeleteUserConfirmation(false);
-        bank.deleteAccount(chosenId);
+        remove(chosenId);
         setShowDeleteUserConfirmation(false);
         displayModalForDuration(setShowDeleteUserConfirmationMessage, 1500);
     };
 
     return (
         <Wrapper>
-            <Header>
-                <Title>Manage Users</Title>
+            <PageTitleContainer>
+                <PageTitle>Manage Users</PageTitle>
                 <AddNewUserButton onClick={handleAddUser}>+ New User</AddNewUserButton>
-            </Header>
+            </PageTitleContainer>
 
-            {userList.length && (
-                <DataTable
-                    headers={BANK_USER_KEYS}
-                    data={userList}
-                    onDelete={handleDelete}
-                    onEdit={handleEdit}
-                    inputFormatter={bank.inputFormatter}
-                    inputValidator={bank.inputValidator}
-                />
-            )}
+            <DataTable
+                headers={BANK_USER_KEYS}
+                data={userList}
+                onDelete={handleDelete}
+                onEdit={handleEdit}
+                inputFormatter={formatter}
+                inputValidator={validator}
+            />
 
             <Modal show={showAddUserConfirmation}>
-                <AddUser onConfirm={handleConfirmAddUser} />
+                <AddUser onConfirm={handleConfirmAddUser} validator={validator} formatter={formatter}/>
             </Modal>
 
             <Modal show={showAddUserConfirmationMessage}>
@@ -103,21 +101,6 @@ const Wrapper = styled.div`
 
     background-color: ${({ theme }) => theme.colors.main.themeColor};
 `;
-
-const Header = styled.div`
-    display: flex;
-    justify-content: space-between;
-    background-color: ${props => props.theme.colors.mainTitleDiv.backgroundColor};
-    color: ${props => props.theme.colors.mainTitleDiv.fontColor};
-    padding: 1% 10% 1% 10%;
-    width: 100%;
-
-    overflow: auto;
-
-    border-bottom: 2px solid white;
-`;
-
-const Title = styled.h1``;
 
 const AddNewUserButton = styled(PrimaryButton)`
     padding: 10px;
