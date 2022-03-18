@@ -10,5 +10,4 @@ export default class BankUser extends User {
         this.balance = balance;
         this.id = 0;
     }
- 
 }

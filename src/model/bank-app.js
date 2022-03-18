@@ -5,7 +5,7 @@ import {
 } from '../services/bank-transaction-database-service';
 import { createUser, deleteUser, editUser, getUser, getUserList } from '../services/bank-user-database-service';
 import BankTransaction from './bank-transaction';
-import TransactionTypes from './enums/transaction-types';
+import { TransactionTypes } from './enums/transaction-types';
 
 export default class BankApp {
     constructor(userDatabaseKey, transactionDatabaseKey, inputFormatter, inputValidator) {
@@ -80,7 +80,7 @@ export default class BankApp {
         this.createTransaction(
             new BankTransaction(new Date().toString(), TransactionTypes.Deposit, amount, 'cash', account)
         );
-        
+
         return true;
     };
 

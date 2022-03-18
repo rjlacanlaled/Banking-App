@@ -21,7 +21,19 @@ export default function App() {
                     <Routes>
                         <Route path='/' />
                         <Route path='/login' element={<Login />} />
-                        <Route path='/users' element={<UserManagement bank={bank} />} />
+                        <Route
+                            path='/users'
+                            element={
+                                <UserManagement
+                                    users={bank.users}
+                                    create={bank.createAccount}
+                                    update={bank.updateAccount}
+                                    remove={bank.deleteAccount}
+                                    validator={bank.inputValidator}
+                                    formatter={bank.inputFormatter}
+                                />
+                            }
+                        />
                         <Route path='/transactions' />
                         <Route path='/withdraw' />
                     </Routes>

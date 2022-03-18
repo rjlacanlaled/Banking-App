@@ -9,8 +9,8 @@ import { Modal } from '../components/styles/Modal.styled';
 import Confirmation from '../components/Confirmation';
 import { displayModalForDuration } from '../utils/modal-util';
 
-export default function UserManagement({ bank }) {
-    const [userList, setUserList] = useState(bank.users);
+export default function UserManagement({ users, create, update, remove, formatter, validator }) {
+    const [userList, setUserList] = useState(users);
     const [chosenId, setChosenId] = useState(0);
 
     const [showAddUserConfirmation, setShowAddUserConfirmation] = useState(false);
@@ -19,8 +19,8 @@ export default function UserManagement({ bank }) {
     const [showDeleteUserConfirmationMessage, setShowDeleteUserConfirmationMessage] = useState(false);
 
     useEffect(() => {
-        setUserList(bank.users);
-    }, [bank.users]);
+        setUserList(users);
+    }, [users]);
 
 
     const handleAddUser = () => {
@@ -29,13 +29,13 @@ export default function UserManagement({ bank }) {
 
     const handleConfirmAddUser = (confirmed, user) => {
         if (!confirmed) return setShowAddUserConfirmation(false);
-        bank.createAccount(user);
+        create(user);
         setShowAddUserConfirmation(false);
         displayModalForDuration(setShowAddUserConfirmationMessage, 1500);
     };
 
     const handleEdit = user => {
-        bank.updateAccount(user);
+        update(user);
     };
 
     const handleDelete = id => {
@@ -45,7 +45,7 @@ export default function UserManagement({ bank }) {
 
     const handleConfirmDeleteUser = confirmed => {
         if (!confirmed) return setShowDeleteUserConfirmation(false);
-        bank.deleteAccount(chosenId);
+        remove(chosenId);
         setShowDeleteUserConfirmation(false);
         displayModalForDuration(setShowDeleteUserConfirmationMessage, 1500);
     };
@@ -63,8 +63,8 @@ export default function UserManagement({ bank }) {
                     data={userList}
                     onDelete={handleDelete}
                     onEdit={handleEdit}
-                    inputFormatter={bank.inputFormatter}
-                    inputValidator={bank.inputValidator}
+                    inputFormatter={formatter}
+                    inputValidator={validator}
                 />
             )}
 
