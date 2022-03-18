@@ -1,20 +1,16 @@
-import {
-    createBankTransaction,
-    getBankTransactions,
-    updateBankTransactions,
-} from '../services/bank-transaction-database-service';
-import { createUser, deleteUser, editUser, getUser, getUserList } from '../services/bank-user-database-service';
+import BankInputFormatter from './bank-input-formatter';
 import BankTransaction from './bank-transaction';
-import TransactionTypes from './enums/transaction-types';
+import BankValidator from './bank-validator';
+import { TransactionTypes } from './enums/transaction-types';
 
 export default class BankApp {
-    constructor(userDatabaseKey, transactionDatabaseKey, inputFormatter, inputValidator) {
-        this.userDatabaseKey = userDatabaseKey;
-        this.transactionDatabaseKey = transactionDatabaseKey;
-        this.inputFormatter = inputFormatter;
-        this.inputValidator = inputValidator;
-        this.users = getUserList(userDatabaseKey);
-        this.transactions = getBankTransactions(transactionDatabaseKey);
+    constructor(userDatabase, transactionDatabase) {
+        this.userDatabase = userDatabase;
+        this.transactionDatabase = transactionDatabase;
+        this.inputFormatter = new BankInputFormatter();
+        this.inputValidator = new BankValidator();
+        this.users = userDatabase.getAll();
+        this.transactions = transactionDatabase.getAll();
     }
 
     transfer = (fromId, toId, amount) => {
@@ -80,43 +76,43 @@ export default class BankApp {
         this.createTransaction(
             new BankTransaction(new Date().toString(), TransactionTypes.Deposit, amount, 'cash', account)
         );
-        
+
         return true;
     };
 
     createAccount = user => {
-        createUser(user, this.userDatabaseKey);
+        this.userDatabase.create(user);
         this.updateUsers();
     };
 
     createTransaction = transaction => {
-        createBankTransaction(transaction, this.transactionDatabaseKey);
+        this.transactionDatabase.create(transaction);
         this.updateTransactions();
     };
 
     updateAccount = user => {
-        editUser(user, this.userDatabaseKey);
+        this.userDatabase.update(user);
         this.updateUsers();
     };
 
     deleteAccount = id => {
-        deleteUser(id, this.userDatabaseKey);
+        this.userDatabase.remove(id);
         this.updateUsers();
     };
 
     getAccount = id => {
-        getUser(id, this.userDatabaseKey);
+        this.userDatabase.get(id);
     };
 
-    getAllAccountsAccoun = () => {
-        getUserList(this.userDatabaseKey);
+    getAccounts = () => {
+       return this.userDatabase.getAll();
     };
 
     updateUsers = () => {
-        this.users = getUserList(this.userDatabaseKey);
+        this.users = this.getAccounts();
     };
 
     updateTransactions = () => {
-        this.transactions = updateBankTransactions(this.transactionDatabaseKey);
+        this.transactions = this.transactionDatabase.getAll();
     };
 }

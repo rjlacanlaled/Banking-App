@@ -1,40 +1,38 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import BankUser, { MAX_BALANCE_DIGITS, MAX_NAME_CHARS } from '../model/bank-user';
-import { validBalance, validFirstName, validLastName } from '../services/bank-input-validation-service';
-import { createUser } from '../services/bank-user-database-service';
-import { formatFloat, formatName } from '../utils/input-format-util';
+import BankUser from '../model/bank-user';
 import ErrorBox from './ErrorBox';
 import { NegativeButton, PrimaryButton } from './styles/Buttons.styled';
 import { Input } from './styles/Inputs.styled';
 
-export default function AddUser({onConfirm}) {
+export default function AddUser({ onConfirm, validator, formatter }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [balance, setBalance] = useState('');
     const [errors, setErrors] = useState([]);
 
     const handleFirstNameChange = e => {
-        if (e.target.value.length > MAX_NAME_CHARS) return;
-        const value = formatName(e.target.value);
+        const value = formatter.nameFormatter(e.target.value) || firstName;
         setFirstName(value);
     };
 
     const handleLastNameChange = e => {
-        if (e.target.value.length > MAX_NAME_CHARS) return;
-        const value = formatName(e.target.value);
+        const value = formatter.nameFormatter(e.target.value) || lastName;
         setLastName(value);
     };
 
     const handleBalanceChange = e => {
-        if (e.target.value.length > MAX_BALANCE_DIGITS) return;
-        const value = formatFloat(e.target.value);
+        const value = formatter.balanceFormatter(e.target.value) || balance;
         setBalance(value);
     };
 
     const handleFormSubmit = e => {
         e.preventDefault();
-        let err = [...validFirstName(firstName), ...validLastName(lastName), ...validBalance(balance)];
+        let err = [
+            ...validator.validFirstName(firstName),
+            ...validator.validLastName(lastName),
+            ...validator.validBalance(balance),
+        ];
         if (err.length) return setErrors(err);
         resetInput();
         onConfirm(true, new BankUser(firstName, lastName, balance));
@@ -50,12 +48,12 @@ export default function AddUser({onConfirm}) {
         setLastName('');
         setBalance('');
         setErrors([]);
-    }
+    };
 
     return (
         <Container>
             <FormTitle>Add User</FormTitle>
-            <ErrorBox errors={errors}/>
+            <ErrorBox errors={errors} />
             <Form>
                 <Label>First Name</Label>
                 <StyledInput onChange={handleFirstNameChange} value={firstName} placeholder='Enter first name' />
@@ -65,9 +63,9 @@ export default function AddUser({onConfirm}) {
                 <StyledInput onChange={handleBalanceChange} value={balance} placeholder='Enter account balance' />
             </Form>
             <ButtonContainer>
-                    <StyledPrimaryButton onClick={handleFormSubmit}>Submit</StyledPrimaryButton>
-                    <StyledNegativeButton onClick={handleAddUserCancel}>Cancel</StyledNegativeButton>
-                </ButtonContainer>
+                <StyledPrimaryButton onClick={handleFormSubmit}>Submit</StyledPrimaryButton>
+                <StyledNegativeButton onClick={handleAddUserCancel}>Cancel</StyledNegativeButton>
+            </ButtonContainer>
         </Container>
     );
 }

@@ -1,4 +1,5 @@
-import Transaction from './transactions'
+
+import { Transaction } from './transaction';
 
 export default class BankTransaction extends Transaction {
     constructor(timestamp, transactionType, amount, from, to) {
