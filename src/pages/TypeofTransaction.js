@@ -5,6 +5,11 @@ import {
    updateUserList,
    getUser,
 } from "../services/BankUserDatabaseService";
+import {
+   addDeposit,
+   deductWithdaw,
+   transferFunds
+} from "../services/BankTransactionFunctions";
 
 export function TransactionTypes() {
    const types = ["Deposit", "Withdraw", "Transfer"];
@@ -43,24 +48,13 @@ export function TransactionTypes() {
 
 function Deposit() {
    const [userId, setUserId] = useState(getUserList()[0].id);
-   const [depositValue, setDepositValue] = useState(0);
+   const [depositValue, setDepositValue] = useState("");
 
    const handleDeposit = (e) => {
       e.preventDefault();
 
-      const userList = getUserList();
-      const user = userList[userList.findIndex((list) => list.id == userId)];
-      console.log(user);
-
-      const stored = parseFloat(user.balance);
-      const deposit = parseFloat(depositValue);
-
-      user.balance = stored + deposit;
-
-      updateUserList(userList);
-
-      console.log(userList);
-
+      addDeposit(userId, depositValue);
+      setDepositValue("");
       return;
    };
 
@@ -106,7 +100,9 @@ function Deposit() {
 
 function Withdraw() {
    const [userId, setUserId] = useState(getUserList()[0].id);
-   const [withdrawValue, setWithdrawValue] = useState(0);
+   const [withdrawValue, setWithdrawValue] = useState("");
+   const [toShowModal, setToShowModal] = useState(false);
+   const [toShowErrorModal, setToShowErrorModal] = useState(false);
 
    const handleWithdraw = (e) => {
       e.preventDefault();
@@ -114,26 +110,40 @@ function Withdraw() {
       const userList = getUserList();
       const user = userList[userList.findIndex((list) => list.id == userId)];
 
-      if (withdrawValue > user.balance) return alert("Not enough balance");
+      if (withdrawValue > user.balance) return setToShowErrorModal(true);
 
-      const stored = parseFloat(user.balance);
-      const withdraw = parseFloat(withdrawValue);
+      deductWithdaw(userId, withdrawValue);
 
-      user.balance = stored - withdraw;
-
-      updateUserList(userList);
-
-      console.log(userList);
-
+      setWithdrawValue(0);
       return;
+   };
+
+   const closeModal = (e) => {
+      setToShowModal(false);
+      setWithdrawValue(0);
    };
 
    return (
       <Form onSubmit={handleWithdraw}>
+         <ErrorModal
+            showError={toShowErrorModal}
+            setToShowErrorModal={setToShowErrorModal}
+            setWithdrawValue={setWithdrawValue}
+         />
+         <BalanceModal
+            showModal={toShowModal}
+            userId={userId}
+            closeModal={closeModal}
+         />
          <BoxContainer>
             <BoxTitle>Withdraw From</BoxTitle>
             <BoxAction>
-               <BoxOptions>
+               <BoxOptions
+                  value={userId}
+                  onChange={(e) => {
+                     setUserId(e.target.value);
+                  }}
+               >
                   {getUserList().map(({ id, firstName, lastName }) => {
                      return (
                         <option value={id}>
@@ -142,6 +152,14 @@ function Withdraw() {
                      );
                   })}
                </BoxOptions>
+               <ViewBalance
+                  href="#"
+                  onClick={() => {
+                     setToShowModal(true);
+                  }}
+               >
+                  View Balance
+               </ViewBalance>
             </BoxAction>
          </BoxContainer>
          <BoxContainer>
@@ -163,13 +181,83 @@ function Withdraw() {
    );
 }
 
-function Transfer() {
+const DisplayUser = ({ userId }) => {
+   const userList = getUserList();
+   const user = userList[userList.findIndex((list) => list.id == userId)];
+
    return (
-      <Form>
+      <div>
+         <p>
+            {user.firstName} {user.lastName}
+         </p>
+         <p>{user.balance}</p>
+      </div>
+   );
+};
+
+const BalanceModal = ({ showModal, userId, closeModal }) => {
+   return (
+      <ViewBalanceModal showModal={showModal}>
+         <DisplayUser userId={userId} />
+         <button onClick={closeModal}>Close</button>
+      </ViewBalanceModal>
+   );
+};
+
+const ErrorModal = ({ showError, setToShowErrorModal }) => {
+   setTimeout(() => {
+      setToShowErrorModal(false);
+   }, 3000);
+
+   return (
+      <ViewErrorModal showError={showError}>
+         <h3>Insufficient balance in account</h3>
+      </ViewErrorModal>
+   );
+};
+
+function Transfer() {
+   const [transferFromId, setTransferFromId] = useState(getUserList()[0].id);
+   const [transferToId, setTransferToId] = useState(getUserList()[1].id);
+   const [transferValue, setTransferValue] = useState(0);
+   const [availableUsers, setAvailableUsers] = useState(
+      getUserList().filter((user) => user.id != transferFromId)
+   );
+
+   const handleTransferFrom = (e) => {
+      const { value } = e.target;
+      setTransferFromId(value);
+
+      const userList = getUserList();
+      setAvailableUsers(userList.filter((user) => user.id != value));
+      return;
+   };
+
+   const handleTransferTo = (e) => {
+      const { value } = e.target;
+      setTransferToId(value);
+      return;
+   };
+
+   const handleTransfer = (e) => {
+      e.preventDefault();
+
+      const userList = getUserList();
+      const giver = userList[userList.findIndex(list => list.id == transferFromId)]
+
+      if (transferValue > giver.balance) return alert("Not enough balance");
+      transferFunds(transferFromId, transferToId, transferValue)
+      setTransferValue(0);
+
+      return console.log(getUserList());
+   };
+
+   return (
+      <Form onSubmit={handleTransfer}>
          <BoxContainer>
             <BoxTitle>Transfer From</BoxTitle>
             <BoxAction>
-               <BoxOptions>
+               <BoxOptions value={transferFromId} onChange={handleTransferFrom}>
                   {getUserList().map(({ id, firstName, lastName }) => {
                      return (
                         <option value={id}>
@@ -183,7 +271,26 @@ function Transfer() {
          <BoxContainer>
             <BoxTitle>Transfer To</BoxTitle>
             <BoxAction>
-               <AmountInput />
+               <BoxOptions value={transferToId} onChange={handleTransferTo}>
+                  {availableUsers.map(({ id, firstName, lastName }) => {
+                     return (
+                        <option value={id}>
+                           {firstName} {lastName}
+                        </option>
+                     );
+                  })}
+               </BoxOptions>
+            </BoxAction>
+         </BoxContainer>
+         <BoxContainer>
+            <BoxTitle>Amount</BoxTitle>
+            <BoxAction>
+               <AmountInput
+                  value={transferValue}
+                  onChange={(e) => {
+                     setTransferValue(e.target.value);
+                  }}
+               />
             </BoxAction>
          </BoxContainer>
          <SubmitContainer>
@@ -271,6 +378,10 @@ const AmountInput = styled.input.attrs(({ type }) => ({
    }
 `;
 
+const ViewBalance = styled.a`
+   margin: 0 0 5% 3%;
+`;
+
 const SubmitContainer = styled(BoxContainer)`
    margin-bottom: 0;
    box-shadow: none;
@@ -284,4 +395,27 @@ const SubmitButton = styled.button.attrs(({ type }) => ({ type: "submit" }))`
    height: fit-content;
 
    padding: 1%;
+`;
+
+const ViewBalanceModal = styled.div`
+   position: absolute;
+   left: 50%;
+   top: 20%;
+   transform: translateX(-50%);
+
+   width: 50%;
+   height: 30%;
+   z-index: 20;
+
+   display: ${({ showModal }) => (showModal ? "flex" : "none")};
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   text-align: center;
+
+   background-color: green;
+`;
+
+const ViewErrorModal = styled(ViewBalanceModal)`
+   display: ${({ showError }) => (showError ? "flex" : "none")};
 `;
