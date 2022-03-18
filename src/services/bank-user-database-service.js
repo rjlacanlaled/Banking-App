@@ -1,4 +1,4 @@
-import { BANK_USER_ID_KEY, BANK_USER_LIST_KEY } from '../model/BankUser';
+import { BANK_USER_ID_KEY, BANK_USER_LIST_KEY } from '../model/bank-user';
 
 export function getLastUserId() {
     const userId = localStorage.getItem(BANK_USER_ID_KEY);

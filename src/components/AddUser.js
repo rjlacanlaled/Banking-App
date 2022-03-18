@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import BankUser, { MAX_BALANCE_DIGITS, MAX_NAME_CHARS } from '../model/BankUser';
+import BankUser, { MAX_BALANCE_DIGITS, MAX_NAME_CHARS } from '../model/bank-user';
 import { validBalance, validFirstName, validLastName } from '../services/bank-input-validation-service';
 import { createUser } from '../services/bank-user-database-service';
 import { formatFloat, formatName } from '../utils/input-format-util';

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { PrimaryButton } from '../components/styles/Buttons.styled';
 import { useEffect, useState } from 'react';
 import { deleteUser, editUser, getUserList } from '../services/bank-user-database-service';
-import { BANK_USER_KEYS } from '../model/BankUser';
+import { BANK_USER_KEYS } from '../model/bank-user';
 import AddUser from '../components/AddUser';
 import ConfirmationMessage from '../components/ConfirmationMessage';
 import DataTable from '../components/DataTable';

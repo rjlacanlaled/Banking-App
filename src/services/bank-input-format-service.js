@@ -1,4 +1,4 @@
-import { MAX_BALANCE_DIGITS, MAX_NAME_CHARS } from '../model/BankUser';
+import { MAX_BALANCE_DIGITS, MAX_NAME_CHARS } from '../model/bank-user';
 import { formatFloat, formatName } from '../utils/input-format-util';
 
 export const bankInputFormatter = {

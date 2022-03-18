@@ -1,5 +1,5 @@
 import { getUserList } from "../services/bank-user-database-service";
-import User from "./User";
+import User from "./user";
 
 export const BANK_USER_LIST_KEY = "bankUserList";
 export const BANK_USER_ID_KEY = "bankUserId";
