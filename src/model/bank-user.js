@@ -1,3 +1,4 @@
+
 import User from './user';
 
 export const BANK_USER_KEYS = ['id', 'firstName', 'lastName', 'balance'];

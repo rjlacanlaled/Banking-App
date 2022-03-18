@@ -36,7 +36,7 @@ export default function SideBar() {
             </PageList>
             <ButtonContainer>
                 <StyledNegativeButton>Log out</StyledNegativeButton>
-                <ThemeToggle type='checkbox' />
+                <ToggleSwitch type='checkbox' />
             </ButtonContainer>
         </Container>
 
@@ -108,39 +108,39 @@ const StyledNegativeButton = styled(NegativeButton)`
     padding: 5px 20px 5px 20px;
 `;
 
-// const Switch = styled.input`
-//    opacity: 0;
-//    width: 0;
-//    height: 0;
 
-//    &:checked + ${Slider}:before {
-//       transform: translateX(66px);
-//    }
-// `;
+const Slider = styled.span`
+   position: absolute;
+   cursor: pointer;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background-color: gray;
+   border-radius: 17px;
+   
+   &:before {
+       content: "";
+       position: absolute;
+       height: 26px;
+       width: 26px;
+       left: 4px;
+       bottom: 4px;
+       background-color: white;
+       transition: 0.8s;
+       border-radius: 50%;
+    }
+    `;
 
-// const Slider = styled.span`
-//    position: absolute;
-//    cursor: pointer;
-//    top: 0;
-//    left: 0;
-//    right: 0;
-//    bottom: 0;
-//    background-color: gray;
-//    border-radius: 17px;
-
-//    &:before {
-//       content: "";
-//       position: absolute;
-//       height: 26px;
-//       width: 26px;
-//       left: 4px;
-//       bottom: 4px;
-//       background-color: white;
-//       transition: 0.8s;
-//       border-radius: 50%;
-//    }
-// `;
-
+    const Switch = styled.input`
+       opacity: 0;
+       width: 0;
+       height: 0;
+    
+       &:checked + ${Slider}:before {
+          transform: translateX(66px);
+       }
+    `;
 // const LogOutButtonContainer = () => {
 //    return <LogOutButton>Log Out</LogOutButton>;
 // };
@@ -238,18 +238,18 @@ const StyledNegativeButton = styled(NegativeButton)`
 //    font-size: 1.2rem;
 // `;
 
-// const ToggleSwitch = () => {
-//    return (
-//       <ToggleLabel>
-//          <Switch type="checkbox" />
-//          <Slider />
-//       </ToggleLabel>
-//    );
-// };
+const ToggleSwitch = () => {
+   return (
+      <ToggleLabel>
+         <Switch type="checkbox" />
+         <Slider />
+      </ToggleLabel>
+   );
+};
 
-// const ToggleLabel = styled.label`
-//    width: 100px;
-//    height: 34px;
-//    position: relative;
-//    margin-top: 5px;
-// `;
+const ToggleLabel = styled.label`
+   width: 100px;
+   height: 34px;
+   position: relative;
+   margin-top: 5px;
+`;
