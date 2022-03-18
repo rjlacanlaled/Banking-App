@@ -1,64 +1,62 @@
-import { BANK_USER_ID_KEY, BANK_USER_LIST_KEY } from '../model/bank-user';
-
-export function getLastUserId() {
-    const userId = localStorage.getItem(BANK_USER_ID_KEY);
+export function getLastUserId(databaseKey) {
+    const userId = localStorage.getItem(databaseKey);
     return parseInt(userId) || 0;
 }
 
-export function incrementUserId() {
-    localStorage.setItem(BANK_USER_ID_KEY, getLastUserId() + 1);
+export function incrementUserId(databaseKey) {
+    localStorage.setItem(databaseKey.concat('id'), getLastUserId() + 1);
 }
 
-export function getUserList() {
-    const userList = JSON.parse(localStorage.getItem(BANK_USER_LIST_KEY));
+export function getUserList(databaseKey) {
+    const userList = JSON.parse(localStorage.getItem(databaseKey));
     if (!userList) return [];
 
     return userList;
 }
 
-export function updateUserList(userList) {
-    localStorage.setItem(BANK_USER_LIST_KEY, JSON.stringify(userList));
+export function updateUserList(userList, databaseKey) {
+    localStorage.setItem(databaseKey, JSON.stringify(userList));
 }
 
-export function getUser(id) {
-    const userList = getUserList();
+export function getUser(id, databaseKey) {
+    const userList = getUserList(databaseKey);
     if (!userList) return false;
 
     const user = userList[userList.findIndex(user => user.id == id)];
     return user || false;
 }
 
-export function createUser(user) {
+export function createUser(user, databaseKey) {
     if (!user) return false;
-    let userList = getUserList();
+    let userList = getUserList(databaseKey);
 
     if (!userList) userList = {};
-    user.id = getLastUserId() + 1;
+    user.id = getLastUserId(databaseKey) + 1;
     userList.push(user);
 
-    updateUserList(userList);
-    incrementUserId();
+    updateUserList(userList, databaseKey);
+    incrementUserId(databaseKey);
 
     return true;
 }
 
-export function deleteUser(id) {
+export function deleteUser(id, databaseKey) {
     if (!id) return false;
-    const user = getUser(id);
+    const user = getUser(id, databaseKey);
 
     if (!user) return 'User not found!';
 
-    let userList = getUserList();
+    let userList = getUserList(databaseKey);
     userList = userList.filter(userListItem => userListItem.id !== user.id);
 
-    updateUserList(userList);
+    updateUserList(userList, databaseKey);
 
     return user;
 }
 
-export function editUser(updatedUser) {
+export function editUser(updatedUser, databaseKey) {
     if (!updatedUser) return false;
-    const userList = getUserList();
+    const userList = getUserList(databaseKey);
     const user = userList[userList.findIndex(list => list.id === updatedUser.id)];
 
     if (!user) return 'User not found!';
@@ -66,7 +64,7 @@ export function editUser(updatedUser) {
     user.lastName = updatedUser.lastName;
     user.balance = updatedUser.balance;
 
-    updateUserList(userList);
+    updateUserList(userList, databaseKey);
 
     return user;
 }
@@ -78,38 +76,4 @@ export function findFirstName(firstName) {
     const filteredUserList = userList.filter(user => user.firstName.match(`${firstName}`));
 
     return filteredUserList;
-}
-
-export function findLastName(lastName) {
-    const userList = getUserList();
-    if (!userList.length) return [];
-
-    const filteredUserList = userList.filter(user => user.lastName.match(`${lastName}`));
-
-    return filteredUserList;
-}
-
-export function findBalance(balance) {
-    const userList = getUserList();
-    if (!userList.length) return [];
-
-    const filteredUserList = userList.filter(user => user.balance >= balance);
-
-    return filteredUserList;
-}
-
-export function findUser(key, category) {
-    switch (category) {
-        case 'id':
-            const user = getUser(key);
-            return user ? [user] : [];
-        case 'balance':
-            return findBalance(key);
-        case 'lastName':
-            return findLastName(key);
-        case 'firstName':
-            return findFirstName(key);
-        default:
-            return [];
-    }
 }
