@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import ConfirmCancelButtons from './ConfirmCancelButtons';
-import EditDeleteButtons from './EditDeleteButtons';
+import { FiEdit } from 'react-icons/fi';
+import { RiDeleteBin5Line } from 'react-icons/ri';
+import { MdOutlineCancel } from 'react-icons/md';
+import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { Input } from './styles/Inputs.styled';
 import { TableData, TableRow } from './styles/Table.styled';
 
@@ -42,7 +44,6 @@ export default function DataTableRow({
     const handleInputChange = (e, key) => {
         const { value } = e.target;
         const validInput = onInputChange[key](value);
-        console.log(validInput);
         if (validInput === undefined) return;
 
         const newValues = { ...values };
@@ -63,9 +64,15 @@ export default function DataTableRow({
             ))}
             <TableData>
                 {!isEditing ? (
-                    <EditDeleteButtons id={id} onEdit={setIsEditing} onDelete={handleDelete} />
+                    <ButtonContainer>
+                        <StyledFiEdit onClick={() => setIsEditing(true)} />
+                        <StyledRiDeleteBin5Line onClick={handleDelete} />
+                    </ButtonContainer>
                 ) : (
-                    <ConfirmCancelButtons id={id} onConfirm={handleConfirmEdit} onCancel={handleCancelEdit} />
+                    <ButtonContainer>
+                        <StyledAiOutlineCheckCircle onClick={() => handleConfirmEdit(id)} />
+                        <StyledMdOutlineCancel onClick={handleCancelEdit} />
+                    </ButtonContainer>
                 )}
             </TableData>
         </TableRow>
@@ -73,3 +80,17 @@ export default function DataTableRow({
 }
 
 const StyledInput = styled(Input)``;
+const ButtonContainer = styled.div``;
+const StyledFiEdit = styled(FiEdit)`
+    cursor: pointer;
+`;
+const StyledRiDeleteBin5Line = styled(RiDeleteBin5Line)`
+    cursor: pointer;
+`;
+
+const StyledMdOutlineCancel = styled(MdOutlineCancel)`
+    cursor: pointer;
+`;
+const StyledAiOutlineCheckCircle = styled(AiOutlineCheckCircle)`
+    cursor: pointer;
+`;

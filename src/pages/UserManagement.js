@@ -8,7 +8,8 @@ import DataTable from '../components/DataTable';
 import { Modal } from '../components/styles/Modal.styled';
 import Confirmation from '../components/Confirmation';
 import { displayModalForDuration } from '../utils/modal-util';
-import { PageTitle, PageTitleContainer } from '../components/styles/Titles.styled';
+import { ButtonTitle, PageTitle, PageTitleContainer } from '../components/styles/Titles.styled';
+import { FiUserPlus } from 'react-icons/fi';
 
 export default function UserManagement({ users, create, update, remove, formatter, validator }) {
     const [userList, setUserList] = useState(users);
@@ -54,7 +55,10 @@ export default function UserManagement({ users, create, update, remove, formatte
         <Wrapper>
             <PageTitleContainer>
                 <PageTitle>Manage Users</PageTitle>
-                <AddNewUserButton onClick={handleAddUser}>+ New User</AddNewUserButton>
+                <AddUserButtonContainer>
+                    <StyledFiUserPlus onClick={handleAddUser} />
+                    <ButtonTitle>New Account</ButtonTitle>
+                </AddUserButtonContainer>
             </PageTitleContainer>
 
             <DataTable
@@ -67,7 +71,7 @@ export default function UserManagement({ users, create, update, remove, formatte
             />
 
             <Modal show={showAddUserConfirmation}>
-                <AddUser onConfirm={handleConfirmAddUser} validator={validator} formatter={formatter}/>
+                <AddUser onConfirm={handleConfirmAddUser} validator={validator} formatter={formatter} />
             </Modal>
 
             <Modal show={showAddUserConfirmationMessage}>
@@ -102,6 +106,15 @@ const Wrapper = styled.div`
     background-color: ${({ theme }) => theme.colors.main.themeColor};
 `;
 
-const AddNewUserButton = styled(PrimaryButton)`
-    padding: 10px;
+const AddUserButtonContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+
+const StyledFiUserPlus = styled(FiUserPlus)`
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
 `;

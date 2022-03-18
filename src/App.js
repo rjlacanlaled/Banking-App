@@ -30,8 +30,8 @@ export default function App() {
                                     create={bank.createAccount}
                                     update={bank.updateAccount}
                                     remove={bank.deleteAccount}
-                                    validator={bank.inputValidator}
-                                    formatter={bank.inputFormatter}
+                                    validator={bank.inputValidator.validator}
+                                    formatter={bank.inputFormatter.formatter}
                                 />
                             }
                         />
