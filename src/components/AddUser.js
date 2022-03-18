@@ -1,79 +1,71 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import BankUser, { MAX_BALANCE_DIGITS, MAX_NAME_CHARS } from '../model/BankUser';
-import { validBalance, validFirstName, validLastName } from '../services/BankInputValidationService';
-import { createUser } from '../services/BankUserDatabaseService';
-import { formatFloat, formatName } from '../services/InputFormatService';
+import BankUser from '../model/bank-user';
+import ErrorBox from './ErrorBox';
 import { NegativeButton, PrimaryButton } from './styles/Buttons.styled';
 import { Input } from './styles/Inputs.styled';
 
-export default function AddUser(props) {
+export default function AddUser({ onConfirm, validator, formatter }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [balance, setBalance] = useState('');
     const [errors, setErrors] = useState([]);
 
     const handleFirstNameChange = e => {
-        if (e.target.value.length > MAX_NAME_CHARS) return;
-        const value = formatName(e.target.value);
+        const value = formatter.nameFormatter(e.target.value) || firstName;
         setFirstName(value);
     };
 
     const handleLastNameChange = e => {
-        if (e.target.value.length > MAX_NAME_CHARS) return;
-        const value = formatName(e.target.value);
+        const value = formatter.nameFormatter(e.target.value) || lastName;
         setLastName(value);
     };
 
     const handleBalanceChange = e => {
-        if (e.target.value.length > MAX_BALANCE_DIGITS) return;
-        const value = formatFloat(e.target.value);
+        const value = formatter.balanceFormatter(e.target.value) || balance;
         setBalance(value);
     };
 
     const handleFormSubmit = e => {
         e.preventDefault();
-        console.log('here');
-        // validate input before submitting
-        let err = [...validFirstName(firstName), ...validLastName(lastName), ...validBalance(balance)];
+        let err = [
+            ...validator.validFirstName(firstName),
+            ...validator.validLastName(lastName),
+            ...validator.validBalance(balance),
+        ];
         if (err.length) return setErrors(err);
-        createUser(new BankUser(firstName, lastName, balance));
-        props.setShowAddUser(false);
-        props.setShowAddUserConfirmation(true);
-        setTimeout(() => {
-            props.setShowAddUserConfirmation(false);
-            e.target.submit();
-        }, 2000);
+        resetInput();
+        onConfirm(true, new BankUser(firstName, lastName, balance));
     };
 
     const handleAddUserCancel = () => {
+        resetInput();
+        onConfirm(false);
+    };
+
+    const resetInput = () => {
         setFirstName('');
         setLastName('');
         setBalance('');
         setErrors([]);
-        props.setShowAddUser(false);
     };
 
     return (
         <Container>
             <FormTitle>Add User</FormTitle>
-            <ErrorBox hasError={errors.length > 0}>
-                {errors.map(error => {
-                    return <ErrorMessage key={error}>{error}</ErrorMessage>;
-                })}
-            </ErrorBox>
-            <Form onSubmit={handleFormSubmit}>
+            <ErrorBox errors={errors} />
+            <Form>
                 <Label>First Name</Label>
                 <StyledInput onChange={handleFirstNameChange} value={firstName} placeholder='Enter first name' />
                 <Label>Last Name</Label>
                 <StyledInput onChange={handleLastNameChange} value={lastName} placeholder='Enter last name' />
                 <Label>Balance</Label>
                 <StyledInput onChange={handleBalanceChange} value={balance} placeholder='Enter account balance' />
-                <ButtonContainer>
-                    <StyledPrimaryButton type='submit'>Submit</StyledPrimaryButton>
-                    <StyledNegativeButton onClick={handleAddUserCancel}>Cancel</StyledNegativeButton>
-                </ButtonContainer>
             </Form>
+            <ButtonContainer>
+                <StyledPrimaryButton onClick={handleFormSubmit}>Submit</StyledPrimaryButton>
+                <StyledNegativeButton onClick={handleAddUserCancel}>Cancel</StyledNegativeButton>
+            </ButtonContainer>
         </Container>
     );
 }
@@ -109,6 +101,9 @@ const FormTitle = styled.h1`
 
 const ButtonContainer = styled.div`
     display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
     gap: 10px;
 `;
 
@@ -125,22 +120,8 @@ const Label = styled.label`
 `;
 
 const StyledPrimaryButton = styled(PrimaryButton)`
-    padding: 5px;
+    padding: 10px 20px 10px 20px;
 `;
 const StyledNegativeButton = styled(NegativeButton)`
-    padding: 5px;
-`;
-
-const ErrorBox = styled.ul`
-    display: ${({ hasError }) => (hasError ? 'block' : 'none')};
-    padding: 10px;
-    margin: 10px 0 10px 0;
-    border: 1px solid #721c23;
-    border-radius: 5px;
-    background-color: #f8d7d9;
-`;
-const ErrorMessage = styled.li`
-    color: #721c23;
-    list-style-type: square;
-    list-style-position: inside;
+    padding: 10px 20px 10px 20px;
 `;
