@@ -1,22 +1,23 @@
-import { createUser, deleteUser, getUser, getUserList } from '../services/bank-user-database-service';
+import { createUser, deleteUser, editUser, getUser, getUserList } from '../services/bank-user-database-service';
 
 export default class BankApp {
-    constructor(userDatabaseKey, transactionDatabaseKey, users = [], transactions = []) {
-        this.users = users;
-        this.transactions = transactions;
+    constructor(userDatabaseKey, transactionDatabaseKey) {
+        this.userDatabaseKey = userDatabaseKey;
+        this.transactionDatabaseKey = transactionDatabaseKey;
+        this.users = getUserList(userDatabaseKey);
+       // this.transactions = ;
     }
 
     create = (user) => {
-        if (!user) return;
-        createUser(user, userDatabaseKey);
+        return createUser(user, userDatabaseKey);
     }
 
     update = (id, user) => {
-        if (!user) return;
+        return editUser(user, userDatabaseKey);
     }
 
     delete = (id) => {
-        deleteUser(id, userDatabase);
+        return deleteUser(id, userDatabase);
     }
 
     get = (id) => {
