@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { TransactionTypes } from "../model/enums/transaction-types";
 import { bankApp } from "../model/bank-app-test";
+import useFloatFormat from "./hooks/useFloatFormat";
 
 const USERLIST = bankApp.userDatabase.getAll();
 
@@ -9,13 +10,13 @@ const TRANSACTIONTYPESLIST = Object.values(TransactionTypes);
 
 export default function MakeATransaction({ bank }) {
    const [transactionType, setTransactionType] = useState(
-      TransactionTypes.Deposit
+      TRANSACTIONTYPESLIST[2]
    );
 
    const handleTransaction = (e) => {
       const { value } = e.target;
       setTransactionType(value);
-      console.log(bank.users)
+      console.log(bank.users);
    };
 
    return (
@@ -35,7 +36,7 @@ export default function MakeATransaction({ bank }) {
          <OptionsPart toShow={transactionType}>
             {transactionType === TRANSACTIONTYPESLIST[2] ? (
                <Deposit bank={bank} />
-            ) : transactionType === TRANSACTIONTYPESLIST[1] ? (
+            ) : transactionType === TRANSACTIONTYPESLIST[2] ? (
                <Deposit bank={bank} />
             ) : (
                <Deposit bank={bank} />
@@ -46,17 +47,17 @@ export default function MakeATransaction({ bank }) {
 }
 
 function Deposit({ bank }) {
-   const [userId, setUserId] = useState(USERLIST[0].id);
-   const [depositValue, setDepositValue] = useState(0);
+   const [userId, setUserId] = useState(bank.users[0].id);
+   const [depositValue, setDepositValue] = useFloatFormat(0)
+
+   console.log(bank.getAccount(userId));
 
    const handleDeposit = (e) => {
       e.preventDefault();
 
       bank.deposit(userId, depositValue);
-      console.log(depositValue)
-      console.log(bank.deposit(userId, depositValue))
-      console.log(bank.getAccount(userId))
-      setDepositValue(0);
+      console.log(bank.users);
+      setDepositValue("");
       return;
    };
 
@@ -69,10 +70,9 @@ function Deposit({ bank }) {
                   value={userId}
                   onChange={(e) => {
                      setUserId(e.target.value);
-                     console.log(userId)
                   }}
                >
-                  {USERLIST.map(({ id, firstName, lastName }) => {
+                  {bank.users.map(({ id, firstName, lastName }) => {
                      return (
                         <option value={id}>
                            {firstName} {lastName}
@@ -89,7 +89,6 @@ function Deposit({ bank }) {
                   value={depositValue}
                   onChange={(e) => {
                      setDepositValue(e.target.value);
-                     console.log(e.target.value);
                   }}
                />
             </BoxAction>

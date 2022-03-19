@@ -10,11 +10,11 @@ import { bankApp } from './model/bank-app-test';
 import BankTransactionHistory from './pages/BankTransactionHistory';
 import RadioSelection from './components/RadioSelection';
 import MakeATransaction from './components/TransactionMainBox';
+import AuthProvider from './components/context/AuthProvider';
 
 export default function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [bank, setBank] = useState(bankApp);
-
 
     useEffect(() => {
         setBank(bankApp);
@@ -40,6 +40,18 @@ export default function App() {
                         <Route path='/withdraw' />
                     </Routes>
                 </Main>
+                <AuthProvider>
+                    <Main>
+                        <SideBar />
+                        <Routes>
+                            <Route path='/' element={<RadioSelection />} />
+                            <Route path='/login' element={<Login />} />
+                            <Route path='/users' element={<BankUserManagement bank={bank} />} />
+                            <Route path='/transactions' element={<BankTransactionHistory bank={bank} />} />
+                            <Route path='/withdraw' />
+                        </Routes>
+                    </Main>
+                </AuthProvider>
             </ThemeProvider>
         </BrowserRouter>
     );
