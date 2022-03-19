@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-import { PrimaryButton } from '../components/styles/Buttons.styled';
 import { useEffect, useState } from 'react';
-import { BANK_USER_KEYS } from '../model/bank-user';
 import AddUser from '../components/AddUser';
 import ConfirmationMessage from '../components/ConfirmationMessage';
 import DataTable from '../components/DataTable';
@@ -11,8 +9,8 @@ import { displayModalForDuration } from '../utils/modal-util';
 import { ButtonTitle, PageTitle, PageTitleContainer } from '../components/styles/Titles.styled';
 import { FiUserPlus } from 'react-icons/fi';
 
-export default function UserManagement({ users, create, update, remove, formatter, validator }) {
-    const [userList, setUserList] = useState(users);
+export default function BankUserManagement({ bank }) {
+    const [userList, setUserList] = useState(bank.users);
     const [chosenId, setChosenId] = useState(0);
 
     const [showAddUserConfirmation, setShowAddUserConfirmation] = useState(false);
@@ -21,8 +19,8 @@ export default function UserManagement({ users, create, update, remove, formatte
     const [showDeleteUserConfirmationMessage, setShowDeleteUserConfirmationMessage] = useState(false);
 
     useEffect(() => {
-        setUserList(users);
-    }, [users]);
+        setUserList(bank.users);
+    }, [bank.users]);
 
     const handleAddUser = () => {
         setShowAddUserConfirmation(true);
@@ -30,13 +28,13 @@ export default function UserManagement({ users, create, update, remove, formatte
 
     const handleConfirmAddUser = (confirmed, user) => {
         if (!confirmed) return setShowAddUserConfirmation(false);
-        create(user);
+        bank.createAccount(user);
         setShowAddUserConfirmation(false);
-        displayModalForDuration(setShowAddUserConfirmationMessage, 1500);
+        displayModalForDuration(setShowAddUserConfirmationMessage, 1000);
     };
 
     const handleEdit = user => {
-        update(user);
+        bank.updateAccount(user);
     };
 
     const handleDelete = id => {
@@ -46,15 +44,15 @@ export default function UserManagement({ users, create, update, remove, formatte
 
     const handleConfirmDeleteUser = confirmed => {
         if (!confirmed) return setShowDeleteUserConfirmation(false);
-        remove(chosenId);
+        bank.deleteAccount(chosenId);
         setShowDeleteUserConfirmation(false);
-        displayModalForDuration(setShowDeleteUserConfirmationMessage, 1500);
+        displayModalForDuration(setShowDeleteUserConfirmationMessage, 1000);
     };
 
     return (
         <Wrapper>
             <PageTitleContainer>
-                <PageTitle>Manage Users</PageTitle>
+                <PageTitle>Manage bank.Users</PageTitle>
                 <AddUserButtonContainer>
                     <StyledFiUserPlus onClick={handleAddUser} />
                     <ButtonTitle>New Account</ButtonTitle>
@@ -62,16 +60,20 @@ export default function UserManagement({ users, create, update, remove, formatte
             </PageTitleContainer>
 
             <DataTable
-                headers={BANK_USER_KEYS}
+                headers={bank.userDatabase.headers}
                 data={userList}
                 onDelete={handleDelete}
                 onEdit={handleEdit}
-                inputFormatter={formatter}
-                inputValidator={validator}
+                inputFormatter={bank.inputFormatter.formatter}
+                inputValidator={bank.inputValidator.validator}
             />
 
             <Modal show={showAddUserConfirmation}>
-                <AddUser onConfirm={handleConfirmAddUser} validator={validator} formatter={formatter} />
+                <AddUser
+                    onConfirm={handleConfirmAddUser}
+                    validator={bank.inputValidator.validator}
+                    formatter={bank.inputFormatter.formatter}
+                />
             </Modal>
 
             <Modal show={showAddUserConfirmationMessage}>

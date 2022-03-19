@@ -1,13 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Confirmation from '../components/Confirmation';
 import ConfirmationMessage from '../components/ConfirmationMessage';
 import DataTable from '../components/DataTable';
 import { Modal } from '../components/styles/Modal.styled';
-import { PageTitle, PageTitleContainer } from '../components/styles/Titles.styled'; 
+import { PageTitle, PageTitleContainer } from '../components/styles/Titles.styled';
 
-export default function TransactionHistory({ headers, transactions, remove }) {
+export default function BankTransactionHistory({ bank }) {
     const [chosenId, setChosenId] = useState(0);
+    const [transactions, setTransactions] = useState(bank.transactions);
+
+    useEffect(() => {
+        setTransactions(bank.transactions);
+    }, [bank.transactions]);
 
     const handleDelete = () => {};
 
@@ -19,7 +24,7 @@ export default function TransactionHistory({ headers, transactions, remove }) {
                 <PageTitle>Transaction History</PageTitle>
             </PageTitleContainer>
 
-            <DataTable headers={headers} data={transactions} onDelete={handleDelete} />
+            <DataTable headers={bank.transactionDatabase.headers} data={transactions} onDelete={handleDelete} />
 
             <Modal show={false}>
                 <Confirmation

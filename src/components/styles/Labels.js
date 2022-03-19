@@ -1,3 +1,3 @@
 import styled from "styled-components";
 
-const Label = styled.label``;
+export const Label = styled.label``;

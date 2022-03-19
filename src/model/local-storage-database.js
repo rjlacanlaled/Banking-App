@@ -1,6 +1,7 @@
 export default class LocalStorageDatabase {
-    constructor(key) {
+    constructor(key, headers) {
         this.key = key;
+        this.headers = headers;
     }
 
     getId = () => {

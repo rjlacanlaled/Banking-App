@@ -11,27 +11,28 @@ export default function AddUser({ onConfirm, validator, formatter }) {
     const [balance, setBalance] = useState('');
     const [errors, setErrors] = useState([]);
 
+
     const handleFirstNameChange = e => {
-        const value = formatter.nameFormatter(e.target.value) || firstName;
+        const value = formatter.firstName(e.target.value) || firstName;
         setFirstName(value);
     };
 
     const handleLastNameChange = e => {
-        const value = formatter.nameFormatter(e.target.value) || lastName;
+        const value = formatter.lastName(e.target.value) || lastName;
         setLastName(value);
     };
 
     const handleBalanceChange = e => {
-        const value = formatter.balanceFormatter(e.target.value) || balance;
+        const value = formatter.balance(e.target.value) || balance;
         setBalance(value);
     };
 
     const handleFormSubmit = e => {
         e.preventDefault();
         let err = [
-            ...validator.validFirstName(firstName),
-            ...validator.validLastName(lastName),
-            ...validator.validBalance(balance),
+            ...validator.firstName(firstName),
+            ...validator.lastName(lastName),
+            ...validator.balance(balance),
         ];
         if (err.length) return setErrors(err);
         resetInput();

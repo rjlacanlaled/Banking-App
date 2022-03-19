@@ -13,6 +13,14 @@ export default class BankApp {
         this.transactions = transactionDatabase.getAll();
     }
 
+    login = (username, password) => {
+        const user = this.users.find(user => user.username === username);
+        if (!user) return 'User not found!';
+        if (user.password !== password) return 'Password incorrect!';
+
+        return true;
+    };
+
     transfer = (fromId, toId, amount) => {
         if (amount < 1) return 'Transfer amount must be greater than 0!';
         const fromAccount = this.getAccount(fromId);
@@ -58,7 +66,7 @@ export default class BankApp {
         this.createTransaction(
             new BankTransaction(new Date().toString(), TransactionTypes.Withdraw, amount, account, 'cash')
         );
-        
+
         return true;
     };
 
@@ -106,7 +114,7 @@ export default class BankApp {
     };
 
     getAccounts = () => {
-       return this.userDatabase.getAll();
+        return this.userDatabase.getAll();
     };
 
     updateUsers = () => {

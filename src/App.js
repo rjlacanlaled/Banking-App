@@ -1,17 +1,22 @@
 import styled, { ThemeProvider } from 'styled-components';
 import { theme } from './components/styles/Theme';
 import GlobalStyles from './components/styles/Global';
-import UserManagement from './pages/UserManagement';
+import BankUserManagement from './pages/BankUserManagement';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import SideBar from './components/Sidebar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { bankApp } from './model/bank-app-test';
-import TransactionHistory from './pages/TransactionHistory';
+import BankTransactionHistory from './pages/BankTransactionHistory';
+import RadioSelection from './components/RadioSelection';
 
 export default function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [bank, setBank] = useState(bankApp);
+
+    useEffect(() => {
+        setBank(bankApp);
+    }, [bankApp]);
 
     return (
         <BrowserRouter>
@@ -20,22 +25,15 @@ export default function App() {
                 <Main>
                     <SideBar />
                     <Routes>
-                        <Route path='/' />
+                        <Route path='/' element={<RadioSelection />} />
                         <Route path='/login' element={<Login />} />
+                        <Route path='/users' element={<BankUserManagement bank={bank} />} />
                         <Route
-                            path='/users'
+                            path='/transactions'
                             element={
-                                <UserManagement
-                                    users={bank.users}
-                                    create={bank.createAccount}
-                                    update={bank.updateAccount}
-                                    remove={bank.deleteAccount}
-                                    validator={bank.inputValidator.validator}
-                                    formatter={bank.inputFormatter.formatter}
-                                />
+                                <BankTransactionHistory bank={bank}/>
                             }
                         />
-                        <Route path='/transactions' element={<TransactionHistory transactions={bank.transactions} remove={bank.removeTransaction}/>} />
                         <Route path='/withdraw' />
                     </Routes>
                 </Main>

@@ -1,12 +1,13 @@
-
 import User from './user';
-
-export const BANK_USER_KEYS = ['id', 'firstName', 'lastName', 'balance'];
+import { UserTypes } from './enums/user-types';
 
 export default class BankUser extends User {
-    constructor(firstName, lastName, balance) {
+    constructor(firstName, lastName, balance, username = 'user', password = 'user') {
         super(firstName, lastName);
         this.balance = balance;
         this.id = 0;
+        this.type = UserTypes.Normal;
+        this.username = username;
+        this.password = password;
     }
 }
