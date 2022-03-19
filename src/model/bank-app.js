@@ -55,7 +55,7 @@ export default class BankApp {
 
         if (!account) return 'Account does not exist!';
 
-        const balance = parseFloat(account.balance);
+        let balance = parseFloat(account.balance);
 
         if (balance < amount) return 'Balance is less than the withdraw amount!';
 
@@ -76,7 +76,7 @@ export default class BankApp {
 
         if (!account) return 'Account does not exist!';
 
-        const balance = parseFloat(account.balance);
+        let balance = parseFloat(account.balance);
         balance += amount;
 
         account.balance = balance;
