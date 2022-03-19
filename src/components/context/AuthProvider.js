@@ -1,17 +1,18 @@
 import { createContext, useState } from 'react';
 import Login from '../../pages/Login';
+import usePersist from '../hooks/usePersist';
 
 export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
-    const [user, setUser] = useState();
+    const [user, setUser] = usePersist('currentUser', null);
 
     const login = user => {
         setUser(user);
     };
 
     const logout = () => {
-        setUser();
+        setUser(null);
     };
 
     return (

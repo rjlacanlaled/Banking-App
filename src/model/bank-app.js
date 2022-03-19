@@ -22,6 +22,7 @@ export default class BankApp {
     };
 
     transfer = (fromId, toId, amount) => {
+        if (fromId == toId) return 'You cannot transfer to the same account!';
         if (amount < 1) return 'Transfer amount must be greater than 0!';
         const fromAccount = this.getAccount(fromId);
         const toAccount = this.getAccount(toId);

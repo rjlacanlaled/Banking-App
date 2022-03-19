@@ -1,16 +1,29 @@
+import { useState } from 'react';
 import styled from 'styled-components';
+import ErrorBox from '../components/ErrorBox';
+import useAlphaNumericFormat from '../components/hooks/useAlphanumericFormat';
 import useAuth from '../components/hooks/useAuth';
+import BankUser from '../model/bank-user';
 
 const defaultLogin = {
-  username: 'admin',
-  password: 'admin'
-}
+    username: 'admin',
+    password: 'admin',
+};
 
 export default function Login({ login }) {
     const auth = useAuth();
+    const [errors, setErrors] = useState([]);
+    const [username, setUsername] = useAlphaNumericFormat('');
+    const [password, setPassword] = useState('');
 
     const handleSubmit = () => {
-        auth.login('dsadas');
+        const err = [];
+        if (username !== defaultLogin.username) err.push('Username not found!');
+        if (err.length) return setErrors(err);
+        if (password !== defaultLogin.password) err.push('Password incorrect!');
+        if (err.length) return setErrors(err);
+
+        auth.login({user: new BankUser('admin', 'admin', '100000', 'admin', 'admin')}); 
     };
 
     return (
@@ -27,13 +40,13 @@ export default function Login({ login }) {
                         <Label>Username:</Label>
                     </LabelBox>
                     <InputBox>
-                        <Input />
+                        <Input type='text' value={username} onChange={e => setUsername(e.target.value)} />
                     </InputBox>
                     <LabelBox>
                         <Label>Password:</Label>
                     </LabelBox>
                     <InputBox>
-                        <Input />
+                        <Input type='password' value={password} onChange={e => setPassword(e.target.value)} />
                     </InputBox>
                     <SubmitBox>
                         <Submit onClick={handleSubmit} />
@@ -42,7 +55,9 @@ export default function Login({ login }) {
                         <Remarks>Forgot your password or login details?</Remarks>
                         <Remarks2>Message us!</Remarks2>
                     </RemarksBox>
+                    <ErrorBox errors={errors} />
                 </LoginInputs>
+                
             </LoginBox>
         </LoginContainer>
     );
@@ -53,6 +68,7 @@ const LoginContainer = styled.div`
     height: 100vh;
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 `;
