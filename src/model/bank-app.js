@@ -33,8 +33,8 @@ export default class BankApp {
         let toBalance = parseFloat(toAccount.balance);
         if (fromAccount.balance < amount) return `You do not have enough balance! Current balance: PHP ${fromBalance}`;
 
-        toBalance += amount;
-        fromBalance -= amount;
+        toBalance += parseFloat(amount);
+        fromBalance -= parseFloat(amount);
 
         toAccount.balance = toBalance;
         fromAccount.balance = fromBalance;
@@ -59,7 +59,7 @@ export default class BankApp {
 
         if (balance < amount) return 'Balance is less than the withdraw amount!';
 
-        balance -= amount;
+        balance -= parseFloat(amount);
         account.balance = balance;
         this.updateAccount(account);
 
@@ -77,7 +77,7 @@ export default class BankApp {
         if (!account) return 'Account does not exist!';
 
         let balance = parseFloat(account.balance);
-        balance += amount;
+        balance += parseFloat(amount);
 
         account.balance = balance;
         this.updateAccount(account);
