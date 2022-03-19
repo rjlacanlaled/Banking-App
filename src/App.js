@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { bankApp } from './model/bank-app-test';
 import BankTransactionHistory from './pages/BankTransactionHistory';
 import RadioSelection from './components/RadioSelection';
+import MakeATransaction from './components/TransactionMainBox';
 
 export default function App() {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -26,6 +27,7 @@ export default function App() {
                     <SideBar />
                     <Routes>
                         <Route path='/' element={<RadioSelection />} />
+                        <Route path='/transact' element={<MakeATransaction bank={bank}/>} />
                         <Route path='/login' element={<Login />} />
                         <Route path='/users' element={<BankUserManagement bank={bank} />} />
                         <Route
