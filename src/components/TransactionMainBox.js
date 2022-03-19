@@ -53,9 +53,9 @@ function Deposit({ bank }) {
       e.preventDefault();
 
       bank.deposit(userId, depositValue);
-      console.log(userId)
+      console.log(depositValue)
+      console.log(bank.deposit(userId, depositValue))
       console.log(bank.getAccount(userId))
-      console.log(bank.withdraw(userId, depositValue))
       setDepositValue("");
       return;
    };
