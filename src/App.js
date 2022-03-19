@@ -24,22 +24,6 @@ export default function App() {
         <BrowserRouter>
             <ThemeProvider theme={theme}>
                 <GlobalStyles />
-                <Main>
-                    <SideBar />
-                    <Routes>
-                        <Route path='/' element={<RadioSelection />} />
-                        <Route path='/transact' element={<MakeATransaction bank={bank}/>} />
-                        <Route path='/login' element={<Login />} />
-                        <Route path='/users' element={<BankUserManagement bank={bank} />} />
-                        <Route
-                            path='/transactions'
-                            element={
-                                <BankTransactionHistory bank={bank}/>
-                            }
-                        />
-                        <Route path='/withdraw' />
-                    </Routes>
-                </Main>
                 <AuthProvider>
                     <Main>
                         <SideBar />
