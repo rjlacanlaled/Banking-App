@@ -78,6 +78,8 @@ const SearchContainer = styled.div`
 const TableContainer = styled.div`
    max-height: 375px;
 
+   border: 1px solid white;
+
    overflow: auto;
 `;
 

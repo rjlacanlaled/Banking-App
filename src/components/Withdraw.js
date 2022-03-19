@@ -10,36 +10,36 @@ import {
    Form,
    AmountInput,
    SubmitContainer,
-   SubmitButton
+   SubmitButton,
 } from "../pages/TransactionPage";
 
-export default function Deposit({ bank }) {
+export default function Withdraw({ bank }) {
    const [userId, setUserId] = useState(bank.users[0].id);
-   const [depositValue, setDepositValue] = useFloatFormat("");
+   const [withdrawValue, setWithdrawValue] = useFloatFormat("");
    const [showTransactionSuccessModal, setShowTransactionSuccessModal] =
       useState(false);
    const [showError, setShowError] = useState("");
 
-   const handleDeposit = (e) => {
+   const handleWithdraw = (e) => {
       e.preventDefault();
 
-      setShowError(bank.deposit(userId, depositValue));
+      setShowError(bank.withdraw(userId, withdrawValue));
 
       displayModalForDuration(setShowTransactionSuccessModal, 2000);
 
-      setDepositValue("");
+      setWithdrawValue("");
       return;
    };
 
    return (
-      <Form onSubmit={handleDeposit}>
+      <Form onSubmit={handleWithdraw}>
          <TransactionSuccess
             showTransactionSuccessModal={showTransactionSuccessModal}
          >
             {showError === true ? "Transaction Success" : showError}
          </TransactionSuccess>
          <BoxContainer>
-            <BoxTitle>Deposit To</BoxTitle>
+            <BoxTitle>Withdraw From</BoxTitle>
             <BoxAction>
                <BoxOptions
                   value={userId}
@@ -61,9 +61,9 @@ export default function Deposit({ bank }) {
             <BoxTitle>Amount</BoxTitle>
             <BoxAction>
                <AmountInput
-                  value={depositValue}
+                  value={withdrawValue}
                   onChange={(e) => {
-                     setDepositValue(e.target.value);
+                     setWithdrawValue(e.target.value);
                   }}
                />
             </BoxAction>
