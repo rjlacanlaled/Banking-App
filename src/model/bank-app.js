@@ -71,8 +71,6 @@ export default class BankApp {
     };
 
     deposit = (id, amount) => {
-        console.log(id, amount)
-
         if (amount < 1) return 'Deposit amount must be greater than 0';
         const account = this.getAccount(id);
 
@@ -80,10 +78,10 @@ export default class BankApp {
 
         let balance = parseFloat(account.balance);
         balance += parseFloat(amount);
-
+        
         account.balance = balance;
         this.updateAccount(account);
-
+        
         this.createTransaction(
             new BankTransaction(new Date().toString(), TransactionTypes.Deposit, amount, 'cash', account)
         );

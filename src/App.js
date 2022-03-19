@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { bankApp } from './model/bank-app-test';
 import BankTransactionHistory from './pages/BankTransactionHistory';
 import RadioSelection from './components/RadioSelection';
-import MakeATransaction from './components/TransactionMainBox';
+import MakeATransaction from './pages/TransactionPage';
 import AuthProvider from './components/context/AuthProvider';
 
 export default function App() {
