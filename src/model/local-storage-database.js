@@ -61,7 +61,7 @@ export default class LocalStorageDatabase {
         const database = this.getAll();
         let index = database.findIndex(databaseItem => databaseItem.id === updatedItem.id);
 
-        if (!index) return;
+        if (index == null) return;
         database[index] = updatedItem;
 
         this.updateDatabase(database);

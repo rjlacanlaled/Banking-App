@@ -12,7 +12,6 @@ import RadioSelection from './components/RadioSelection';
 import AuthProvider from './components/context/AuthProvider';
 
 export default function App() {
-    const [loggedIn, setLoggedIn] = useState(false);
     const [bank, setBank] = useState(bankApp);
 
     useEffect(() => {

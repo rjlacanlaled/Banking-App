@@ -80,7 +80,7 @@ export default class BankApp {
         balance += parseFloat(amount);
 
         account.balance = balance;
-        this.updateAccount(account);
+        this.updateAccount(account);    
 
         this.createTransaction(
             new BankTransaction(new Date().toString(), TransactionTypes.Deposit, amount, 'cash', account)
