@@ -47,7 +47,7 @@ export default function MakeATransaction({ bank }) {
 
 function Deposit({ bank }) {
    const [userId, setUserId] = useState(USERLIST[0].id);
-   const [depositValue, setDepositValue] = useState("");
+   const [depositValue, setDepositValue] = useState(0);
 
    const handleDeposit = (e) => {
       e.preventDefault();
@@ -56,7 +56,7 @@ function Deposit({ bank }) {
       console.log(depositValue)
       console.log(bank.deposit(userId, depositValue))
       console.log(bank.getAccount(userId))
-      setDepositValue("");
+      setDepositValue(0);
       return;
    };
 
