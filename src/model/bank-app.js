@@ -22,6 +22,7 @@ export default class BankApp {
     };
 
     transfer = (fromId, toId, amount) => {
+        if (fromId == toId) return 'You cannot transfer to the same account!';
         if (amount < 1) return 'Transfer amount must be greater than 0!';
         const fromAccount = this.getAccount(fromId);
         const toAccount = this.getAccount(toId);
@@ -64,7 +65,7 @@ export default class BankApp {
         this.updateAccount(account);
 
         this.createTransaction(
-            new BankTransaction(new Date().toString(), TransactionTypes.Withdraw, amount, account, 'cash')
+            new BankTransaction(new Date().toString(), TransactionTypes.Withdraw, amount, account.id, 'cash')
         );
 
         return true;
@@ -80,10 +81,10 @@ export default class BankApp {
         balance += parseFloat(amount);
 
         account.balance = balance;
-        this.updateAccount(account);
+        this.updateAccount(account);    
 
         this.createTransaction(
-            new BankTransaction(new Date().toString(), TransactionTypes.Deposit, amount, 'cash', account)
+            new BankTransaction(new Date().toString(), TransactionTypes.Deposit, amount, 'cash', account.id)
         );
 
         return true;

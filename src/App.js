@@ -10,9 +10,9 @@ import { bankApp } from './model/bank-app-test';
 import BankTransactionHistory from './pages/BankTransactionHistory';
 import RadioSelection from './components/RadioSelection';
 import AuthProvider from './components/context/AuthProvider';
+import PageNotFound from './pages/PageNotFound';
 
 export default function App() {
-    const [loggedIn, setLoggedIn] = useState(false);
     const [bank, setBank] = useState(bankApp);
 
     useEffect(() => {
@@ -28,10 +28,10 @@ export default function App() {
                         <SideBar />
                         <Routes>
                             <Route path='/' element={<RadioSelection />} />
-                            <Route path='/login' element={<Login />} />
                             <Route path='/users' element={<BankUserManagement bank={bank} />} />
                             <Route path='/transactions' element={<BankTransactionHistory bank={bank} />} />
                             <Route path='/withdraw' />
+                            <Route path="*" element={<PageNotFound />} />
                         </Routes>
                     </Main>
                 </AuthProvider>
