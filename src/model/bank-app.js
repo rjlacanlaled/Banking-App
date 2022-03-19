@@ -110,7 +110,7 @@ export default class BankApp {
     };
 
     getAccount = id => {
-        this.userDatabase.get(id);
+        return this.userDatabase.get(id);
     };
 
     getAccounts = () => {
