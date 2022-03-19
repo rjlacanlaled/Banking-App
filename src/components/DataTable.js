@@ -58,7 +58,9 @@ export default function DataTable({ headers, data, onDelete, onEdit, inputFormat
     );
 }
 
-const NoDataMessage = styled.div``;
+const NoDataMessage = styled.div`
+    padding: 20px;
+`;
 
 const Wrapper = styled.div`
     display: flex;
