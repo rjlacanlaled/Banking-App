@@ -65,7 +65,7 @@ export default class BankApp {
         this.updateAccount(account);
 
         this.createTransaction(
-            new BankTransaction(new Date().toString(), TransactionTypes.Withdraw, amount, account, 'cash')
+            new BankTransaction(new Date().toString(), TransactionTypes.Withdraw, amount, account.id, 'cash')
         );
 
         return true;
@@ -84,7 +84,7 @@ export default class BankApp {
         this.updateAccount(account);    
 
         this.createTransaction(
-            new BankTransaction(new Date().toString(), TransactionTypes.Deposit, amount, 'cash', account)
+            new BankTransaction(new Date().toString(), TransactionTypes.Deposit, amount, 'cash', account.id)
         );
 
         return true;
