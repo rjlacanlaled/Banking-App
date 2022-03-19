@@ -72,7 +72,6 @@ export default function BankUserManagement({ bank }) {
                 <AddUser
                     onConfirm={handleConfirmAddUser}
                     validator={bank.inputValidator.validator}
-                    formatter={bank.inputFormatter.formatter}
                 />
             </Modal>
 

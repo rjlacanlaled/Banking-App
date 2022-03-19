@@ -2,38 +2,20 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import BankUser from '../model/bank-user';
 import ErrorBox from './ErrorBox';
+import useFloatFormat from './hooks/useFloatFormat';
+import useNameFormat from './hooks/useNameFormat';
 import { NegativeButton, PrimaryButton } from './styles/Buttons.styled';
 import { Input } from './styles/Inputs.styled';
 
-export default function AddUser({ onConfirm, validator, formatter }) {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [balance, setBalance] = useState('');
+export default function AddUser({ onConfirm, validator }) {
+    const [firstName, setFirstName] = useNameFormat('');
+    const [lastName, setLastName] = useNameFormat('');
+    const [balance, setBalance] = useFloatFormat('');
     const [errors, setErrors] = useState([]);
-
-
-    const handleFirstNameChange = e => {
-        const value = formatter.firstName(e.target.value) || firstName;
-        setFirstName(value);
-    };
-
-    const handleLastNameChange = e => {
-        const value = formatter.lastName(e.target.value) || lastName;
-        setLastName(value);
-    };
-
-    const handleBalanceChange = e => {
-        const value = formatter.balance(e.target.value) || balance;
-        setBalance(value);
-    };
 
     const handleFormSubmit = e => {
         e.preventDefault();
-        let err = [
-            ...validator.firstName(firstName),
-            ...validator.lastName(lastName),
-            ...validator.balance(balance),
-        ];
+        let err = [...validator.firstName(firstName), ...validator.lastName(lastName), ...validator.balance(balance)];
         if (err.length) return setErrors(err);
         resetInput();
         onConfirm(true, new BankUser(firstName, lastName, balance));
@@ -57,11 +39,23 @@ export default function AddUser({ onConfirm, validator, formatter }) {
             <ErrorBox errors={errors} />
             <Form>
                 <Label>First Name</Label>
-                <StyledInput onChange={handleFirstNameChange} value={firstName} placeholder='Enter first name' />
+                <StyledInput
+                    onChange={e => setFirstName(e.target.value)}
+                    value={firstName}
+                    placeholder='Enter first name'
+                />
                 <Label>Last Name</Label>
-                <StyledInput onChange={handleLastNameChange} value={lastName} placeholder='Enter last name' />
+                <StyledInput
+                    onChange={e => setLastName(e.target.value)}
+                    value={lastName}
+                    placeholder='Enter last name'
+                />
                 <Label>Balance</Label>
-                <StyledInput onChange={handleBalanceChange} value={balance} placeholder='Enter account balance' />
+                <StyledInput
+                    onChange={e => setBalance(e.target.value)}
+                    value={balance}
+                    placeholder='Enter account balance'
+                />
             </Form>
             <ButtonContainer>
                 <StyledPrimaryButton onClick={handleFormSubmit}>Submit</StyledPrimaryButton>

@@ -4,11 +4,11 @@ import BankValidator from './bank-validator';
 import { TransactionTypes } from './enums/transaction-types';
 
 export default class BankApp {
-    constructor(userDatabase, transactionDatabase) {
+    constructor(userDatabase, transactionDatabase, maxNameChars, maxBalanceDigits) {
         this.userDatabase = userDatabase;
         this.transactionDatabase = transactionDatabase;
         this.inputFormatter = new BankInputFormatter();
-        this.inputValidator = new BankValidator();
+        this.inputValidator = new BankValidator(maxNameChars, maxBalanceDigits);
         this.users = userDatabase.getAll();
         this.transactions = transactionDatabase.getAll();
     }

@@ -25,6 +25,7 @@ export default function DataTableRow({
     };
 
     const handleConfirmEdit = () => {
+
         const errors = keys
             .map(key => (key !== 'id' ? onConfirmInputChange[key](values[key]) : []))
             .reduce((merged, err) => merged.concat(err));
@@ -44,6 +45,7 @@ export default function DataTableRow({
     const handleInputChange = (e, key) => {
         const { value } = e.target;
         const validInput = onInputChange[key](value);
+
         if (validInput === undefined) return;
 
         const newValues = { ...values };
