@@ -18,7 +18,6 @@ export default function App() {
 
     useEffect(() => {
         setBank(bankApp);
-        console.log(bank.getAccount('7'));
     }, [bankApp]);
 
     return (
