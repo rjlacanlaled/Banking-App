@@ -1,14 +1,36 @@
+import styled from 'styled-components';
 import { TableHead, TableHeader, TableRow } from './styles/Table.styled';
 
 export function DataTableHeader({ keys }) {
     return (
-        <TableHead>
-            <TableRow>
+        <StyledTableHead>
+            <StyledTableRow>
                 {keys.map(key => (
-                    <TableHeader key={key}>{key}</TableHeader>
+                    <StyledTableHeader key={key}>{key}</StyledTableHeader>
                 ))}
-                <TableHeader>{'Actions'}</TableHeader>
-            </TableRow>
-        </TableHead>
+                <StyledTableHeader>{'Actions'}</StyledTableHeader>
+            </StyledTableRow>
+        </StyledTableHead>
     );
 }
+
+const StyledTableHead = styled(TableHead)`
+    position: sticky;
+    top: 0px;
+
+    border: 1px solid white;
+    text-transform: uppercase;
+    background-color: ${({ theme }) => theme.colors.main.themeColor};
+    opacity: 1;
+    z-index: 10;
+    padding: 5px;
+`;
+
+const StyledTableRow = styled(TableRow)`
+
+`;
+
+const StyledTableHeader = styled(TableHeader)`
+    border: 1px solid white;
+    padding: 5px;
+`;

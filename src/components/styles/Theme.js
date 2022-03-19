@@ -2,6 +2,7 @@ export const lightTheme = {
     colors: {
         main: {
             themeColor: '#2C8BBA',
+            fontColor: 'white'
         },
         body: {
             fontColor: 'black',

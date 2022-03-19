@@ -25,7 +25,6 @@ export default function DataTableRow({
     };
 
     const handleConfirmEdit = () => {
-
         const errors = keys
             .map(key => (key !== 'id' ? onConfirmInputChange[key](values[key]) : []))
             .reduce((merged, err) => merged.concat(err));
@@ -54,12 +53,13 @@ export default function DataTableRow({
     };
 
     return (
-        <TableRow key={id}>
+        <StyledTableRow key={id}>
             {keys.map(key => (
                 <TableData key={`${id}&&${key}data-item`}>
                     <StyledInput
                         disabled={key === 'id' ? true : !isEditing}
                         value={values[key]}
+                        isEditing={isEditing}
                         onChange={e => handleInputChange(e, key)}
                     />
                 </TableData>
@@ -77,11 +77,27 @@ export default function DataTableRow({
                     </ButtonContainer>
                 )}
             </TableData>
-        </TableRow>
+        </StyledTableRow>
     );
 }
 
-const StyledInput = styled(Input)``;
+const StyledTableRow = styled(TableRow)`
+    
+`;
+
+const StyledInput = styled(Input)`
+    background-color: transparent;
+    border-style: none;
+
+    padding: 5px;
+
+    text-align: center;
+    text-transform: uppercase;
+    color: ${({ theme }) => theme.colors.main.fontColor};
+    opacity: ${({ isEditing }) => (isEditing ? 1 : 0.6)};
+
+    font-weight: 600;
+`;
 const ButtonContainer = styled.div``;
 const StyledFiEdit = styled(FiEdit)`
     cursor: pointer;

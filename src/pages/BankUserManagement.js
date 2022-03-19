@@ -52,7 +52,7 @@ export default function BankUserManagement({ bank }) {
     return (
         <Wrapper>
             <PageTitleContainer>
-                <PageTitle>Manage bank.Users</PageTitle>
+                <PageTitle>Manage Users</PageTitle>
                 <AddUserButtonContainer>
                     <StyledFiUserPlus onClick={handleAddUser} />
                     <ButtonTitle>New Account</ButtonTitle>
