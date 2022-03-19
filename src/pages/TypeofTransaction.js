@@ -128,7 +128,6 @@ function Withdraw() {
          <ErrorModal
             showError={toShowErrorModal}
             setToShowErrorModal={setToShowErrorModal}
-            setWithdrawValue={setWithdrawValue}
          />
          <BalanceModal
             showModal={toShowModal}
@@ -186,20 +185,30 @@ const DisplayUser = ({ userId }) => {
    const user = userList[userList.findIndex((list) => list.id == userId)];
 
    return (
-      <div>
+      <Box>
          <p>
             {user.firstName} {user.lastName}
          </p>
-         <p>{user.balance}</p>
-      </div>
+         <p>Current balance: {user.balance}</p>
+      </Box>
    );
 };
+
+const Box = styled.div`
+   & > p {
+      margin-bottom: 20px;
+   }
+`
+
+const BoxBtn = styled.button`
+   padding: 2px 8px;
+`
 
 const BalanceModal = ({ showModal, userId, closeModal }) => {
    return (
       <ViewBalanceModal showModal={showModal}>
          <DisplayUser userId={userId} />
-         <button onClick={closeModal}>Close</button>
+         <BoxBtn onClick={closeModal}>Close</BoxBtn>
       </ViewBalanceModal>
    );
 };
@@ -223,13 +232,18 @@ function Transfer() {
    const [availableUsers, setAvailableUsers] = useState(
       getUserList().filter((user) => user.id != transferFromId)
    );
+   const [toShowModal, setToShowModal] = useState(false);
+   const [toShowErrorModal, setToShowErrorModal] = useState(false);
 
    const handleTransferFrom = (e) => {
       const { value } = e.target;
       setTransferFromId(value);
 
       const userList = getUserList();
-      setAvailableUsers(userList.filter((user) => user.id != value));
+      setAvailableUsers(userList.filter(user => user.id != value));
+
+      setTransferToId(availableUsers[0].id)
+
       return;
    };
 
@@ -245,15 +259,31 @@ function Transfer() {
       const userList = getUserList();
       const giver = userList[userList.findIndex(list => list.id == transferFromId)]
 
-      if (transferValue > giver.balance) return alert("Not enough balance");
+      if (transferValue > giver.balance) return setToShowErrorModal(true);
       transferFunds(transferFromId, transferToId, transferValue)
       setTransferValue(0);
+      
+      console.log(transferToId)
 
       return console.log(getUserList());
    };
 
+   const closeModal = (e) => {
+      setToShowModal(false);
+      setTransferValue(0);
+   };
+
    return (
       <Form onSubmit={handleTransfer}>
+         <ErrorModal
+            showError={toShowErrorModal}
+            setToShowErrorModal={setToShowErrorModal}
+         />
+         <BalanceModal
+            showModal={toShowModal}
+            userId={transferFromId}
+            closeModal={closeModal}
+         />
          <BoxContainer>
             <BoxTitle>Transfer From</BoxTitle>
             <BoxAction>
@@ -266,6 +296,14 @@ function Transfer() {
                      );
                   })}
                </BoxOptions>
+               <ViewBalance
+                  href="#"
+                  onClick={() => {
+                     setToShowModal(true);
+                  }}
+               >
+                  View Balance
+               </ViewBalance>
             </BoxAction>
          </BoxContainer>
          <BoxContainer>
@@ -322,7 +360,7 @@ const BoxContainer = styled.div`
 
    margin-bottom: 20px;
    box-shadow: 0 0 10px rgb(136, 136, 136);
-   background-color: red;
+   background-color: rgb(0,191,255);
 `;
 
 const BoxTitle = styled.h3`
@@ -413,7 +451,10 @@ const ViewBalanceModal = styled.div`
    justify-content: center;
    text-align: center;
 
-   background-color: green;
+   background-color: rgb(0,0,128);
+   color: white;
+   border: none;
+   border-radius: 20px;
 `;
 
 const ViewErrorModal = styled(ViewBalanceModal)`
