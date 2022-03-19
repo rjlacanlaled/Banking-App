@@ -9,7 +9,6 @@ const removeExtraChars = (name, maxChars) => {
 };
 
 const formatName = (name, maxChars) => {
-    console.log('formatting name');
     let formattedName = format(name);
     if (formattedName.length > maxChars) return removeExtraChars(formattedName, maxChars);
     return formattedName;
