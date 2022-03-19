@@ -15,8 +15,10 @@ export default function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [bank, setBank] = useState(bankApp);
 
+
     useEffect(() => {
         setBank(bankApp);
+        console.log(bank.getAccount('7'));
     }, [bankApp]);
 
     return (

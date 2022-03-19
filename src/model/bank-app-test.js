@@ -11,5 +11,7 @@ const bankUserHeaders = ['id', 'firstName', 'lastName', 'balance'];
 
 export const bankApp = new BankApp(
     new LocalStorageDatabase(USER_DATABASE_KEY, bankUserHeaders),
-    new LocalStorageDatabase(TRANSACTION_DATABASE_KEY, transactionHeaders)
+    new LocalStorageDatabase(TRANSACTION_DATABASE_KEY, transactionHeaders),
+    12,
+    12
 );

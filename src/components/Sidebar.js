@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { NegativeButton } from './styles/Buttons.styled';
 import { MdOutlineDashboard } from 'react-icons/md';
 import { GrUserManager } from 'react-icons/gr';
-import { GiReceiveMoney } from 'react-icons/gi';
 import { RiLuggageDepositLine } from 'react-icons/ri';
 import { AiOutlineTransaction } from 'react-icons/ai';
 

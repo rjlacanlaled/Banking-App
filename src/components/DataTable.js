@@ -60,8 +60,31 @@ export default function DataTable({ headers, data, onDelete, onEdit, inputFormat
 
 const NoDataMessage = styled.div``;
 
-const Wrapper = styled.div``;
-const SearchContainer = styled.div``;
-const TableContainer = styled.div``;
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
 
-const StyledInput = styled(Input)``;
+    color: ${({theme}) => theme.colors.main.fontColor};
+
+`;
+const SearchContainer = styled.div`
+ 
+    
+`;
+const TableContainer = styled.div`
+   max-height: 375px;
+
+   overflow: auto;
+`;
+
+const StyledInput = styled(Input)`
+    padding: 10px;
+    border-style: none;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 900;
+`;
