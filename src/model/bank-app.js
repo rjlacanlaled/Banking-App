@@ -79,7 +79,7 @@ export default class BankApp {
 
         let balance = parseFloat(account.balance);
         balance += parseFloat(amount);
-
+        
         account.balance = balance;
         this.updateAccount(account);    
 
