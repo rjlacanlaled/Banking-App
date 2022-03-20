@@ -31,7 +31,7 @@ export default function App() {
                             <Route path='/' element={<RadioSelection />} />
                             <Route path='/users' element={<BankUserManagement bank={bank} />} />
                             <Route path='/transactions' element={<BankTransactionHistory bank={bank} />} />
-                            <Route path='/withdraw' />
+                            <Route path='/transact' element={<MakeATransaction bank={bank} />} />
                             <Route path="*" element={<PageNotFound />} />
                         </Routes>
                     </Main>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { TransactionTypes } from "../model/enums/transaction-types";
-import Deposit from '../components/Deposit'
+import Deposit from "../components/Deposit";
 import Withdraw from "../components/Withdraw";
 import Transfer from "../components/Transfer";
 
@@ -45,7 +45,6 @@ export default function MakeATransaction({ bank }) {
    );
 }
 
-
 export const SubmitContainer = styled.div`
    margin-bottom: 0;
    box-shadow: none;
@@ -54,13 +53,18 @@ export const SubmitContainer = styled.div`
    justify-content: center;
 `;
 
-export const SubmitButton = styled.button.attrs(({ type }) => ({ type: "submit" }))`
+export const SubmitButton = styled.button.attrs(({ type }) => ({
+   type: "submit",
+}))`
    width: 20%;
    height: fit-content;
    padding: 1%;
 `;
 
-export const Form = styled.form``;
+export const Form = styled.form`
+   width: 100vw;
+   height: 100vh;
+`;
 
 export const AmountInput = styled.input.attrs(({ type }) => ({
    type: type || "number",
@@ -83,13 +87,13 @@ export const AmountInput = styled.input.attrs(({ type }) => ({
 `;
 
 const MainContainer = styled.div`
-   position: absolute;
-   top: 50%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-   width: 50%;
-   height: auto;
-   padding: 0.5% 0.5% 0 0.5%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 20px;
+
+   height: 100vh;
+   width: 100vw;
 `;
 
 const OptionsPart = styled.div`
@@ -97,7 +101,7 @@ const OptionsPart = styled.div`
 `;
 
 export const BoxContainer = styled.div`
-   width: 100%;
+   width: 30%;
    height: 90px;
    margin-bottom: 20px;
    box-shadow: 0 0 10px rgb(136, 136, 136);

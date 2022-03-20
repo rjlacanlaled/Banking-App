@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 import useFloatFormat from "./hooks/useFloatFormat";
 import { displayModalForDuration } from "../utils/modal-util";
+import { Modal } from "./styles/Modal.styled";
 import {
    BoxContainer,
    BoxTitle,
@@ -19,6 +21,7 @@ export default function Withdraw({ bank }) {
    const [showTransactionSuccessModal, setShowTransactionSuccessModal] =
       useState(false);
    const [showError, setShowError] = useState("");
+   const [showModal, setShowModal] = useState(false);
 
    const handleWithdraw = (e) => {
       e.preventDefault();
@@ -33,6 +36,18 @@ export default function Withdraw({ bank }) {
 
    return (
       <Form onSubmit={handleWithdraw}>
+         <Modal show={showModal}>
+            <ViewBalanceModal>
+               <DisplayUser userId={userId} bank={bank} />
+               <BoxBtn
+                  onClick={() => {
+                     setShowModal(false);
+                  }}
+               >
+                  Close
+               </BoxBtn>
+            </ViewBalanceModal>
+         </Modal>
          <TransactionSuccess
             showTransactionSuccessModal={showTransactionSuccessModal}
          >
@@ -56,6 +71,14 @@ export default function Withdraw({ bank }) {
                   })}
                </BoxOptions>
             </BoxAction>
+            <ViewBalance
+               href="#"
+               onClick={() => {
+                  setShowModal(true);
+               }}
+            >
+               View Balance
+            </ViewBalance>
          </BoxContainer>
          <BoxContainer>
             <BoxTitle>Amount</BoxTitle>
@@ -74,3 +97,32 @@ export default function Withdraw({ bank }) {
       </Form>
    );
 }
+
+const ViewBalance = styled.a`
+   margin: 0 0 5% 3%;
+`;
+
+const DisplayUser = ({ userId, bank }) => {
+   const user = bank.getAccount(userId);
+   console.log(user);
+
+   return true;
+};
+
+const BoxBtn = styled.button`
+   padding: 2px 8px;
+`;
+
+const ViewBalanceModal = styled.div`
+   width: 50%;
+   height: 30%;
+   z-index: 20;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   text-align: center;
+   background-color: rgb(0,0,128);
+   color: white;
+   border: none;
+   border-radius: 20px;`
