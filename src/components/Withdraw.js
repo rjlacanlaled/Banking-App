@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import useFloatFormat from "./hooks/useFloatFormat";
 import { displayModalForDuration } from "../utils/modal-util";
-import { Modal } from "./styles/Modal.styled";
+import { NegativeButton } from "./styles/Buttons.styled";
 import {
    BoxContainer,
    BoxTitle,
@@ -15,13 +15,13 @@ import {
    SubmitButton,
 } from "../pages/TransactionPage";
 
-export default function Withdraw({ bank }) {
+export default function Withdraw({ bank, show }) {
    const [userId, setUserId] = useState(bank.users[0].id);
    const [withdrawValue, setWithdrawValue] = useFloatFormat("");
+   const [showBalance, setShowBalance] = useState(false);
    const [showTransactionSuccessModal, setShowTransactionSuccessModal] =
       useState(false);
    const [showError, setShowError] = useState("");
-   const [showModal, setShowModal] = useState(false);
 
    const handleWithdraw = (e) => {
       e.preventDefault();
@@ -36,23 +36,22 @@ export default function Withdraw({ bank }) {
 
    return (
       <Form onSubmit={handleWithdraw}>
-         <Modal show={showModal}>
-            <ViewBalanceModal>
-               <DisplayUser userId={userId} bank={bank} />
-               <BoxBtn
-                  onClick={() => {
-                     setShowModal(false);
-                  }}
-               >
-                  Close
-               </BoxBtn>
-            </ViewBalanceModal>
-         </Modal>
          <TransactionSuccess
             showTransactionSuccessModal={showTransactionSuccessModal}
          >
             {showError === true ? "Transaction Success" : showError}
          </TransactionSuccess>
+         <Wrapper showBalance={showBalance}>
+            <DisplayUser userId={userId} bank={bank} />
+            <Close
+               onClick={() => {
+                  show(false);
+                  setShowBalance(false)
+               }}
+            >
+               Close
+            </Close>
+         </Wrapper>
          <BoxContainer>
             <BoxTitle>Withdraw From</BoxTitle>
             <BoxAction>
@@ -65,20 +64,21 @@ export default function Withdraw({ bank }) {
                   {bank.users.map(({ id, firstName, lastName }) => {
                      return (
                         <option value={id}>
-                           {firstName} {lastName}
+                           {id} - {firstName} {lastName}
                         </option>
                      );
                   })}
                </BoxOptions>
+               <ViewBalance
+                  href="#"
+                  onClick={() => {
+                     show(true);
+                     setShowBalance(true);
+                  }}
+               >
+                  View Balance
+               </ViewBalance>
             </BoxAction>
-            <ViewBalance
-               href="#"
-               onClick={() => {
-                  setShowModal(true);
-               }}
-            >
-               View Balance
-            </ViewBalance>
          </BoxContainer>
          <BoxContainer>
             <BoxTitle>Amount</BoxTitle>
@@ -98,31 +98,58 @@ export default function Withdraw({ bank }) {
    );
 }
 
-const ViewBalance = styled.a`
+export const ViewBalance = styled.a`
    margin: 0 0 5% 3%;
 `;
 
-const DisplayUser = ({ userId, bank }) => {
+export const DisplayUser = ({ userId, bank }) => {
    const user = bank.getAccount(userId);
-   console.log(user);
 
-   return true;
+   return (
+      <BalanceContainer>
+         <p>Account: {user.id} - {user.firstName} {user.lastName}</p>
+         <p>Current Balance: {user.balance}</p>
+      </BalanceContainer>
+
+   );
 };
 
-const BoxBtn = styled.button`
-   padding: 2px 8px;
-`;
-
-const ViewBalanceModal = styled.div`
-   width: 50%;
-   height: 30%;
+export const Wrapper = styled.div`
+   width: 30%;
+   height: 15%;
    z-index: 20;
-   display: flex;
+
+   position: absolute;
+
+   display: ${({ showBalance }) => ( showBalance ? "flex" : "none")};
    flex-direction: column;
    align-items: center;
    justify-content: center;
+
    text-align: center;
-   background-color: rgb(0,0,128);
+   background-color: rgb(0, 0, 128);
    color: white;
    border: none;
-   border-radius: 20px;`
+`;
+
+const BalanceContainer = styled.div`
+   & > p {
+      margin: 10px 0;
+   }
+`
+
+
+export const Close = styled.div`
+   padding: 3px 5px;
+   border: none;
+   border-radius: 5px;
+   background-color: white;
+   color: black;
+   cursor: pointer;
+   margin-bottom: 10px;
+
+   &:hover {
+      background-color: red;
+      color: white;
+   }
+`
