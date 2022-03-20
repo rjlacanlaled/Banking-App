@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { TransactionTypes } from "../model/enums/transaction-types";
-import Deposit from '../components/Deposit'
-import Withdraw from "../components/Withdraw";
+import Deposit from "../components/Deposit";
+import Withdraw, { userId } from "../components/Withdraw";
 import Transfer from "../components/Transfer";
+import { Modal } from "../components/styles/Modal.styled";
 
 const TRANSACTIONTYPESLIST = Object.values(TransactionTypes);
 
 export default function MakeATransaction({ bank }) {
+   const [showModal, setShowModal] = useState(false)
    const [transactionType, setTransactionType] = useState(
       TRANSACTIONTYPESLIST[2]
    );
@@ -20,7 +22,8 @@ export default function MakeATransaction({ bank }) {
 
    return (
       <MainContainer>
-         <BoxContainer>
+         <Modal show={showModal} />
+         <FirstBox>
             <BoxTitle>Make a Transaction</BoxTitle>
             <BoxAction>
                <BoxOptions value={transactionType} onChange={handleTransaction}>
@@ -31,78 +34,31 @@ export default function MakeATransaction({ bank }) {
                   })}
                </BoxOptions>
             </BoxAction>
-         </BoxContainer>
-         <OptionsPart toShow={transactionType}>
+         </FirstBox>
             {transactionType === TRANSACTIONTYPESLIST[2] ? (
                <Deposit bank={bank} />
             ) : transactionType === TRANSACTIONTYPESLIST[1] ? (
-               <Withdraw bank={bank} />
+               <Withdraw bank={bank} show={setShowModal} />
             ) : (
-               <Transfer bank={bank} />
+               <Transfer bank={bank} show={setShowModal}/>
             )}
-         </OptionsPart>
+         
       </MainContainer>
    );
 }
 
-
-export const SubmitContainer = styled.div`
-   margin-bottom: 0;
-   box-shadow: none;
-   background-color: transparent;
-   display: flex;
-   justify-content: center;
-`;
-
-export const SubmitButton = styled.button.attrs(({ type }) => ({ type: "submit" }))`
-   width: 20%;
-   height: fit-content;
-   padding: 1%;
-`;
-
-export const Form = styled.form``;
-
-export const AmountInput = styled.input.attrs(({ type }) => ({
-   type: type || "number",
-}))`
-   width: 50%;
-   margin: 0 0 5% 20%;
-   outline: none;
-   padding: 2px 3px;
-   border-radius: 3px;
-   border: 1px solid black;
-   background-image: linear-gradient(
-      rgba(0, 0, 0, 0.2),
-      rgba(255, 255, 255, 0.5)
-   );
-   &::-webkit-outer-spin-button,
-   &::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-   }
-`;
-
-const MainContainer = styled.div`
-   position: absolute;
-   top: 50%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-   width: 50%;
-   height: auto;
-   padding: 0.5% 0.5% 0 0.5%;
-`;
-
-const OptionsPart = styled.div`
-   display: ${({ toShow }) => (toShow != "" ? "block" : "none")};
-`;
-
 export const BoxContainer = styled.div`
-   width: 100%;
+   width: 40%;
    height: 90px;
    margin-bottom: 20px;
+   margin-right: 20%;
    box-shadow: 0 0 10px rgb(136, 136, 136);
    background-color: rgb(0, 191, 255);
 `;
+
+const FirstBox = styled(BoxContainer)`
+   margin-top: 10%;
+   `
 
 export const BoxTitle = styled.h3`
    width: 100%;
@@ -129,12 +85,70 @@ export const BoxOptions = styled.select`
    );
 `;
 
-export const TransactionSuccess = styled.div`
+export const SubmitContainer = styled.div`
+   width: 10%;
+   
+   
+   margin-bottom: 0;
+   margin-right: 20%;
+   box-shadow: none;
+   display: flex;
+   justify-content: center;
+`;
+
+export const SubmitButton = styled.button.attrs(({ type }) => ({
+   type: "submit",
+}))`
+   width: 90%;
+   height: 100%;
+   padding: 10%;
+`;
+
+export const Form = styled.form`
+   width: 100%;
+   height: 100%;
+
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+`;
+
+export const AmountInput = styled.input.attrs(({ type }) => ({
+   type: type || "number",
+}))`
    width: 50%;
-   height: 30%;
+   margin: 0 0 5% 20%;
+   outline: none;
+   padding: 2px 3px;
+   border-radius: 3px;
+   border: 1px solid black;
+   background-image: linear-gradient(
+      rgba(0, 0, 0, 0.2),
+      rgba(255, 255, 255, 0.5)
+   );
+   &::-webkit-outer-spin-button,
+   &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+   }
+`;
+
+const MainContainer = styled.div`
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+
+   height: 100vh;
+   width: 100vw;
+`;
+
+
+export const TransactionSuccess = styled.div`
+   width: 30%;
+   height: 10%;
 
    position: absolute;
-   left: 25%;
+   left: 40%;
    transform: translateY(-50%);
 
    display: ${({ showTransactionSuccessModal }) =>

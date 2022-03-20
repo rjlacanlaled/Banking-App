@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useFloatFormat from "./hooks/useFloatFormat";
 import { displayModalForDuration } from "../utils/modal-util";
+import { Wrapper, Close, DisplayUser, ViewBalance } from "./Withdraw";
 import {
    BoxContainer,
    BoxTitle,
@@ -13,7 +14,7 @@ import {
    SubmitButton
 } from "../pages/TransactionPage";
 
-export default function Transfer({ bank }) {
+export default function Transfer({ bank, show }) {
     const [transferFromId, setTransferFromId] = useState(bank.users[0].id);
     const [availableUsers, setAvailableUsers] = useState(
        bank.users.filter((user) => user.id != transferFromId)
@@ -23,6 +24,7 @@ export default function Transfer({ bank }) {
     const [showTransactionSuccessModal, setShowTransactionSuccessModal] =
        useState(false);
     const [showError, setShowError] = useState("");
+    const [showBalance, setShowBalance] = useState(false);
  
     const handleWithdraw = (e) => {
        e.preventDefault();
@@ -48,6 +50,17 @@ export default function Transfer({ bank }) {
           >
              {showError === true ? "Transaction Success" : showError}
           </TransactionSuccess>
+          <Wrapper showBalance={showBalance}>
+            <DisplayUser userId={transferFromId} bank={bank} />
+            <Close
+               onClick={() => {
+                  show(false);
+                  setShowBalance(false)
+               }}
+            >
+               Close
+            </Close>
+         </Wrapper>
           <BoxContainer>
              <BoxTitle>Transfer From</BoxTitle>
              <BoxAction>
@@ -67,11 +80,20 @@ export default function Transfer({ bank }) {
                    {bank.users.map(({ id, firstName, lastName }) => {
                       return (
                          <option value={id}>
-                            {firstName} {lastName}
+                            {id} - {firstName} {lastName}
                          </option>
                       );
                    })}
                 </BoxOptions>
+                <ViewBalance
+                  href="#"
+                  onClick={() => {
+                     show(true);
+                     setShowBalance(true);
+                  }}
+               >
+                  View Balance
+               </ViewBalance>
              </BoxAction>
           </BoxContainer>
           <BoxContainer>
@@ -86,7 +108,7 @@ export default function Transfer({ bank }) {
                    {availableUsers.map(({ id, firstName, lastName }) => {
                       return (
                          <option value={id}>
-                            {firstName} {lastName}
+                            {id} - {firstName} {lastName}
                          </option>
                       );
                    })}

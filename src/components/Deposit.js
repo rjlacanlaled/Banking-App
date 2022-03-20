@@ -50,7 +50,7 @@ export default function Deposit({ bank }) {
                   {bank.users.map(({ id, firstName, lastName }) => {
                      return (
                         <option value={id}>
-                           {firstName} {lastName}
+                           {id} - {firstName} {lastName}
                         </option>
                      );
                   })}
