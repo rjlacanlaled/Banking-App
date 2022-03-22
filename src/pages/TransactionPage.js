@@ -78,7 +78,11 @@ export default function MakeATransaction({ bank }) {
             )}
 
             <Modal show={showAddUserConfirmation}>
-                <AddUser onConfirm={handleConfirmAddUser} validator={bank.inputValidator.validator} />
+                <AddUser
+                    onConfirm={handleConfirmAddUser}
+                    validator={bank.inputValidator.validator}
+                    users={bank.users}
+                />
             </Modal>
 
             <Modal show={showAddUserConfirmationMessage}>

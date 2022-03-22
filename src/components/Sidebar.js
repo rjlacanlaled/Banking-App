@@ -26,25 +26,25 @@ export default function SideBar() {
             />
             <PageList>
                 <PageItem>
-                    <StyledMdOutlineDashboard active={activePage} page='dashboard' />
+                    <StyledMdOutlineDashboard />
                     <StyledLink to='/' page='dashboard' active={activePage} collapsed={collapsed}>
                         Dashboard
                     </StyledLink>
                 </PageItem>
                 <PageItem>
-                    <StyledRiLuggageDepositLine active={activePage} page='dashboard' />
+                    <StyledRiLuggageDepositLine />
                     <StyledLink to='/transact' page='transact' active={activePage} collapsed={collapsed}>
                         Transact
                     </StyledLink>
                 </PageItem>
                 <PageItem>
-                    <StyledGrUserManager active={activePage} page='dashboard' />
+                    <StyledGrUserManager />
                     <StyledLink to='/users' page='users' active={activePage} collapsed={collapsed}>
                         Manage Users
                     </StyledLink>
                 </PageItem>
                 <PageItem>
-                    <StyledAiOutlineTransaction active={activePage} page='dashboard' />
+                    <StyledAiOutlineTransaction />
                     <StyledLink to='/transactions' page='transaction-history' active={activePage} collapsed={collapsed}>
                         Transaction History
                     </StyledLink>
@@ -68,7 +68,6 @@ export default function SideBar() {
 }
 
 const Container = styled.div`
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -167,7 +166,7 @@ const StyledAiOutlineDoubleLeft = styled(AiOutlineDoubleLeft)`
     cursor: pointer;
 
     &:hover {
-        color: ${({theme}) => theme.colors.main.themeColor};
+        color: ${({ theme }) => theme.colors.main.themeColor};
     }
 `;
 
@@ -175,7 +174,7 @@ const StyledAiOutlineDoubleRight = styled(AiOutlineDoubleRight)`
     cursor: pointer;
 
     &:hover {
-        color: ${({theme}) => theme.colors.main.themeColor};
+        color: ${({ theme }) => theme.colors.main.themeColor};
     }
 `;
 
@@ -185,44 +184,36 @@ const StyledAiOutlineLogout = styled(AiOutlineLogout)`
     color: red;
 
     &:hover {
-        color: ${({theme}) => theme.colors.main.themeColor};
+        color: ${({ theme }) => theme.colors.main.themeColor};
     }
 `;
 
 const StyledMdOutlineDashboard = styled(MdOutlineDashboard)`
     cursor: pointer;
 
-    color: ${({ active: { active }, page, theme }) => (active == page ? theme.colors.main.themeColor : 'black')};
-
     &:hover {
-        color: ${({theme}) => theme.colors.main.themeColor};
+        color: ${({ theme }) => theme.colors.main.themeColor};
     }
 `;
 const StyledRiLuggageDepositLine = styled(RiLuggageDepositLine)`
     cursor: pointer;
 
-    color: ${({ active: { active }, page, theme }) => (active == page ? theme.colors.main.themeColor : 'black')};
-
     &:hover {
-        color: ${({theme}) => theme.colors.main.themeColor};
+        color: ${({ theme }) => theme.colors.main.themeColor};
     }
 `;
 const StyledGrUserManager = styled(GrUserManager)`
     cursor: pointer;
 
-    color: ${({ active: { active }, page, theme }) => (active == page ? theme.colors.main.themeColor : 'black')};
-
     &:hover {
-        color: ${({theme}) => theme.colors.main.themeColor};
+        color: ${({ theme }) => theme.colors.main.themeColor};
     }
 `;
 
 const StyledAiOutlineTransaction = styled(AiOutlineTransaction)`
     cursor: pointer;
 
-    color: ${({ active: { active }, page, theme }) => (active == page ? theme.colors.main.themeColor : 'black')};
-
     &:hover {
-        color: ${({theme}) => theme.colors.main.themeColor};
+        color: ${({ theme }) => theme.colors.main.themeColor};
     }
 `;

@@ -80,6 +80,7 @@ export default function BankUserManagement({ bank }) {
                 <AddUser
                     onConfirm={handleConfirmAddUser}
                     validator={bank.inputValidator.validator}
+                    users={bank.users}
                 />
             </Modal>
 

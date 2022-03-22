@@ -18,6 +18,8 @@ export const PageTitleContainer = styled.div`
 
 export const PageTitle = styled.h1`
     text-align: center;
+    color: white;
+    padding: 20px;
 `;
 
 export const ButtonTitle = styled.p`

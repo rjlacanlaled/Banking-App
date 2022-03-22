@@ -5,7 +5,9 @@ export default class BankValidator {
         this.validator = {
             firstName: this.validFirstName,
             lastName: this.validLastName,
-            balance: this.validBalance
+            balance: this.validBalance,
+            username: this.validUsername,
+            password: this.validPassword
         }
     }
     
@@ -32,4 +34,29 @@ export default class BankValidator {
         if (balance.length > this.maxBalanceDigits) errors.push(`Balance cannot exceed ${this.maxBalanceDigits} digits.`);
         return errors;
     };
+
+    validUsername = (username, updatedUserList) => {
+        const errors = [];
+        const formattedUsername = username.toLowerCase();
+        if (username.length < 4) errors.push('Username name needs to be atleast 4 characters.');
+        if (username[0].match(/[0-9]/)) errors.push('Username cannot start with a digit!');  
+        for (const user of updatedUserList) {
+
+
+            console.log('user', user.username);
+            if (user.username.toLowerCase() === formattedUsername) {
+                console.log(user.username);
+                errors.push('Username has already been taken.')
+                break;
+            }
+        }
+        return errors;
+    }
+
+    validPassword = password => {
+        const errors = [];
+        if (password.length < 6) errors.push('Password name needs to be atleast 6 characters.');
+
+        return errors;
+    }
 }
