@@ -142,6 +142,8 @@ export const BoxTitle = styled.h3`
 export const BoxAction = styled.div`
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
     margin-top: 10px;
 
     width: 100%;
