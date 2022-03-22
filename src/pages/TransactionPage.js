@@ -1,165 +1,226 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { TransactionTypes } from "../model/enums/transaction-types";
-import { PrimaryButton } from "../components/styles/Buttons.styled";
-import Deposit from "../components/Deposit";
-import Withdraw from "../components/Withdraw";
-import Transfer from "../components/Transfer";
-import { Modal } from "../components/styles/Modal.styled";
-import useActivePage from "../components/hooks/useActivePage";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { TransactionTypes } from '../model/enums/transaction-types';
+import Deposit from '../components/Deposit';
+import Withdraw, { userId } from '../components/Withdraw';
+import Transfer from '../components/Transfer';
+import { Modal } from '../components/styles/Modal.styled';
+import useActivePage from '../components/hooks/useActivePage';
+import { PageTitle, PageTitleContainer } from '../components/styles/Titles.styled';
+import { PrimaryButton } from '../components/styles/Buttons.styled';
+import Confirmation from '../components/Confirmation';
+import ConfirmationMessage from '../components/ConfirmationMessage';
+import AddUser from '../components/AddUser';
+import { displayModalForDuration } from '../utils/modal-util';
 
 const TRANSACTIONTYPESLIST = Object.values(TransactionTypes);
 
 export default function MakeATransaction({ bank }) {
-   const [showModal, setShowModal] = useState(false)
-   const [transactionType, setTransactionType] = useState(
-      TRANSACTIONTYPESLIST[2]
-   );
-   const activePage = useActivePage();
+    const [showModal, setShowModal] = useState(false);
+    const [transactionType, setTransactionType] = useState(TRANSACTIONTYPESLIST[2]);
+    const [showAddUserConfirmation, setShowAddUserConfirmation] = useState(false);
+    const [showAddUserConfirmationMessage, setShowAddUserConfirmationMessage] = useState(false);
+    const activePage = useActivePage();
 
-   useEffect(() => {
-       activePage.setActive('transact');
-   }, []);
+    useEffect(() => {
+        activePage.setActive('transact');
+    }, []);
 
-   
+    const handleTransaction = e => {
+        const { value } = e.target;
+        setTransactionType(value);
+        console.log(bank.users);
+    };
 
-   const handleTransaction = (e) => {
-      const { value } = e.target;
-      setTransactionType(value);
-      console.log(bank.users);
-   };
+    const handleAddUser = () => {
+        setShowAddUserConfirmation(true);
+    };
 
-   return (
-      <MainContainer>
-         <Modal show={showModal} />
-         <FirstBox>
-            <BoxTitle>Make a Transaction</BoxTitle>
-            <BoxAction>
-               <BoxOptions value={transactionType} onChange={handleTransaction}>
-                  {TRANSACTIONTYPESLIST.map((option) => {
-                     return (
-                        <option value={option}>{option.toUpperCase()}</option>
-                     );
-                  })}
-               </BoxOptions>
-            </BoxAction>
-         </FirstBox>
-            {transactionType === TRANSACTIONTYPESLIST[2] ? (
-               <Deposit bank={bank} />
-            ) : transactionType === TRANSACTIONTYPESLIST[1] ? (
-               <Withdraw bank={bank} show={setShowModal} />
+    const handleConfirmAddUser = (confirmed, user) => {
+        if (!confirmed) return setShowAddUserConfirmation(false);
+        bank.createAccount(user);
+        setShowAddUserConfirmation(false);
+        displayModalForDuration(setShowAddUserConfirmationMessage, 1000);
+    };
+
+    return (
+        <MainContainer>
+            <PageTitleContainer>
+                <PageTitle>Transact</PageTitle>
+            </PageTitleContainer>
+            <Modal show={showModal} />
+
+            {bank.users.length > 1 ? (
+                <InputContainer>
+                    <FirstBox>
+                        <BoxTitle>Make a Transaction</BoxTitle>
+                        <BoxAction>
+                            <BoxOptions value={transactionType} onChange={handleTransaction}>
+                                {TRANSACTIONTYPESLIST.map(option => {
+                                    return <option value={option}>{option.toUpperCase()}</option>;
+                                })}
+                            </BoxOptions>
+                        </BoxAction>
+                    </FirstBox>
+                    {transactionType === TRANSACTIONTYPESLIST[2] ? (
+                        <Deposit bank={bank} key='deposit' />
+                    ) : transactionType === TRANSACTIONTYPESLIST[1] ? (
+                        <Withdraw bank={bank} show={setShowModal} />
+                    ) : (
+                        <Transfer bank={bank} show={setShowModal} />
+                    )}
+                </InputContainer>
             ) : (
-               <Transfer bank={bank} show={setShowModal}/>
+                <TransactionNotAllowedContainer>
+                    <h3> You need to have at least 2 accounts to do transactions!</h3>
+                    <StyledPrimaryButton onClick={handleAddUser}>Create new account</StyledPrimaryButton>
+                </TransactionNotAllowedContainer>
             )}
-         
-      </MainContainer>
-   );
+
+            <Modal show={showAddUserConfirmation}>
+                <AddUser onConfirm={handleConfirmAddUser} validator={bank.inputValidator.validator} />
+            </Modal>
+
+            <Modal show={showAddUserConfirmationMessage}>
+                <ConfirmationMessage message='Successfully added user!' imgUrl='./assets/checkmark.gif' />
+            </Modal>
+        </MainContainer>
+    );
 }
 
-export const BoxContainer = styled.div`
-   width: 40%;
-   height: 90px;
-   margin-bottom: 20px;
-   margin-right: 20%;
-   box-shadow: 0 0 10px rgb(136, 136, 136);
-   color: ${({ theme }) => theme.colors.main.fontColor};
-   background-color: ${({ theme }) => theme.colors.main.themeColor};
+export const InputContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    gap: 20px;
+
+    margin-top: 30px;
+
+    max-width: 500px;
+    background-color: #009879;
+    border-radius: 20px;
 `;
 
-const FirstBox = styled(BoxContainer)`
-   margin-top: 10%;
-   `
+export const BoxContainer = styled.div``;
+
+const StyledPrimaryButton = styled(PrimaryButton)`
+    padding: 10px 20px 10px 20px;
+`;
+
+const TransactionNotAllowedContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    gap: 20px;
+    color: white;
+    text-align: center;
+`;
+
+const FirstBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #009879;
+    padding: 20px;
+    margin-top: 20px;
+    width: 100%;
+
+    border-bottom: 1px solid white;
+`;
 
 export const BoxTitle = styled.h3`
-   width: 100%;
-   height: 50%;
-   padding: 10px 0 10px 30px;
+    color: white;
+    text-align: left;
+    padding: 10px;
 `;
 
 export const BoxAction = styled.div`
-   width: 100%;
-   height: 50%;
-   display: flex;
-   align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+
+    width: 100%;
 `;
 
 export const BoxOptions = styled.select`
-   width: 50%;
-   margin: 0 0 5% 20%;
-   outline: none;
-   padding: 2px 3px;
-   border-radius: 3px;
-   background-image: linear-gradient(
-      rgba(0, 0, 0, 0.2),
-      rgba(255, 255, 255, 0.5)
-   );
+    padding: 10px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
 `;
 
 export const SubmitContainer = styled.div`
-   width: 10%;
-   
-   
-   margin-bottom: 0;
-   margin-right: 20%;
-   box-shadow: none;
-   display: flex;
-   justify-content: center;
+    width: 100%;
+    max-width: 200px;
+    border-radius: 20px;
+
+    margin-bottom: 0;
+    box-shadow: none;
+    display: flex;
+    justify-content: center;
 `;
 
 export const SubmitButton = styled(PrimaryButton)`
-   padding: 5% 13%;
+    width: 100%;
+    padding: 10px 20px 10px 20px;
+
+    margin: 10px 10px;
 `;
 
 export const Form = styled.form`
-   width: 100%;
-   height: 100%;
+    width: 100%;
+    height: 100%;
 
-   display: flex;
-   flex-direction: column;
-   align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 
 export const AmountInput = styled.input.attrs(({ type }) => ({
-   type: type || "number",
+    type: type || 'number',
 }))`
-   width: 50%;
-   margin: 0 0 5% 20%;
-   outline: none;
-   padding: 2px 3px;
-   border-radius: 3px;
-   border: 1px solid black;
-   background-image: linear-gradient(
-      rgba(0, 0, 0, 0.2),
-      rgba(255, 255, 255, 0.5)
-   );
-   &::-webkit-outer-spin-button,
-   &::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-   }
+    padding: 10px;
+    border-radius: 10px;
+    min-width: 300px;
+    outline: none;
+    border-style: none;
 `;
 
 const MainContainer = styled.div`
-   display: flex;
-   flex-direction: column;
-   align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 
-   height: 100vh;
-   width: 100vw;
+    height: 100vh;
+    width: 100vw;
+
+    overflow: auto;
+
+    background-color: ${({ theme }) => theme.colors.main.themeColor};
 `;
 
-
 export const TransactionSuccess = styled.div`
-   width: 30%;
-   height: 10%;
+    width: 30%;
+    height: 10%;
 
-   position: absolute;
-   left: 40%;
-   transform: translateY(-50%);
+    position: absolute;
+    left: 40%;
+    transform: translateY(-50%);
 
-   display: ${({ showTransactionSuccessModal }) =>
-      showTransactionSuccessModal ? "flex" : "none"};
-   justify-content: center;
-   align-items: center;
-   background-color: red;
+    display: ${({ showTransactionSuccessModal }) => (showTransactionSuccessModal ? 'flex' : 'none')};
+    justify-content: center;
+    align-items: center;
+`;
+
+const StyledPageTitle = styled(PageTitle)`
+    padding: 20px;
+    color: white;
 `;

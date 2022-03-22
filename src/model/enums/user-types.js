@@ -1,4 +1,4 @@
 export const UserTypes = Object.freeze({
-    Normal: "normal",
+    Normal: "regular",
     Admin: "admin"
 })

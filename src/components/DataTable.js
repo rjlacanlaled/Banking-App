@@ -78,9 +78,10 @@ const SearchContainer = styled.div`
     
 `;
 const TableContainer = styled.div`
-   max-height: 375px;
-
-   border: 1px solid white;
+   max-height: 500px;
+   border-top-left-radius: 20px;
+   border-top-right-radius: 20px;
+   border-bottom: 10px solid #009879;
 
    overflow: auto;
 `;

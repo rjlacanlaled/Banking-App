@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { AiOutlineBank } from 'react-icons/ai';
-import { FiUserPlus } from 'react-icons/fi';
 import styled from 'styled-components';
 import Confirmation from '../components/Confirmation';
 import ConfirmationMessage from '../components/ConfirmationMessage';
@@ -9,7 +8,6 @@ import useActivePage from '../components/hooks/useActivePage';
 import { Modal } from '../components/styles/Modal.styled';
 import { ButtonTitle, PageTitle, PageTitleContainer } from '../components/styles/Titles.styled';
 import { displayModalForDuration } from '../utils/modal-util';
-import MakeATransaction from './TransactionPage';
 
 export default function BankTransactionHistory({ bank }) {
     const [chosenId, setChosenId] = useState(0);
@@ -38,12 +36,13 @@ export default function BankTransactionHistory({ bank }) {
         displayModalForDuration(setShowDeleteConfirmationMessage, 1000);
     };
 
+
     return (
         <Wrapper>
             <PageTitleContainer>
                 <PageTitle>Transaction History</PageTitle>
                 <TransactButtonContainer>
-                    <StyledAiOutlineBank onClick='' />
+                    <StyledAiOutlineBank/>
                     <ButtonTitle>New Transaction</ButtonTitle>
                 </TransactButtonContainer>
             </PageTitleContainer>
@@ -59,10 +58,6 @@ export default function BankTransactionHistory({ bank }) {
 
             <Modal show={showDeleteConfirmationMessage}>
                 <ConfirmationMessage message='Successfully deleted transaction!' imgUrl='./assets/checkmark.gif' />
-            </Modal>
-
-            <Modal show={false}>
-                <MakeATransaction bank={bank} />
             </Modal>
         </Wrapper>
     );

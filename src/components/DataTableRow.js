@@ -82,18 +82,18 @@ export default function DataTableRow({
 }
 
 const StyledTableRow = styled(TableRow)`
-    
 `;
 
 const StyledInput = styled(Input)`
     background-color: transparent;
     border-style: none;
+    
 
     padding: 5px;
 
     text-align: center;
     text-transform: uppercase;
-    color: ${({ theme }) => theme.colors.main.fontColor};
+    color: black;
     opacity: ${({ isEditing }) => (isEditing ? 1 : 0.6)};
 
     font-weight: 600;
