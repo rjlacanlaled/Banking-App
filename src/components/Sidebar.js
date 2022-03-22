@@ -54,7 +54,9 @@ export default function SideBar() {
                 {collapsed ? (
                     <StyledAiOutlineLogout onClick={auth.logout} />
                 ) : (
-                    <StyledNegativeButton onClick={auth.logout}>Log out</StyledNegativeButton>
+                    <StyledNegativeButton onClick={auth.logout} collapsed={collapsed}>
+                        Log out
+                    </StyledNegativeButton>
                 )}
                 <ToggleSwitch type='checkbox' collapsed={collapsed} />
                 {collapsed ? (
@@ -72,13 +74,15 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    min-width: ${({ collapsed }) => (collapsed ? '10px' : '200px')};
+    width: ${({ collapsed }) => (collapsed ? '10px' : '200px')};
     padding: 20px;
+    transition: width 0.5s ease;
 `;
 const Logo = styled.img`
-    visibility: ${({ collapsed }) => (collapsed ? 'hidden' : 'visible')};
-    width: ${({ collapsed }) => (collapsed ? '0px' : '100px')};
-    height: ${({ collapsed }) => (collapsed ? '0px' : '100px')};
+    width: 100px;
+    height: 100px;
+    opacity: ${({ collapsed }) => (collapsed ? '0' : '1')};
+    transition: ${({ collapsed }) => (collapsed ? 'opacity 0.1s ease' : 'opacity 0.1s ease 0.4s')};
 `;
 const PageList = styled.ul`
     display: flex;
@@ -92,6 +96,7 @@ const PageItem = styled.div`
     display: flex;
     align-items: center;
     gap: 5px;
+    min-height: 50px;
 `;
 const ButtonContainer = styled.div`
     display: flex;
@@ -124,8 +129,9 @@ const Slider = styled.span`
         left: 4px;
         bottom: 4px;
         background-color: white;
-        transition: 0.8s;
         border-radius: 50%;
+        opacity: ${({ collapsed }) => (collapsed ? '0' : '1')};
+        transition: ${({ collapsed }) => (collapsed ? 'opacity 0.5s ease 0.4s' : 'opacity 0.1s ease')};
     }
 `;
 
@@ -142,8 +148,8 @@ const Switch = styled.input`
 const ToggleSwitch = ({ collapsed }) => {
     return (
         <ToggleLabel collapsed={collapsed}>
-            <Switch type='checkbox' />
-            <Slider />
+            <Switch type='checkbox' collapsed={collapsed} />
+            <Slider collapsed={collapsed} />
         </ToggleLabel>
     );
 };
@@ -152,21 +158,25 @@ const ToggleLabel = styled.label`
     width: ${({ collapsed }) => (collapsed ? '0px' : '100px')};
     height: 34px;
     position: relative;
-    margin-top: 5px;
-    visibility: ${({ collapsed }) => (collapsed ? 'hidden' : 'visible')};
+    opacity: ${({ collapsed }) => (collapsed ? '0' : '1')};
+    transition: ${({ collapsed }) => (collapsed ? 'opacity 0.1s ease' : 'opacity 0.1s ease 0.4s')};
 `;
 
 const StyledLink = styled(Link)`
-    color: ${({ active: { active }, page, theme }) => (active == page ? theme.colors.main.themeColor : 'black')};
-    transition: all 0.25s ease;
-    display: ${({ collapsed }) => (collapsed ? 'none' : 'block')};
+    color: ${({ active: { active }, page, theme }) =>
+        active == page ? theme.colors.mainTitleDiv.backgroundColor : 'black'};
+    transition: color 0.25s ease;
+    position: ${({ collapsed }) => (collapsed ? 'absolute' : 'relative')};
+    left: ${({ collapsed }) => (collapsed ? '-10000000px' : '0')};
+    opacity: ${({ collapsed }) => (collapsed ? '0' : '1')};
+    transition: ${({ collapsed }) => (collapsed ? 'opacity 0.1s ease' : 'opacity 0.1s ease 0.4s')}; ;
 `;
 
 const StyledAiOutlineDoubleLeft = styled(AiOutlineDoubleLeft)`
     cursor: pointer;
 
     &:hover {
-        color: ${({ theme }) => theme.colors.main.themeColor};
+        ${props => props.theme.colors.mainTitleDiv.backgroundColor}
     }
 `;
 
@@ -174,7 +184,7 @@ const StyledAiOutlineDoubleRight = styled(AiOutlineDoubleRight)`
     cursor: pointer;
 
     &:hover {
-        color: ${({ theme }) => theme.colors.main.themeColor};
+        ${props => props.theme.colors.mainTitleDiv.backgroundColor}
     }
 `;
 
@@ -184,7 +194,7 @@ const StyledAiOutlineLogout = styled(AiOutlineLogout)`
     color: red;
 
     &:hover {
-        color: ${({ theme }) => theme.colors.main.themeColor};
+        ${props => props.theme.colors.mainTitleDiv.backgroundColor}
     }
 `;
 
@@ -192,21 +202,21 @@ const StyledMdOutlineDashboard = styled(MdOutlineDashboard)`
     cursor: pointer;
 
     &:hover {
-        color: ${({ theme }) => theme.colors.main.themeColor};
+        ${props => props.theme.colors.mainTitleDiv.backgroundColor}
     }
 `;
 const StyledRiLuggageDepositLine = styled(RiLuggageDepositLine)`
     cursor: pointer;
 
     &:hover {
-        color: ${({ theme }) => theme.colors.main.themeColor};
+        ${props => props.theme.colors.mainTitleDiv.backgroundColor}
     }
 `;
 const StyledGrUserManager = styled(GrUserManager)`
     cursor: pointer;
 
     &:hover {
-        color: ${({ theme }) => theme.colors.main.themeColor};
+        ${props => props.theme.colors.mainTitleDiv.backgroundColor}
     }
 `;
 
@@ -214,6 +224,6 @@ const StyledAiOutlineTransaction = styled(AiOutlineTransaction)`
     cursor: pointer;
 
     &:hover {
-        color: ${({ theme }) => theme.colors.main.themeColor};
+        ${props => props.theme.colors.mainTitleDiv.backgroundColor}
     }
 `;

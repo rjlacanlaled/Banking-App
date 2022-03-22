@@ -6,6 +6,7 @@ export default class BankAdminUser extends User {
         super(firstName, lastName);
         this.username = username;
         this.password = password;
+        this.balance = 0;
         this.type = UserTypes.Admin;
     }
 }

@@ -5,7 +5,7 @@ import usePersist from '../hooks/usePersist';
 export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
-    const [user, setUser] = usePersist('newUser', null);
+    const [user, setUser] = usePersist('userLoggedIn', null);
 
     const login = user => {
         setUser(user);

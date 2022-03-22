@@ -13,6 +13,7 @@ export default class BankApp {
         this.transactions = transactionDatabase.getAll();
     }
 
+
     login = (username, password) => {
         const user = this.users.find(user => user.username === username);
         if (!user) return 'User not found!';

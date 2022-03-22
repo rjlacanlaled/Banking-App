@@ -7,7 +7,7 @@ import BankAdminUser from '../model/bank-admin-user';
 
 const defaultLogin = new BankAdminUser('Rj', 'Lacanlale', 'admin', 'admin');
 
-export default function Login() {
+export default function Login({ bank }) {
     const auth = useAuth();
     const [errors, setErrors] = useState([]);
     const [username, setUsername] = useAlphaNumericFormat('');

@@ -30,35 +30,37 @@ export default function Dashboard({ bank }) {
             <PageTitle>Good day, {auth.user.firstName + ' ' + auth.user.lastName}!</PageTitle>
 
             <DashboardBoxes>
-                <DashboardBox
-                    icon={<StyledAiOutlineUser />}
-                    title='Total Users'
-                    description={bank.users.length ? bank.users.length : 0}
-                />
-                <DashboardBox
-                    icon={<StyledBsPiggyBank />}
-                    title='Total Deposit'
-                    description={
-                        'PHP ' +
-                        (bank.users.length
-                            ? bank.users
-                                  .map(user => parseFloat(user.balance))
-                                  .reduce((total, balance) => (total += balance))
-                            : 0)
-                    }
-                />
-                <DashboardBox
-                    icon={<StyledGiMoneyStack />}
-                    title='Average Deposits'
-                    description={
-                        'PHP ' +
-                        (bank.users.length
-                            ? bank.users
-                                  .map(user => parseFloat(user.balance))
-                                  .reduce((total, balance) => (total += balance)) / bank.users.length
-                            : 0)
-                    }
-                />
+                <Zoom>
+                    <DashboardBox
+                        icon={<StyledAiOutlineUser />}
+                        title='Total Users'
+                        description={bank.users.length ? bank.users.length : 0}
+                    />
+                    <DashboardBox
+                        icon={<StyledBsPiggyBank />}
+                        title='Total Deposit'
+                        description={
+                            'PHP ' +
+                            (bank.users.length
+                                ? bank.users
+                                      .map(user => parseFloat(user.balance))
+                                      .reduce((total, balance) => (total += balance))
+                                : 0)
+                        }
+                    />
+                    <DashboardBox
+                        icon={<StyledGiMoneyStack />}
+                        title='Average Deposits'
+                        description={
+                            'PHP ' +
+                            (bank.users.length
+                                ? bank.users
+                                      .map(user => parseFloat(user.balance))
+                                      .reduce((total, balance) => (total += balance)) / bank.users.length
+                                : 0)
+                        }
+                    />
+                </Zoom>
             </DashboardBoxes>
         </Wrapper>
     );
@@ -80,7 +82,7 @@ const Wrapper = styled.div`
 
 const DashboardBoxes = styled.div`
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     flex-wrap: wrap;
     flex-shrink: 0;
     width: 100%;

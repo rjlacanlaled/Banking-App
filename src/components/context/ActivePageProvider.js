@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 
 export const ActivePageContext = createContext();
 
@@ -7,3 +7,6 @@ export default function ActivePageProvider({ children }) {
 
     return <ActivePageContext.Provider value={{ active, setActive }}>{children}</ActivePageContext.Provider>;
 }
+
+
+

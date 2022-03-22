@@ -17,7 +17,7 @@ export default function AddUser({ users, onConfirm, validator }) {
     const [username, setUsername] = useUsernameFormat('');
     const [password, setPassword] = useState('');
     const [accountType, setAccountType] = useState(UserTypes.Normal);
-    const [balance, setBalance] = useFloatFormat('');
+    const [balance, setBalance] = useFloatFormat(0);
     const [errors, setErrors] = useState([]);
 
     const handleFormSubmit = e => {
@@ -50,7 +50,7 @@ export default function AddUser({ users, onConfirm, validator }) {
         setLastName('');
         setUsername('');
         setPassword('');
-        setBalance('');
+        setBalance(0);
         setAccountType(UserTypes.Normal);
         setErrors([]);
     };
