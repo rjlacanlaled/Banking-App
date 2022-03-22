@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { TransactionTypes } from "../model/enums/transaction-types";
+import { PrimaryButton } from "../components/styles/Buttons.styled";
 import Deposit from "../components/Deposit";
-import Withdraw, { userId } from "../components/Withdraw";
+import Withdraw from "../components/Withdraw";
 import Transfer from "../components/Transfer";
 import { Modal } from "../components/styles/Modal.styled";
 
@@ -53,7 +54,8 @@ export const BoxContainer = styled.div`
    margin-bottom: 20px;
    margin-right: 20%;
    box-shadow: 0 0 10px rgb(136, 136, 136);
-   background-color: rgb(0, 191, 255);
+   color: ${({ theme }) => theme.colors.main.fontColor};
+   background-color: ${({ theme }) => theme.colors.main.themeColor};
 `;
 
 const FirstBox = styled(BoxContainer)`
@@ -96,12 +98,8 @@ export const SubmitContainer = styled.div`
    justify-content: center;
 `;
 
-export const SubmitButton = styled.button.attrs(({ type }) => ({
-   type: "submit",
-}))`
-   width: 90%;
-   height: 100%;
-   padding: 10%;
+export const SubmitButton = styled(PrimaryButton)`
+   padding: 5% 13%;
 `;
 
 export const Form = styled.form`
