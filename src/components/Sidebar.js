@@ -3,11 +3,18 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { NegativeButton } from './styles/Buttons.styled';
 import { MdOutlineDashboard } from 'react-icons/md';
-import { GrUserManager } from 'react-icons/gr';
+import { GrUserAdmin } from 'react-icons/gr';
 import { RiLuggageDepositLine } from 'react-icons/ri';
-import { AiOutlineTransaction, AiOutlineDoubleLeft, AiOutlineDoubleRight, AiOutlineLogout } from 'react-icons/ai';
+import {
+    AiOutlineTransaction,
+    AiOutlineDoubleLeft,
+    AiOutlineDoubleRight,
+    AiOutlineLogout,
+    AiOutlineUser,
+} from 'react-icons/ai';
 import useAuth from './hooks/useAuth';
 import useActivePage from './hooks/useActivePage';
+import Fade from 'react-reveal/Fade';
 
 export default function SideBar() {
     const [collapsed, setCollapsed] = useState(false);
@@ -20,10 +27,19 @@ export default function SideBar() {
 
     return (
         <Container collapsed={collapsed}>
-            <Logo
-                src='https://scontent.fmnl30-1.fna.fbcdn.net/v/t1.15752-9/275554048_4912356165478076_1490016745173868883_n.jpg?_nc_cat=103&ccb=1-5&_nc_sid=ae9488&_nc_eui2=AeHl2MrrXaIHZIxN82OQY7xQzFNPBHk-t4PMU08EeT63g84Sw1-8D53mUTyWrqI4Jj2A1KThHyFiQlxTzQV3RSbK&_nc_ohc=eso_EihlyCUAX_cBbO2&_nc_ht=scontent.fmnl30-1.fna&oh=03_AVJA9tVuSY9e5CyQogwRVPn2VdccZDlPlSALknU4nCt_6g&oe=62508466'
-                collapsed={collapsed}
-            />
+            {!collapsed ? (
+                <Fade>
+                    <Logo collapsed={collapsed}>
+                        <span style={{ color: '#183046' }}>Some</span>Bank
+                    </Logo>
+                </Fade>
+            ) : (
+                <Fade>
+                    <Logo collapsed={collapsed}>
+                        <div style={{ color: '#183045' }}>S</div>B
+                    </Logo>
+                </Fade>
+            )}
             <PageList>
                 <PageItem>
                     <StyledMdOutlineDashboard />
@@ -77,12 +93,14 @@ const Container = styled.div`
     width: ${({ collapsed }) => (collapsed ? '10px' : '200px')};
     padding: 20px;
     transition: width 0.5s ease;
+    color: white;
+    background-color: #009879;
+    border-right: 1px solid #a6eca8;
 `;
-const Logo = styled.img`
-    width: 100px;
-    height: 100px;
-    opacity: ${({ collapsed }) => (collapsed ? '0' : '1')};
-    transition: ${({ collapsed }) => (collapsed ? 'opacity 0.1s ease' : 'opacity 0.1s ease 0.4s')};
+const Logo = styled.p`
+    font-weight: 900;
+    font-size: 1.5rem;
+    padding-top: 10px;
 `;
 const PageList = styled.ul`
     display: flex;
@@ -97,6 +115,12 @@ const PageItem = styled.div`
     align-items: center;
     gap: 5px;
     min-height: 50px;
+    border-bottom: 1px solid white;
+    width: 100%;
+
+    &:last-child {
+        border-style: none;
+    }
 `;
 const ButtonContainer = styled.div`
     display: flex;
@@ -109,6 +133,8 @@ const ButtonContainer = styled.div`
 const ThemeToggle = styled.input``;
 const StyledNegativeButton = styled(NegativeButton)`
     padding: 5px 20px 5px 20px;
+    opacity: ${({ collapsed }) => (collapsed ? '0' : '1')};
+    transition: ${({ collapsed }) => (collapsed ? 'opacity 0.1s ease' : 'opacity 0.1s ease 0.4s')};
 `;
 
 const Slider = styled.span`
@@ -163,8 +189,7 @@ const ToggleLabel = styled.label`
 `;
 
 const StyledLink = styled(Link)`
-    color: ${({ active: { active }, page, theme }) =>
-        active == page ? theme.colors.mainTitleDiv.backgroundColor : 'black'};
+    color: ${({ active: { active }, page, theme }) => (active == page ? '#183046' : 'white')};
     transition: color 0.25s ease;
     position: ${({ collapsed }) => (collapsed ? 'absolute' : 'relative')};
     left: ${({ collapsed }) => (collapsed ? '-10000000px' : '0')};
@@ -176,7 +201,7 @@ const StyledAiOutlineDoubleLeft = styled(AiOutlineDoubleLeft)`
     cursor: pointer;
 
     &:hover {
-        ${props => props.theme.colors.mainTitleDiv.backgroundColor}
+        color: '#183046';
     }
 `;
 
@@ -184,7 +209,7 @@ const StyledAiOutlineDoubleRight = styled(AiOutlineDoubleRight)`
     cursor: pointer;
 
     &:hover {
-        ${props => props.theme.colors.mainTitleDiv.backgroundColor}
+        color: '#183046';
     }
 `;
 
@@ -194,7 +219,7 @@ const StyledAiOutlineLogout = styled(AiOutlineLogout)`
     color: red;
 
     &:hover {
-        ${props => props.theme.colors.mainTitleDiv.backgroundColor}
+        color: '#183046';
     }
 `;
 
@@ -202,21 +227,21 @@ const StyledMdOutlineDashboard = styled(MdOutlineDashboard)`
     cursor: pointer;
 
     &:hover {
-        ${props => props.theme.colors.mainTitleDiv.backgroundColor}
+        color: '#183046';
     }
 `;
 const StyledRiLuggageDepositLine = styled(RiLuggageDepositLine)`
     cursor: pointer;
 
     &:hover {
-        ${props => props.theme.colors.mainTitleDiv.backgroundColor}
+        color: '#183046';
     }
 `;
-const StyledGrUserManager = styled(GrUserManager)`
+const StyledGrUserManager = styled(AiOutlineUser)`
     cursor: pointer;
 
     &:hover {
-        ${props => props.theme.colors.mainTitleDiv.backgroundColor}
+        color: '#183046';
     }
 `;
 
@@ -224,6 +249,6 @@ const StyledAiOutlineTransaction = styled(AiOutlineTransaction)`
     cursor: pointer;
 
     &:hover {
-        ${props => props.theme.colors.mainTitleDiv.backgroundColor}
+        color: '#183046';
     }
 `;

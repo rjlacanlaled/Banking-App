@@ -8,10 +8,10 @@ import { Modal } from '../components/styles/Modal.styled';
 import useActivePage from '../components/hooks/useActivePage';
 import { PageTitle, PageTitleContainer } from '../components/styles/Titles.styled';
 import { PrimaryButton } from '../components/styles/Buttons.styled';
-import Confirmation from '../components/Confirmation';
 import ConfirmationMessage from '../components/ConfirmationMessage';
 import AddUser from '../components/AddUser';
 import { displayModalForDuration } from '../utils/modal-util';
+import Zoom from 'react-reveal/Zoom';
 
 const TRANSACTIONTYPESLIST = Object.values(TransactionTypes);
 
@@ -20,6 +20,7 @@ export default function MakeATransaction({ bank }) {
     const [transactionType, setTransactionType] = useState(TRANSACTIONTYPESLIST[2]);
     const [showAddUserConfirmation, setShowAddUserConfirmation] = useState(false);
     const [showAddUserConfirmationMessage, setShowAddUserConfirmationMessage] = useState(false);
+    const [show, setShow] = useState(true);
     const activePage = useActivePage();
 
     useEffect(() => {
@@ -29,6 +30,7 @@ export default function MakeATransaction({ bank }) {
     const handleTransaction = e => {
         const { value } = e.target;
         setTransactionType(value);
+        //setShow(transactionType !== deposit)
         console.log(bank.users);
     };
 
@@ -50,32 +52,37 @@ export default function MakeATransaction({ bank }) {
             </PageTitleContainer>
             <Modal show={showModal} />
 
-            {bank.users.length > 1 ? (
-                <InputContainer>
-                    <FirstBox>
-                        <BoxTitle>Make a Transaction</BoxTitle>
-                        <BoxAction>
-                            <BoxOptions value={transactionType} onChange={handleTransaction}>
-                                {TRANSACTIONTYPESLIST.map(option => {
-                                    return <option value={option}>{option.toUpperCase()}</option>;
-                                })}
-                            </BoxOptions>
-                        </BoxAction>
-                    </FirstBox>
-                    {transactionType === TRANSACTIONTYPESLIST[2] ? (
-                        <Deposit bank={bank} key='deposit' />
-                    ) : transactionType === TRANSACTIONTYPESLIST[1] ? (
-                        <Withdraw bank={bank} show={setShowModal} />
-                    ) : (
-                        <Transfer bank={bank} show={setShowModal} />
-                    )}
-                </InputContainer>
-            ) : (
-                <TransactionNotAllowedContainer>
-                    <h3> You need to have at least 2 accounts to do transactions!</h3>
-                    <StyledPrimaryButton onClick={handleAddUser}>Create new account</StyledPrimaryButton>
-                </TransactionNotAllowedContainer>
-            )}
+            <Zoom>
+                {bank.users.length > 1 ? (
+                    <InputContainer>
+                        <FirstBox>
+                            <BoxTitle>Make a Transaction</BoxTitle>
+                            <BoxAction>
+                                <BoxOptions value={transactionType} onChange={handleTransaction}>
+                                    {TRANSACTIONTYPESLIST.map(option => {
+                                        return <option value={option}>{option.toUpperCase()}</option>;
+                                    })}
+                                </BoxOptions>
+                            </BoxAction>
+                        </FirstBox>
+
+                        {transactionType === TRANSACTIONTYPESLIST[2] ? (
+                            <Deposit bank={bank} key='deposit' />
+                        ) : transactionType === TRANSACTIONTYPESLIST[1] ? (
+                            <Withdraw bank={bank} show={setShowModal} />
+                        ) : (
+                            <Zoom collapse when={!show}>
+                                <Transfer bank={bank} show={setShowModal} collapse={setShow} />
+                            </Zoom>
+                        )}
+                    </InputContainer>
+                ) : (
+                    <TransactionNotAllowedContainer>
+                        <h3> You need to have at least 2 accounts to do transactions!</h3>
+                        <StyledPrimaryButton onClick={handleAddUser}>Create new account</StyledPrimaryButton>
+                    </TransactionNotAllowedContainer>
+                )}
+            </Zoom>
 
             <Modal show={showAddUserConfirmation}>
                 <AddUser
@@ -187,9 +194,7 @@ export const Form = styled.form`
     align-items: center;
 `;
 
-export const AmountInput = styled.input.attrs(({ type }) => ({
-    type: type || 'number',
-}))`
+export const AmountInput = styled.input`
     padding: 10px;
     border-radius: 10px;
     min-width: 300px;
@@ -203,8 +208,9 @@ const MainContainer = styled.div`
     align-items: center;
     gap: 10px;
 
-    height: 100vh;
-    width: 100vw;
+    width: 100%;
+    height: 100%;
+    background-color: red;
 
     overflow: auto;
 
@@ -222,9 +228,4 @@ export const TransactionSuccess = styled.div`
     display: ${({ showTransactionSuccessModal }) => (showTransactionSuccessModal ? 'flex' : 'none')};
     justify-content: center;
     align-items: center;
-`;
-
-const StyledPageTitle = styled(PageTitle)`
-    padding: 20px;
-    color: white;
 `;

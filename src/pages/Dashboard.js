@@ -9,6 +9,9 @@ import { PageTitle, PageTitleContainer } from '../components/styles/Titles.style
 import { UserTypes } from '../model/enums/user-types';
 import { BsPiggyBank } from 'react-icons/bs';
 import { GiMoneyStack } from 'react-icons/gi';
+import Zoom from 'react-reveal/Zoom';
+import Fade from 'react-reveal/Fade';
+import Bounce from 'react-reveal/Bounce';
 
 export default function Dashboard({ bank }) {
     const activePage = useActivePage();
@@ -27,7 +30,14 @@ export default function Dashboard({ bank }) {
                     <AccountType>{auth.user.type}</AccountType>
                 </AccountTypeContainer>
             </PageTitleContainer>
-            <PageTitle>Good day, {auth.user.firstName + ' ' + auth.user.lastName}!</PageTitle>
+            <NameContainer>
+                <Fade left>
+                    <div>Good day, &nbsp; </div>
+                </Fade>
+                <Fade right>
+                    <div> { auth.user.firstName + ' ' + auth.user.lastName  }!</div>
+                </Fade>
+            </NameContainer>
 
             <DashboardBoxes>
                 <Zoom>
@@ -36,6 +46,7 @@ export default function Dashboard({ bank }) {
                         title='Total Users'
                         description={bank.users.length ? bank.users.length : 0}
                     />
+
                     <DashboardBox
                         icon={<StyledBsPiggyBank />}
                         title='Total Deposit'
@@ -66,14 +77,24 @@ export default function Dashboard({ bank }) {
     );
 }
 
+const NameContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    color: white;
+    font-size: 2rem;
+    padding: 30px;
+    font-weight: 900;
+`;
+
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 10px;  
 
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
 
     overflow: auto;
 

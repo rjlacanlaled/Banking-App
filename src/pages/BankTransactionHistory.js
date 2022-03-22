@@ -8,6 +8,7 @@ import useActivePage from '../components/hooks/useActivePage';
 import { Modal } from '../components/styles/Modal.styled';
 import { ButtonTitle, PageTitle, PageTitleContainer } from '../components/styles/Titles.styled';
 import { displayModalForDuration } from '../utils/modal-util';
+import Fade from 'react-reveal/Fade';
 
 export default function BankTransactionHistory({ bank }) {
     const [chosenId, setChosenId] = useState(0);
@@ -36,18 +37,19 @@ export default function BankTransactionHistory({ bank }) {
         displayModalForDuration(setShowDeleteConfirmationMessage, 1000);
     };
 
-
     return (
         <Wrapper>
             <PageTitleContainer>
                 <PageTitle>Transaction History</PageTitle>
                 <TransactButtonContainer>
-                    <StyledAiOutlineBank/>
+                    <StyledAiOutlineBank />
                     <ButtonTitle>New Transaction</ButtonTitle>
                 </TransactButtonContainer>
             </PageTitleContainer>
 
-            <DataTable headers={bank.transactionDatabase.headers} data={transactions} onDelete={handleDelete} />
+            <Fade left>
+                <DataTable headers={bank.transactionDatabase.headers} data={transactions} onDelete={handleDelete} />
+            </Fade>
 
             <Modal show={showDeleteConfirmation}>
                 <Confirmation
@@ -69,8 +71,8 @@ const Wrapper = styled.div`
     align-items: center;
     gap: 10px;
 
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
 
     overflow: auto;
 
@@ -82,10 +84,15 @@ const TransactButtonContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    & > p {
+        color: #183046;
+    }
 `;
 
 const StyledAiOutlineBank = styled(AiOutlineBank)`
     cursor: pointer;
     width: 50px;
     height: 50px;
+    color: #183046;
 `;
