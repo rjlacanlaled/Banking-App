@@ -11,29 +11,33 @@ import RadioSelection from './components/RadioSelection';
 import TransactionPage from './pages/TransactionPage';
 import AuthProvider from './components/context/AuthProvider';
 import PageNotFound from './pages/PageNotFound';
+import Dashboard from './pages/Dashboard';
+import ActivePageProvider from './components/context/ActivePageProvider';
 
 export default function App() {
     const [bank, setBank] = useState(bankApp);
 
     useEffect(() => {
-        setBank(bankApp);
-    }, [bankApp]);
+        setBank(bank);
+    }, [bank]);
 
     return (
         <BrowserRouter>
             <ThemeProvider theme={theme}>
                 <GlobalStyles />
                 <AuthProvider>
-                    <Main>
-                        <SideBar />
-                        <Routes>
-                            <Route path='/' element={<RadioSelection />} />
-                            <Route path='/users' element={<BankUserManagement bank={bank} />} />
-                            <Route path='/transactions' element={<BankTransactionHistory bank={bank} />} />
-                            <Route path='/transact' element={<TransactionPage bank={bank}/>} />
-                            <Route path="*" element={<PageNotFound />} />
-                        </Routes>
-                    </Main>
+                    <ActivePageProvider>
+                        <Main>
+                            <SideBar />
+                            <Routes>
+                                <Route path='/' element={<Dashboard />} />
+                                <Route path='/users' element={<BankUserManagement bank={bank} />} />
+                                <Route path='/transactions' element={<BankTransactionHistory bank={bank} />} />
+                                <Route path='/transact' element={<TransactionPage bank={bank} />} />
+                                <Route path='*' element={<PageNotFound />} />
+                            </Routes>
+                        </Main>
+                    </ActivePageProvider>
                 </AuthProvider>
             </ThemeProvider>
         </BrowserRouter>

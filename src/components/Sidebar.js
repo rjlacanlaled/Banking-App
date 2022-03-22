@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { NegativeButton } from './styles/Buttons.styled';
@@ -7,9 +7,11 @@ import { GrUserManager } from 'react-icons/gr';
 import { RiLuggageDepositLine } from 'react-icons/ri';
 import { AiOutlineTransaction } from 'react-icons/ai';
 import useAuth from './hooks/useAuth';
+import useActivePage from './hooks/useActivePage';
 
-export default function SideBar({ logout }) {
+export default function SideBar() {
     const auth = useAuth();
+    const activePage = useActivePage();
 
     return (
         <Container>
@@ -17,19 +19,27 @@ export default function SideBar({ logout }) {
             <PageList>
                 <PageItem>
                     <MdOutlineDashboard />
-                    <Link to='/'>Dashboard</Link>
+                    <StyledLink to='/' page='dashboard' active={activePage}>
+                        Dashboard
+                    </StyledLink>
                 </PageItem>
                 <PageItem>
                     <RiLuggageDepositLine />
-                    <Link to='/transact'>Transact</Link>
+                    <StyledLink to='/transact' page='transact' active={activePage}>
+                        Transact
+                    </StyledLink>
                 </PageItem>
                 <PageItem>
                     <GrUserManager />
-                    <Link to='/users'>Manage Users</Link>
+                    <StyledLink to='/users' page='users' active={activePage}>
+                        Manage Users
+                    </StyledLink>
                 </PageItem>
                 <PageItem>
                     <AiOutlineTransaction />
-                    <Link to='/transactions'>Transaction History</Link>
+                    <StyledLink to='/transactions' page='transaction-history' active={activePage}>
+                        Transaction History
+                    </StyledLink>
                 </PageItem>
             </PageList>
             <ButtonContainer>
@@ -125,4 +135,9 @@ const ToggleLabel = styled.label`
     height: 34px;
     position: relative;
     margin-top: 5px;
+`;
+
+const StyledLink = styled(Link)`
+    color: ${({ active: { active }, page, theme }) => (active == page ? theme.colors.main.themeColor: 'black')};
+    transition: all 0.25s ease;
 `;

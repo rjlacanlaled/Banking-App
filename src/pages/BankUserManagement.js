@@ -8,6 +8,7 @@ import Confirmation from '../components/Confirmation';
 import { displayModalForDuration } from '../utils/modal-util';
 import { ButtonTitle, PageTitle, PageTitleContainer } from '../components/styles/Titles.styled';
 import { FiUserPlus } from 'react-icons/fi';
+import useActivePage from '../components/hooks/useActivePage';
 
 export default function BankUserManagement({ bank }) {
     const [userList, setUserList] = useState(bank.users);
@@ -17,6 +18,13 @@ export default function BankUserManagement({ bank }) {
     const [showAddUserConfirmationMessage, setShowAddUserConfirmationMessage] = useState(false);
     const [showDeleteUserConfirmation, setShowDeleteUserConfirmation] = useState(false);
     const [showDeleteUserConfirmationMessage, setShowDeleteUserConfirmationMessage] = useState(false);
+
+    const activePage = useActivePage();
+
+
+    useEffect(() => {
+        activePage.setActive('users');
+    }, []);
 
     useEffect(() => {
         setUserList(bank.users);
