@@ -6,6 +6,7 @@ import Deposit from "../components/Deposit";
 import Withdraw from "../components/Withdraw";
 import Transfer from "../components/Transfer";
 import { Modal } from "../components/styles/Modal.styled";
+import useActivePage from "../components/hooks/useActivePage";
 
 const TRANSACTIONTYPESLIST = Object.values(TransactionTypes);
 
@@ -14,6 +15,13 @@ export default function MakeATransaction({ bank }) {
    const [transactionType, setTransactionType] = useState(
       TRANSACTIONTYPESLIST[2]
    );
+   const activePage = useActivePage();
+
+   useEffect(() => {
+       activePage.setActive('transact');
+   }, []);
+
+   
 
    const handleTransaction = (e) => {
       const { value } = e.target;

@@ -1,4 +1,4 @@
-import User from './User';
+import User from './user';
 import { UserTypes } from './enums/user-types';
 
 export default class BankUser extends User {

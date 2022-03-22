@@ -100,6 +100,11 @@ export default class BankApp {
         this.updateTransactions();
     };
 
+    deleteTransaction = id => {
+        this.transactionDatabase.remove(id);
+        this.updateTransactions();
+    }
+
     updateAccount = user => {
         this.userDatabase.update(user);
         this.updateUsers();
