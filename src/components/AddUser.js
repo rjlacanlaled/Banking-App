@@ -70,7 +70,7 @@ const Container = styled.div`
     flex-direction: column;
 
     border: 3px solid ${props => props.theme.colors.main.themeColor};
-    background-color: ${props => props.theme.colors.form.backgroundColor};
+    background-color: #009879;
     color: ${props => props.theme.colors.form.fontColor};
     border-radius: 20px;
 

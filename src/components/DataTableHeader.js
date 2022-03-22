@@ -20,7 +20,8 @@ const StyledTableHead = styled(TableHead)`
 
     border: 1px solid white;
     text-transform: uppercase;
-    background-color: ${({ theme }) => theme.colors.main.themeColor};
+    background-color: #009879;
+    border-radius: 20px;
     opacity: 1;
     z-index: 10;
     padding: 5px;
@@ -31,6 +32,5 @@ const StyledTableRow = styled(TableRow)`
 `;
 
 const StyledTableHeader = styled(TableHeader)`
-    border: 1px solid white;
-    padding: 5px;
+    padding: 20px;
 `;
