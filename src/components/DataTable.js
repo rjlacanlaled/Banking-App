@@ -4,7 +4,15 @@ import { Input } from './styles/Inputs.styled';
 import ErrorBox from './ErrorBox';
 import { DataTableContents } from './DataTableContents';
 
-export default function DataTable({ headers, data, onDelete, onEdit, inputFormatter, inputValidator }) {
+export default function DataTable({
+    headers,
+    data,
+    onDelete,
+    onEdit,
+    inputFormatter,
+    inputValidator,
+    actions: { hasEdit, hasDelete },
+}) {
     const [list, setList] = useState(data);
     const [keys, setKeys] = useState(headers);
     const [search, setSearch] = useState('');
@@ -49,6 +57,8 @@ export default function DataTable({ headers, data, onDelete, onEdit, inputFormat
                         onInputChange={inputFormatter}
                         onConfirmInputChange={inputValidator}
                         onError={setErrors}
+                        hasEdit={hasEdit}
+                        hasDelete={hasDelete}
                     ></DataTableContents>
                 ) : (
                     <NoDataMessage>{'No data to display!'}</NoDataMessage>
@@ -70,20 +80,16 @@ const Wrapper = styled.div`
     gap: 10px;
     width: 100%;
 
-    color: ${({theme}) => theme.colors.main.fontColor};
-
+    color: ${({ theme }) => theme.colors.main.fontColor};
 `;
-const SearchContainer = styled.div`
- 
-    
-`;
+const SearchContainer = styled.div``;
 const TableContainer = styled.div`
-   max-height: 500px;
-   border-top-left-radius: 20px;
-   border-top-right-radius: 20px;
-   border-bottom: 10px solid #009879;
+    max-height: 500px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom: 10px solid #009879;
 
-   overflow: auto;
+    overflow: auto;
 `;
 
 const StyledInput = styled(Input)`

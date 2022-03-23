@@ -48,7 +48,12 @@ export default function BankTransactionHistory({ bank }) {
             </PageTitleContainer>
 
             <Fade left>
-                <DataTable headers={bank.transactionDatabase.headers} data={transactions} onDelete={handleDelete} />
+                <DataTable
+                    headers={bank.transactionDatabase.headers}
+                    data={transactions}
+                    onDelete={handleDelete}
+                    actions={{ hasEdit: false, hasDelete: true }}
+                />
             </Fade>
 
             <Modal show={showDeleteConfirmation}>

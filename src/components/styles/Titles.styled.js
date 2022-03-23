@@ -13,6 +13,9 @@ export const PageTitleContainer = styled.div`
     padding: 1% 10% 1% 10%;
     width: 100%;
 
+    border-bottom: 1px solid #a6eca8;
+
+
 `;
 
 export const PageTitle = styled.h1`

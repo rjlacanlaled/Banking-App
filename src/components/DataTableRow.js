@@ -16,6 +16,8 @@ export default function DataTableRow({
     onInputChange,
     onConfirmInputChange,
     onError,
+    hasEdit,
+    hasDelete,
 }) {
     const [isEditing, setIsEditing] = useState(false);
     const [values, setValues] = useState(item);
@@ -25,11 +27,16 @@ export default function DataTableRow({
     };
 
     const handleConfirmEdit = () => {
-        const errors = keys
-            .map(key => (key !== 'id' ? onConfirmInputChange[key](values[key]) : []))
-            .reduce((merged, err) => merged.concat(err));
+        if (onConfirmInputChange) {
+            const errors = keys
+                .map(key =>
+                    key !== 'id' ? (onConfirmInputChange[key] ? onConfirmInputChange[key](values[key]) : []) : []
+                )
+                .reduce((merged, err) => merged.concat(err));
 
-        if (errors.length) return onError(errors);
+            if (errors.length) return onError(errors);
+        }
+
         onError([]);
         setIsEditing(false);
         onEdit(values);
@@ -64,30 +71,30 @@ export default function DataTableRow({
                     />
                 </TableData>
             ))}
-            <TableData>
-                {!isEditing ? (
-                    <ButtonContainer>
-                        <StyledFiEdit onClick={() => setIsEditing(true)} />
-                        <StyledRiDeleteBin5Line onClick={handleDelete} />
-                    </ButtonContainer>
-                ) : (
-                    <ButtonContainer>
-                        <StyledAiOutlineCheckCircle onClick={() => handleConfirmEdit(id)} />
-                        <StyledMdOutlineCancel onClick={handleCancelEdit} />
-                    </ButtonContainer>
-                )}
-            </TableData>
+            {(hasEdit || hasDelete) && (
+                <TableData>
+                    {!isEditing ? (
+                        <ButtonContainer>
+                            {hasEdit && <StyledFiEdit onClick={() => setIsEditing(true)} />}
+                            {hasDelete && <StyledRiDeleteBin5Line onClick={handleDelete} />}
+                        </ButtonContainer>
+                    ) : (
+                        <ButtonContainer>
+                            <StyledAiOutlineCheckCircle onClick={() => handleConfirmEdit(id)} />
+                            <StyledMdOutlineCancel onClick={handleCancelEdit} />
+                        </ButtonContainer>
+                    )}
+                </TableData>
+            )}
         </StyledTableRow>
     );
 }
 
-const StyledTableRow = styled(TableRow)`
-`;
+const StyledTableRow = styled(TableRow)``;
 
 const StyledInput = styled(Input)`
     background-color: transparent;
     border-style: none;
-    
 
     padding: 5px;
 

@@ -2,8 +2,17 @@ import { DataTableHeader } from './DataTableHeader';
 import DataTableRow from './DataTableRow';
 import { Table, TableBody } from './styles/Table.styled';
 
-export function DataTableContents({ keys, list, onEdit, onDelete, onInputChange, onConfirmInputChange, onError }) {
-
+export function DataTableContents({
+    keys,
+    list,
+    onEdit,
+    onDelete,
+    onInputChange,
+    onConfirmInputChange,
+    onError,
+    hasEdit,
+    hasDelete,
+}) {
     return (
         <Table>
             <DataTableHeader keys={keys} />
@@ -20,6 +29,8 @@ export function DataTableContents({ keys, list, onEdit, onDelete, onInputChange,
                             onDelete={onDelete}
                             onEdit={onEdit}
                             onError={onError}
+                            hasEdit={hasEdit}
+                            hasDelete={hasDelete}
                         />
                     );
                 })}

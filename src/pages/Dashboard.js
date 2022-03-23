@@ -35,7 +35,7 @@ export default function Dashboard({ bank }) {
                     <div>Good day, &nbsp; </div>
                 </Fade>
                 <Fade right>
-                    <div> { auth.user.firstName + ' ' + auth.user.lastName  }!</div>
+                    <div> {auth.user.firstName + ' ' + auth.user.lastName}!</div>
                 </Fade>
             </NameContainer>
 
@@ -91,7 +91,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;  
+    gap: 10px;
 
     height: 100%;
     width: 100%;
@@ -121,11 +121,14 @@ const AccountTypeContainer = styled.div`
 
 const AccountType = styled.p`
     color: white;
+
+    color: #183046;
 `;
 
 const StyledRiAdminLine = styled(RiAdminLine)`
     width: 50px;
     height: 50px;
+    color: #183046;
 `;
 
 const StyledAiOutlineUser = styled(AiOutlineUser)`

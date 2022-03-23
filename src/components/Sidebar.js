@@ -115,7 +115,7 @@ const PageItem = styled.div`
     align-items: center;
     gap: 5px;
     min-height: 50px;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid #183046;;
     width: 100%;
 
     &:last-child {

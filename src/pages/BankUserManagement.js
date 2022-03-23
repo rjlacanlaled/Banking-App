@@ -75,6 +75,7 @@ export default function BankUserManagement({ bank }) {
                     onEdit={handleEdit}
                     inputFormatter={bank.inputFormatter.formatter}
                     inputValidator={bank.inputValidator.validator}
+                    actions={{ hasEdit: true, hasDelete: true }}
                 />
             </Fade>
 
