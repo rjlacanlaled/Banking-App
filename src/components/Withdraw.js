@@ -115,8 +115,8 @@ export const DisplayUser = ({ userId, bank }) => {
 };
 
 export const Wrapper = styled.div`
-   width: 30%;
-   height: 15%;
+   width: 80%;
+   height: 40%;
    z-index: 20;
 
    position: absolute;
@@ -134,10 +134,11 @@ export const Wrapper = styled.div`
 `;
 
 const BalanceContainer = styled.div`
+   z-index: 20;
+
    & > p {
       margin: 10px 0;
    }
-
 `
 
 

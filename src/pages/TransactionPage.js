@@ -50,7 +50,6 @@ export default function MakeATransaction({ bank }) {
             <PageTitleContainer>
                 <PageTitle>Transact</PageTitle>
             </PageTitleContainer>
-            <Modal show={showModal} />
 
             <Zoom>
                 {bank.users.length > 1 ? (
@@ -218,14 +217,17 @@ const MainContainer = styled.div`
 `;
 
 export const TransactionSuccess = styled.div`
-    width: 30%;
+    width: 100%;
     height: 10%;
 
     position: absolute;
-    left: 40%;
-    transform: translateY(-50%);
+    left: 0;
+    top: 100%;
 
     display: ${({ showTransactionSuccessModal }) => (showTransactionSuccessModal ? 'flex' : 'none')};
     justify-content: center;
     align-items: center;
+
+    font-size: medium;
+    color: red;
 `;

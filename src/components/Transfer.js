@@ -47,9 +47,6 @@ export default function Transfer({ bank, show, collapse }) {
 
     return (
         <Form onSubmit={handleWithdraw}>
-            <TransactionSuccess showTransactionSuccessModal={showTransactionSuccessModal}>
-                {showError === true ? 'Transaction Success' : showError}
-            </TransactionSuccess>
             <Wrapper showBalance={showBalance}>
                 <DisplayUser userId={transferFromId} bank={bank} />
                 <Close
@@ -127,6 +124,9 @@ export default function Transfer({ bank, show, collapse }) {
             <SubmitContainer>
                 <SubmitButton>Submit</SubmitButton>
             </SubmitContainer>
+            <TransactionSuccess showTransactionSuccessModal={showTransactionSuccessModal}>
+                {showError === true ? 'Transaction Success' : showError}
+            </TransactionSuccess>
         </Form>
     );
 }
