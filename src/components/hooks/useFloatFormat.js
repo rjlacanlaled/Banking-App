@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 const format = num => {
+    num = num.toString();
     return num.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '0.0');
 };
 
@@ -20,6 +21,6 @@ export default function useFloatFormat(num, maxNum = 12) {
     useEffect(() => {
         setValue(() => formatFloat(value, maxNum));
     }, [value]);
-    
+
     return [value, setValue];
 }

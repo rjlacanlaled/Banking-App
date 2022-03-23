@@ -9,6 +9,7 @@ import { displayModalForDuration } from '../utils/modal-util';
 import { ButtonTitle, PageTitle, PageTitleContainer } from '../components/styles/Titles.styled';
 import { FiUserPlus } from 'react-icons/fi';
 import useActivePage from '../components/hooks/useActivePage';
+import Fade from 'react-reveal/Fade';
 
 export default function BankUserManagement({ bank }) {
     const [userList, setUserList] = useState(bank.users);
@@ -20,7 +21,6 @@ export default function BankUserManagement({ bank }) {
     const [showDeleteUserConfirmationMessage, setShowDeleteUserConfirmationMessage] = useState(false);
 
     const activePage = useActivePage();
-
 
     useEffect(() => {
         activePage.setActive('users');
@@ -67,19 +67,23 @@ export default function BankUserManagement({ bank }) {
                 </AddUserButtonContainer>
             </PageTitleContainer>
 
-            <DataTable
-                headers={bank.userDatabase.headers}
-                data={userList}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-                inputFormatter={bank.inputFormatter.formatter}
-                inputValidator={bank.inputValidator.validator}
-            />
+            <Fade right>
+                <DataTable
+                    headers={bank.userDatabase.headers}
+                    data={userList}
+                    onDelete={handleDelete}
+                    onEdit={handleEdit}
+                    inputFormatter={bank.inputFormatter.formatter}
+                    inputValidator={bank.inputValidator.validator}
+                    actions={{ hasEdit: true, hasDelete: true }}
+                />
+            </Fade>
 
             <Modal show={showAddUserConfirmation}>
                 <AddUser
                     onConfirm={handleConfirmAddUser}
                     validator={bank.inputValidator.validator}
+                    users={bank.users}
                 />
             </Modal>
 
@@ -107,8 +111,8 @@ const Wrapper = styled.div`
     align-items: center;
     gap: 10px;
 
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
 
     overflow: auto;
 
@@ -120,10 +124,15 @@ const AddUserButtonContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    & > p {
+        color: #183046;
+    }
 `;
 
 const StyledFiUserPlus = styled(FiUserPlus)`
     cursor: pointer;
     width: 50px;
     height: 50px;
+    color: #183046;
 `;

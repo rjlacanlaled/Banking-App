@@ -30,7 +30,7 @@ export default function App() {
                         <Main>
                             <SideBar />
                             <Routes>
-                                <Route path='/' element={<Dashboard />} />
+                                <Route path='/' element={<Dashboard bank={bank}/>} />
                                 <Route path='/users' element={<BankUserManagement bank={bank} />} />
                                 <Route path='/transactions' element={<BankTransactionHistory bank={bank} />} />
                                 <Route path='/transact' element={<TransactionPage bank={bank} />} />

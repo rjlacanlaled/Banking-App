@@ -127,15 +127,17 @@ export const Wrapper = styled.div`
    justify-content: center;
 
    text-align: center;
-   background-color: rgb(0, 0, 128);
+   background-color: ${({theme}) => theme.colors.main.themeColor};
    color: white;
    border: none;
+   border-radius: 20px;
 `;
 
 const BalanceContainer = styled.div`
    & > p {
       margin: 10px 0;
    }
+
 `
 
 

@@ -1,24 +1,43 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import BankAdminUser from '../model/bank-admin-user';
 import BankUser from '../model/bank-user';
+import { UserTypes } from '../model/enums/user-types';
 import ErrorBox from './ErrorBox';
+import useAlphaNumericFormat from './hooks/useAlphanumericFormat';
 import useFloatFormat from './hooks/useFloatFormat';
 import useNameFormat from './hooks/useNameFormat';
+import useUsernameFormat from './hooks/useUsernameFormat';
 import { NegativeButton, PrimaryButton } from './styles/Buttons.styled';
-import { Input } from './styles/Inputs.styled';
+import { Input, Option, Select } from './styles/Inputs.styled';
 
-export default function AddUser({ onConfirm, validator }) {
+export default function AddUser({ users, onConfirm, validator }) {
     const [firstName, setFirstName] = useNameFormat('');
     const [lastName, setLastName] = useNameFormat('');
-    const [balance, setBalance] = useFloatFormat('');
+    const [username, setUsername] = useUsernameFormat('');
+    const [password, setPassword] = useState('');
+    const [accountType, setAccountType] = useState(UserTypes.Normal);
+    const [balance, setBalance] = useFloatFormat(0);
     const [errors, setErrors] = useState([]);
 
     const handleFormSubmit = e => {
         e.preventDefault();
-        let err = [...validator.firstName(firstName), ...validator.lastName(lastName), ...validator.balance(balance)];
+        console.log(users);
+        let err = [
+            ...validator.firstName(firstName),
+            ...validator.lastName(lastName),
+            ...validator.balance(balance),
+            ...validator.username(username, users),
+            ...validator.password(password),
+        ];
         if (err.length) return setErrors(err);
         resetInput();
-        onConfirm(true, new BankUser(firstName, lastName, balance));
+        onConfirm(
+            true,
+            accountType === UserTypes.Normal
+                ? new BankUser(firstName, lastName, balance, username, password)
+                : new BankAdminUser(firstName, lastName, username, password)
+        );
     };
 
     const handleAddUserCancel = () => {
@@ -29,7 +48,10 @@ export default function AddUser({ onConfirm, validator }) {
     const resetInput = () => {
         setFirstName('');
         setLastName('');
-        setBalance('');
+        setUsername('');
+        setPassword('');
+        setBalance(0);
+        setAccountType(UserTypes.Normal);
         setErrors([]);
     };
 
@@ -38,6 +60,19 @@ export default function AddUser({ onConfirm, validator }) {
             <FormTitle>Add User</FormTitle>
             <ErrorBox errors={errors} />
             <Form>
+                <Label>Username</Label>
+                <StyledInput
+                    onChange={e => setUsername(e.target.value)}
+                    value={username}
+                    placeholder='Enter username'
+                />
+                <Label>Password</Label>
+                <StyledInput
+                    onChange={e => setPassword(e.target.value)}
+                    value={password}
+                    placeholder='Enter password'
+                    type='password'
+                />
                 <Label>First Name</Label>
                 <StyledInput
                     onChange={e => setFirstName(e.target.value)}
@@ -50,12 +85,22 @@ export default function AddUser({ onConfirm, validator }) {
                     value={lastName}
                     placeholder='Enter last name'
                 />
-                <Label>Balance</Label>
-                <StyledInput
-                    onChange={e => setBalance(e.target.value)}
-                    value={balance}
-                    placeholder='Enter account balance'
-                />
+                <Label>Account Type</Label>
+                <StyledSelect onChange={e => setAccountType(e.target.value)} value={accountType}>
+                    {Object.values(UserTypes).map(userType => (
+                        <StyledOption value={userType}> {userType}</StyledOption>
+                    ))}
+                </StyledSelect>
+                {accountType === UserTypes.Normal && (
+                    <>
+                        <Label>Balance</Label>
+                        <StyledInput
+                            onChange={e => setBalance(e.target.value)}
+                            value={balance}
+                            placeholder='Enter account balance'
+                        />
+                    </>
+                )}
             </Form>
             <ButtonContainer>
                 <StyledPrimaryButton onClick={handleFormSubmit}>Submit</StyledPrimaryButton>
@@ -89,7 +134,7 @@ const Form = styled.form`
 `;
 
 const FormTitle = styled.h1`
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     text-align: center;
     margin-bottom: 20px;
 `;
@@ -112,6 +157,7 @@ const StyledInput = styled(Input)`
 const Label = styled.label`
     font-weight: 900;
     align-self: flex-start;
+    font-size: 0.8rem;
 `;
 
 const StyledPrimaryButton = styled(PrimaryButton)`
@@ -120,3 +166,11 @@ const StyledPrimaryButton = styled(PrimaryButton)`
 const StyledNegativeButton = styled(NegativeButton)`
     padding: 10px 20px 10px 20px;
 `;
+
+const StyledSelect = styled(Select)`
+    padding: 8px;
+    border: 1px solid ${props => props.theme.colors.main.themeColor};
+    border-radius: 5px;
+    min-width: 400px;
+`;
+const StyledOption = styled(Option)``;

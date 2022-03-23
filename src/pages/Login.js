@@ -3,14 +3,11 @@ import styled from 'styled-components';
 import ErrorBox from '../components/ErrorBox';
 import useAlphaNumericFormat from '../components/hooks/useAlphanumericFormat';
 import useAuth from '../components/hooks/useAuth';
-import BankUser from '../model/bank-user';
+import BankAdminUser from '../model/bank-admin-user';
 
-const defaultLogin = {
-    username: 'admin',
-    password: 'admin',
-};
+const defaultLogin = new BankAdminUser('Rj', 'Lacanlale', 'admin', 'admin');
 
-export default function Login({ login }) {
+export default function Login({ bank }) {
     const auth = useAuth();
     const [errors, setErrors] = useState([]);
     const [username, setUsername] = useAlphaNumericFormat('');
@@ -23,7 +20,7 @@ export default function Login({ login }) {
         if (password !== defaultLogin.password) err.push('Password incorrect!');
         if (err.length) return setErrors(err);
 
-        auth.login({user: new BankUser('admin', 'admin', '100000', 'admin', 'admin')}); 
+        auth.login(defaultLogin); 
     };
 
     return (
