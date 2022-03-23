@@ -8,10 +8,11 @@ const GlobalStyles = createGlobalStyle`
         margin: 0;
         padding: 0;
         text-decoration: none;
+
+        font-family: 'Roboto', sans-serif;
     }
 
     body {
-        font-family: 'Roboto', sans-serif;
         background-color: ${theme.colors.body.backgroundColor};
         color: ${theme.colors.body.fontColor}
     }

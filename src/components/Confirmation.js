@@ -2,22 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { NegativeButton, PrimaryButton } from './styles/Buttons.styled';
 
-export default function DeleteUserConfirmation(props) {
-    const handleCancelButton = () => {
-        props.setShowDeleteUserConfirmation(false);
-    };
-
-    const handleDeleteButton = () => {
-        props.setShowDeleteUserConfirmation(false);
-        props.confirmDeleteUser();
-    };
-
+export default function Confirmation({ message, onConfirm }) {
     return (
         <Wrapper>
-            <Message>Are you sure you want to delete user #{props.id}?</Message>
+            <Message>{message}</Message>
             <ButtonGroup>
-                <StyledPrimaryButton onClick={handleDeleteButton}>Confirm</StyledPrimaryButton>
-                <StyledNegativeButton onClick={handleCancelButton}>Cancel</StyledNegativeButton>
+                <StyledPrimaryButton onClick={() => onConfirm(true)}>Confirm</StyledPrimaryButton>
+                <StyledNegativeButton onClick={() => onConfirm(false)}>Cancel</StyledNegativeButton>
             </ButtonGroup>
         </Wrapper>
     );
