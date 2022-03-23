@@ -70,6 +70,7 @@ export default function DataTable({
 
 const NoDataMessage = styled.div`
     padding: 20px;
+    height: 100%;
 `;
 
 const Wrapper = styled.div`
@@ -87,7 +88,7 @@ const TableContainer = styled.div`
     max-height: 500px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    border-bottom: 10px solid #009879;
+    border-bottom: 5px solid #009879;
 
     overflow: auto;
 `;

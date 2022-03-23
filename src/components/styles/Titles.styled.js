@@ -15,7 +15,7 @@ export const PageTitleContainer = styled.div`
 
     border-bottom: 1px solid #a6eca8;
 
-
+    justify-self: flex-start;
 `;
 
 export const PageTitle = styled.h1`
