@@ -88,7 +88,7 @@ export default function AddUser({ users, onConfirm, validator }) {
                 <Label>Account Type</Label>
                 <StyledSelect onChange={e => setAccountType(e.target.value)} value={accountType}>
                     {Object.values(UserTypes).map(userType => (
-                        <StyledOption value={userType}> {userType}</StyledOption>
+                        <StyledOption key={userType} value={userType}> {userType}</StyledOption>
                     ))}
                 </StyledSelect>
                 {accountType === UserTypes.Normal && (

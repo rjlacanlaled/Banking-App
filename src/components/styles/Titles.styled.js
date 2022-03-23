@@ -12,6 +12,7 @@ export const PageTitleContainer = styled.div`
     color: ${props => props.theme.colors.mainTitleDiv.fontColor};
     padding: 1% 10% 1% 10%;
     width: 100%;
+    z-index: 50;
 
     border-bottom: 1px solid #a6eca8;
 

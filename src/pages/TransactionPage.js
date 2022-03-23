@@ -60,7 +60,7 @@ export default function MakeATransaction({ bank }) {
                             <BoxAction>
                                 <BoxOptions value={transactionType} onChange={handleTransaction}>
                                     {TRANSACTIONTYPESLIST.map(option => {
-                                        return <option value={option}>{option.toUpperCase()}</option>;
+                                        return <option key={option} value={option}>{option.toUpperCase()}</option>;
                                     })}
                                 </BoxOptions>
                             </BoxAction>

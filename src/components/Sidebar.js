@@ -43,25 +43,25 @@ export default function SideBar() {
             <PageList>
                 <PageItem>
                     <StyledMdOutlineDashboard />
-                    <StyledLink to='/' page='dashboard' active={activePage} collapsed={collapsed}>
+                    <StyledLink to='/' page='dashboard' active={activePage} collapsed={collapsed ? '1' : undefined}>
                         Dashboard
                     </StyledLink>
                 </PageItem>
                 <PageItem>
                     <StyledRiLuggageDepositLine />
-                    <StyledLink to='/transact' page='transact' active={activePage} collapsed={collapsed}>
+                    <StyledLink to='/transact' page='transact' active={activePage} collapsed={collapsed ? '1' : undefined}>
                         Transact
                     </StyledLink>
                 </PageItem>
                 <PageItem>
                     <StyledGrUserManager />
-                    <StyledLink to='/users' page='users' active={activePage} collapsed={collapsed}>
+                    <StyledLink to='/users' page='users' active={activePage} collapsed={collapsed ? '1' : undefined}>
                         Manage Users
                     </StyledLink>
                 </PageItem>
                 <PageItem>
                     <StyledAiOutlineTransaction />
-                    <StyledLink to='/transactions' page='transaction-history' active={activePage} collapsed={collapsed}>
+                    <StyledLink to='/transactions' page='transaction-history' active={activePage} collapsed={collapsed ? '1' : undefined}>
                         Transaction History
                     </StyledLink>
                 </PageItem>
@@ -97,7 +97,7 @@ const Container = styled.div`
     background-color: #009879;
     border-right: 1px solid #a6eca8;
 `;
-const Logo = styled.p`
+const Logo = styled.div`
     font-weight: 900;
     font-size: 1.5rem;
     padding-top: 10px;
@@ -115,7 +115,7 @@ const PageItem = styled.div`
     align-items: center;
     gap: 5px;
     min-height: 50px;
-    border-bottom: 1px solid #183046;;
+    border-bottom: 1px solid #192F45;
     width: 100%;
 
     &:last-child {

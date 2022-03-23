@@ -48,7 +48,7 @@ export default function Deposit({ bank }) {
                         >
                             {bank.users.map(({ id, firstName, lastName }) => {
                                 return (
-                                    <option value={id}>
+                                    <option key={id} value={id}>
                                         {id} - {firstName} {lastName}
                                     </option>
                                 );
@@ -76,7 +76,7 @@ export default function Deposit({ bank }) {
 }
 
 const Container = styled.div`
-    display: flex;
-    justify-content: center;
-    width: 100%;
+   display: flex;
+   background-color: transparent;
+   width: 100%;
 `;
