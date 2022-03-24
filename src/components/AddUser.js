@@ -113,6 +113,7 @@ export default function AddUser({ users, onConfirm, validator }) {
 const Container = styled.div`
     display: flex;
     flex-direction: column;
+    z-index: 100;
 
     border: 3px solid ${props => props.theme.colors.main.themeColor};
     background-color: #009879;
