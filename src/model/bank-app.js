@@ -6,12 +6,13 @@ import { TransactionTypes } from './enums/transaction-types';
 import { UserTypes } from './enums/user-types';
 
 export default class BankApp {
-    constructor(userDatabase, transactionDatabase, maxNameChars, maxBalanceDigits) {
+    constructor(userDatabase, transactionDatabase, maxNameChars, maxBalanceDigits, budgetDatabase) {
         this.userDatabase = userDatabase;
         this.transactionDatabase = transactionDatabase;
         this.inputFormatter = new BankInputFormatter();
         this.inputValidator = new BankValidator(maxNameChars, maxBalanceDigits);
         this.users = userDatabase.getAll();
+        this.budgets = userDatabase.getAll();
         this.transactions = transactionDatabase.getAll();
 
         if (this.users.find(user => user.username === 'admin')) return;
