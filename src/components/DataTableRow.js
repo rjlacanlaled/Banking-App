@@ -97,6 +97,7 @@ const StyledInput = styled(Input)`
     border-style: none;
 
     padding: 5px;
+    font-size: 0.6rem;
 
     text-align: center;
     text-transform: uppercase;

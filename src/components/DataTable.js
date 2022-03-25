@@ -86,6 +86,7 @@ const Wrapper = styled.div`
 const SearchContainer = styled.div``;
 const TableContainer = styled.div`
     max-height: 500px;
+    max-width: 800px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     border-bottom: 5px solid #009879;
