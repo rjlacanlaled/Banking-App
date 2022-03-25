@@ -11,7 +11,6 @@ import { PrimaryButton } from '../components/styles/Buttons.styled';
 import ConfirmationMessage from '../components/ConfirmationMessage';
 import AddUser from '../components/AddUser';
 import { displayModalForDuration } from '../utils/modal-util';
-import Zoom from 'react-reveal/Zoom';
 
 const TRANSACTIONTYPESLIST = Object.values(TransactionTypes);
 
@@ -52,37 +51,37 @@ export default function MakeATransaction({ bank }) {
             </PageTitleContainer>
             <Modal show={showModal} />
 
-            <Zoom>
-                {bank.users.length > 1 ? (
-                    <InputContainer>
-                        <FirstBox>
-                            <BoxTitle>Make a Transaction</BoxTitle>
-                            <BoxAction>
-                                <BoxOptions value={transactionType} onChange={handleTransaction}>
-                                    {TRANSACTIONTYPESLIST.map(option => {
-                                        return <option key={option} value={option}>{option.toUpperCase()}</option>;
-                                    })}
-                                </BoxOptions>
-                            </BoxAction>
-                        </FirstBox>
+            {bank.users.length > 1 ? (
+                <InputContainer>
+                    <FirstBox>
+                        <BoxTitle>Make a Transaction</BoxTitle>
+                        <BoxAction>
+                            <BoxOptions value={transactionType} onChange={handleTransaction}>
+                                {TRANSACTIONTYPESLIST.map(option => {
+                                    return (
+                                        <option key={option} value={option}>
+                                            {option.toUpperCase()}
+                                        </option>
+                                    );
+                                })}
+                            </BoxOptions>
+                        </BoxAction>
+                    </FirstBox>
 
-                        {transactionType === TRANSACTIONTYPESLIST[2] ? (
-                            <Deposit bank={bank} key='deposit' />
-                        ) : transactionType === TRANSACTIONTYPESLIST[1] ? (
-                            <Withdraw bank={bank} show={setShowModal} />
-                        ) : (
-                            <Zoom collapse when={!show}>
-                                <Transfer bank={bank} show={setShowModal} collapse={setShow} />
-                            </Zoom>
-                        )}
-                    </InputContainer>
-                ) : (
-                    <TransactionNotAllowedContainer>
-                        <h3> You need to have at least 2 accounts to do transactions!</h3>
-                        <StyledPrimaryButton onClick={handleAddUser}>Create new account</StyledPrimaryButton>
-                    </TransactionNotAllowedContainer>
-                )}
-            </Zoom>
+                    {transactionType === TRANSACTIONTYPESLIST[2] ? (
+                        <Deposit bank={bank} key='deposit' />
+                    ) : transactionType === TRANSACTIONTYPESLIST[1] ? (
+                        <Withdraw bank={bank} show={setShowModal} />
+                    ) : (
+                        <Transfer bank={bank} show={setShowModal} collapse={setShow} />
+                    )}
+                </InputContainer>
+            ) : (
+                <TransactionNotAllowedContainer>
+                    <h3> You need to have at least 2 accounts to do transactions!</h3>
+                    <StyledPrimaryButton onClick={handleAddUser}>Create new account</StyledPrimaryButton>
+                </TransactionNotAllowedContainer>
+            )}
 
             <Modal show={showAddUserConfirmation}>
                 <AddUser
