@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useBudgets } from "./context/BudgetContext";
+import { UserTypes } from "../model/enums/user-types";
 
-export default function AddBudgetModal({ show, setShowAddBudgetModal }) {
+export default function AddBudgetModal({ bank, show, setShowAddBudgetModal }) {
     const [budgetName, setBudgetName] = useState()
     const [spending, setSpending] = useState()
 
@@ -27,6 +28,17 @@ export default function AddBudgetModal({ show, setShowAddBudgetModal }) {
          <Form onSubmit={handleSubmit}>
             <AddBudgetHeader>
                <Title>New Budget</Title>
+               <select>
+               {bank.users
+                  .filter((user) => user.type !== UserTypes.Admin)
+                  .map(({ id, firstName, lastName }) => {
+                     return (
+                        <option key={id} userId={id}>
+                           {id} - {firstName} {lastName}
+                        </option>
+                     );
+                  })}
+            </select>
                <CloseButton onClick={() => setShowAddBudgetModal(false)}>&times;</CloseButton>
             </AddBudgetHeader>
             <AddBudgetBody>

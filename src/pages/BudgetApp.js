@@ -10,7 +10,7 @@ import {
 } from "../components/styles/Titles.styled";
 import AddBudgetModal from "../components/AddBugetModal";
 
-export default function BudgetApp() {
+export default function BudgetApp({ bank }) {
    const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
    const { budgets } = useBudgets()
 
@@ -40,11 +40,12 @@ export default function BudgetApp() {
                console.log(budget)
          
                return (
-                  <BudgetBox key={budget.id} sop={budget.id} name={budget.name} amount={budget.amount} />
+                  <BudgetBox bank={bank} key={budget.id} sop={budget.id} name={budget.name} amount={budget.amount} />
                )
             })}
          </BudgetBoxes>
          <AddBudgetModal
+            bank={bank}
             show={showAddBudgetModal}
             setShowAddBudgetModal={setShowAddBudgetModal}
          />
