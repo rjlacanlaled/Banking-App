@@ -2,6 +2,7 @@ import BankInputFormatter from './bank-input-formatter';
 import BankTransaction from './bank-transaction';
 import BankValidator from './bank-validator';
 import { TransactionTypes } from './enums/transaction-types';
+import { UserTypes } from './enums/user-types';
 
 export default class BankApp {
     constructor(userDatabase, transactionDatabase, maxNameChars, maxBalanceDigits) {
@@ -18,6 +19,7 @@ export default class BankApp {
         const user = this.users.find(user => user.username === username);
         if (!user) return [-1, 'User not found!'];
         if (user.password !== password) return [-1, 'Password incorrect!'];
+        if (user.type !== UserTypes.Admin) return [-1, 'Account is not an admin. User login is not yet supported.'];
 
         return [1, user];
     };
