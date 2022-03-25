@@ -227,8 +227,11 @@ export const TransactionSuccess = styled.div`
     height: 10%;
 
     position: absolute;
-    left: 40%;
-    transform: translateY(-50%);
+    top: 70%;
+    left: 57%;
+    transform: translateX(-50%);
+
+    color: red;
 
     display: ${({ showTransactionSuccessModal }) => (showTransactionSuccessModal ? 'flex' : 'none')};
     justify-content: center;
