@@ -19,7 +19,8 @@ export default class BankApp {
         const user = this.users.find(user => user.username === username);
         if (!user) return [-1, 'User not found!'];
         if (user.password !== password) return [-1, 'Password incorrect!'];
-        if (user.type !== UserTypes.Admin) return [-1, 'Account is not an admin. User login is not yet supported.'];
+        console.log(user.type);
+        if (user.type != UserTypes.Admin) return [-1, 'Account is not an admin. Regular user login is not yet supported.'];
 
         return [1, user];
     };
