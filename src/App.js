@@ -25,7 +25,7 @@ export default function App() {
         <BrowserRouter>
             <ThemeProvider theme={theme}>
                 <GlobalStyles />
-                <AuthProvider>
+                <AuthProvider bank={bank}>
                     <ActivePageProvider>
                         <Main>
                             <SideBar />

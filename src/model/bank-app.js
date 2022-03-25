@@ -16,10 +16,10 @@ export default class BankApp {
 
     login = (username, password) => {
         const user = this.users.find(user => user.username === username);
-        if (!user) return 'User not found!';
-        if (user.password !== password) return 'Password incorrect!';
+        if (!user) return [-1, 'User not found!'];
+        if (user.password !== password) return [-1, 'Password incorrect!'];
 
-        return true;
+        return [1, user];
     };
 
     transfer = (fromId, toId, amount) => {

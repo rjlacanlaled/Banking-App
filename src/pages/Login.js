@@ -14,13 +14,11 @@ export default function Login({ bank }) {
     const [password, setPassword] = useState('');
 
     const handleSubmit = () => {
-        const err = [];
-        if (username !== defaultLogin.username) err.push('Username not found!');
-        if (err.length) return setErrors(err);
-        if (password !== defaultLogin.password) err.push('Password incorrect!');
-        if (err.length) return setErrors(err);
+        setErrors([]);
+        const user = bank.login(username, password);
+        if (user[0] === -1) return setErrors([user[1]]);
 
-        auth.login(defaultLogin); 
+        auth.login(user[1]); 
     };
 
     return (
