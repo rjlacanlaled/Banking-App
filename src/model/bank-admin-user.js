@@ -1,5 +1,5 @@
 import { UserTypes } from './enums/user-types';
-import User from './user';
+import User from './User';
 
 export default class BankAdminUser extends User {
     constructor(firstName, lastName, username, password) {

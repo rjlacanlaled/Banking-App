@@ -11,6 +11,7 @@ import {
     AiOutlineDoubleRight,
     AiOutlineLogout,
     AiOutlineUser,
+    AiOutlineShoppingCart,
 } from 'react-icons/ai';
 import useAuth from './hooks/useAuth';
 import useActivePage from './hooks/useActivePage';
@@ -63,6 +64,12 @@ export default function SideBar() {
                     <StyledAiOutlineTransaction />
                     <StyledLink to='/transactions' page='transaction-history' active={activePage} collapsed={collapsed ? '1' : undefined}>
                         Transaction History
+                    </StyledLink>
+                </PageItem>
+                <PageItem>
+                    <StyledAiOutlineTransaction />
+                    <StyledLink to='/budget' page='budget-app' active={activePage} collapsed={collapsed ? '1' : undefined}>
+                        SomeBudget
                     </StyledLink>
                 </PageItem>
             </PageList>
@@ -251,4 +258,12 @@ const StyledAiOutlineTransaction = styled(AiOutlineTransaction)`
     &:hover {
         color: '#183046';
     }
-`;
+    `;
+
+const StyledAiOutlineShoppingCart = styled(AiOutlineShoppingCart)`
+    cursor: pointer;
+    
+    &:hover {
+        color: '#183046';
+    }
+`
