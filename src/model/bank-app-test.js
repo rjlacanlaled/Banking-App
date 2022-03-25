@@ -1,8 +1,8 @@
 import BankApp from './bank-app';
 import LocalStorageDatabase from './local-storage-database';
 
-const USER_DATABASE_KEY = 'bank-database-12';
-const TRANSACTION_DATABASE_KEY = 'bank-transact-database-12';
+const USER_DATABASE_KEY = 'bank-database-13';
+const TRANSACTION_DATABASE_KEY = 'bank-transact-database-13';
 
 const transactionHeaders = ['id', 'from', 'to', 'transactionType', 'amount', 'timestamp'];
 const bankUserHeaders = ['id', 'type', 'firstName', 'lastName', 'balance'];

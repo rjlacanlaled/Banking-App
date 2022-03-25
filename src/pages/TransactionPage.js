@@ -51,7 +51,7 @@ export default function MakeATransaction({ bank }) {
             </PageTitleContainer>
             <Modal show={showModal} />
 
-            {bank.users.length > 1 ? (
+            {bank.users.length >= 1 ? (
                 <InputContainer>
                     <FirstBox>
                         <BoxTitle>Make a Transaction</BoxTitle>
@@ -72,13 +72,18 @@ export default function MakeATransaction({ bank }) {
                         <Deposit bank={bank} key='deposit' />
                     ) : transactionType === TRANSACTIONTYPESLIST[1] ? (
                         <Withdraw bank={bank} show={setShowModal} />
-                    ) : (
+                    ) : bank.users.length > 1 ? (
                         <Transfer bank={bank} show={setShowModal} collapse={setShow} />
+                    ) : (
+                        <TransactionNotAllowedContainer>
+                            <h3> You need to have at least 2 accounts to do transfer!</h3>
+                            <StyledPrimaryButton onClick={handleAddUser}>Create new account</StyledPrimaryButton>
+                        </TransactionNotAllowedContainer>
                     )}
                 </InputContainer>
             ) : (
                 <TransactionNotAllowedContainer>
-                    <h3> You need to have at least 2 accounts to do transactions!</h3>
+                    <h3> You need to have at least 1 account to do transactions!</h3>
                     <StyledPrimaryButton onClick={handleAddUser}>Create new account</StyledPrimaryButton>
                 </TransactionNotAllowedContainer>
             )}
@@ -129,6 +134,7 @@ const TransactionNotAllowedContainer = styled.div`
     gap: 20px;
     color: white;
     text-align: center;
+    padding: 20px;
 `;
 
 const FirstBox = styled.div`
