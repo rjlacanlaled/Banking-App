@@ -9,9 +9,10 @@ export const TableBody = styled.tbody`
     background-color: white;
     color: black;
 `;
-export const TableHeader = styled.th``;
-export const TableRow = styled.tr`
+export const TableHeader = styled.th`
+    font-size: 0.8rem;
 `;
+export const TableRow = styled.tr``;
 export const TableData = styled.td`
     text-transform: capitalize;
     padding: 5px;

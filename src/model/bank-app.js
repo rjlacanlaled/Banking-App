@@ -1,25 +1,33 @@
+import BankAdminUser from './bank-admin-user';
 import BankInputFormatter from './bank-input-formatter';
 import BankTransaction from './bank-transaction';
 import BankValidator from './bank-validator';
 import { TransactionTypes } from './enums/transaction-types';
+import { UserTypes } from './enums/user-types';
 
 export default class BankApp {
-    constructor(userDatabase, transactionDatabase, maxNameChars, maxBalanceDigits) {
+    constructor(userDatabase, transactionDatabase, maxNameChars, maxBalanceDigits, budgetDatabase) {
         this.userDatabase = userDatabase;
         this.transactionDatabase = transactionDatabase;
         this.inputFormatter = new BankInputFormatter();
         this.inputValidator = new BankValidator(maxNameChars, maxBalanceDigits);
         this.users = userDatabase.getAll();
+        this.budgets = userDatabase.getAll();
         this.transactions = transactionDatabase.getAll();
-    }
 
+        if (this.users.find(user => user.username === 'admin')) return;
+        this.createAccount(new BankAdminUser('admin', 'admin', 'admin', 'admin', 'admin'));
+    }
 
     login = (username, password) => {
         const user = this.users.find(user => user.username === username);
-        if (!user) return 'User not found!';
-        if (user.password !== password) return 'Password incorrect!';
+        if (!user) return [-1, 'User not found!'];
+        if (user.password !== password) return [-1, 'Password incorrect!'];
+        console.log(user.type);
+        if (user.type != UserTypes.Admin)
+            return [-1, 'Account is not an admin. Regular user login is not yet supported.'];
 
-        return true;
+        return [1, user];
     };
 
     transfer = (fromId, toId, amount) => {
@@ -80,9 +88,9 @@ export default class BankApp {
 
         let balance = parseFloat(account.balance);
         balance += parseFloat(amount);
-        
+
         account.balance = balance;
-        this.updateAccount(account);    
+        this.updateAccount(account);
 
         this.createTransaction(
             new BankTransaction(new Date().toString(), TransactionTypes.Deposit, amount, 'cash', account.id)
@@ -104,7 +112,7 @@ export default class BankApp {
     deleteTransaction = id => {
         this.transactionDatabase.remove(id);
         this.updateTransactions();
-    }
+    };
 
     updateAccount = user => {
         this.userDatabase.update(user);

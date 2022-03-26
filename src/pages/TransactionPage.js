@@ -11,7 +11,6 @@ import { PrimaryButton } from '../components/styles/Buttons.styled';
 import ConfirmationMessage from '../components/ConfirmationMessage';
 import AddUser from '../components/AddUser';
 import { displayModalForDuration } from '../utils/modal-util';
-import Zoom from 'react-reveal/Zoom';
 
 const TRANSACTIONTYPESLIST = Object.values(TransactionTypes);
 
@@ -52,37 +51,42 @@ export default function MakeATransaction({ bank }) {
             </PageTitleContainer>
             <Modal show={showModal} />
 
-            <Zoom>
-                {bank.users.length > 1 ? (
-                    <InputContainer>
-                        <FirstBox>
-                            <BoxTitle>Make a Transaction</BoxTitle>
-                            <BoxAction>
-                                <BoxOptions value={transactionType} onChange={handleTransaction}>
-                                    {TRANSACTIONTYPESLIST.map(option => {
-                                        return <option key={option} value={option}>{option.toUpperCase()}</option>;
-                                    })}
-                                </BoxOptions>
-                            </BoxAction>
-                        </FirstBox>
+            {bank.users.length >= 1 ? (
+                <InputContainer>
+                    <FirstBox>
+                        <BoxTitle>Make a Transaction</BoxTitle>
+                        <BoxAction>
+                            <BoxOptions value={transactionType} onChange={handleTransaction}>
+                                {TRANSACTIONTYPESLIST.map(option => {
+                                    return (
+                                        <option key={option} value={option}>
+                                            {option.toUpperCase()}
+                                        </option>
+                                    );
+                                })}
+                            </BoxOptions>
+                        </BoxAction>
+                    </FirstBox>
 
-                        {transactionType === TRANSACTIONTYPESLIST[2] ? (
-                            <Deposit bank={bank} key='deposit' />
-                        ) : transactionType === TRANSACTIONTYPESLIST[1] ? (
-                            <Withdraw bank={bank} show={setShowModal} />
-                        ) : (
-                            <Zoom collapse when={!show}>
-                                <Transfer bank={bank} show={setShowModal} collapse={setShow} />
-                            </Zoom>
-                        )}
-                    </InputContainer>
-                ) : (
-                    <TransactionNotAllowedContainer>
-                        <h3> You need to have at least 2 accounts to do transactions!</h3>
-                        <StyledPrimaryButton onClick={handleAddUser}>Create new account</StyledPrimaryButton>
-                    </TransactionNotAllowedContainer>
-                )}
-            </Zoom>
+                    {transactionType === TRANSACTIONTYPESLIST[2] ? (
+                        <Deposit bank={bank} key='deposit' />
+                    ) : transactionType === TRANSACTIONTYPESLIST[1] ? (
+                        <Withdraw bank={bank} show={setShowModal} />
+                    ) : bank.users.length > 1 ? (
+                        <Transfer bank={bank} show={setShowModal} collapse={setShow} />
+                    ) : (
+                        <TransactionNotAllowedContainer>
+                            <h3> You need to have at least 2 accounts to do transfer!</h3>
+                            <StyledPrimaryButton onClick={handleAddUser}>Create new account</StyledPrimaryButton>
+                        </TransactionNotAllowedContainer>
+                    )}
+                </InputContainer>
+            ) : (
+                <TransactionNotAllowedContainer>
+                    <h3> You need to have at least 1 account to do transactions!</h3>
+                    <StyledPrimaryButton onClick={handleAddUser}>Create new account</StyledPrimaryButton>
+                </TransactionNotAllowedContainer>
+            )}
 
             <Modal show={showAddUserConfirmation}>
                 <AddUser
@@ -130,6 +134,7 @@ export const TransactionNotAllowedContainer = styled.div`
     gap: 20px;
     color: white;
     text-align: center;
+    padding: 20px;
 `;
 
 const FirstBox = styled.div`
@@ -222,8 +227,11 @@ export const TransactionSuccess = styled.div`
     height: 10%;
 
     position: absolute;
-    left: 40%;
-    transform: translateY(-50%);
+    top: 70%;
+    left: 57%;
+    transform: translateX(-50%);
+
+    color: red;
 
     display: ${({ showTransactionSuccessModal }) => (showTransactionSuccessModal ? 'flex' : 'none')};
     justify-content: center;
