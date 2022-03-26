@@ -221,19 +221,3 @@ const MainContainer = styled.div`
 
     background-color: ${({ theme }) => theme.colors.main.themeColor};
 `;
-
-export const TransactionSuccess = styled.div`
-    width: 30%;
-    height: 10%;
-
-    position: absolute;
-    top: 70%;
-    left: 57%;
-    transform: translateX(-50%);
-
-    color: red;
-
-    display: ${({ showTransactionSuccessModal }) => (showTransactionSuccessModal ? 'flex' : 'none')};
-    justify-content: center;
-    align-items: center;
-`;

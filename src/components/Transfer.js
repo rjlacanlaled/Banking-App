@@ -8,12 +8,12 @@ import {
     BoxTitle,
     BoxAction,
     BoxOptions,
-    TransactionSuccess,
     Form,
     AmountInput,
     SubmitContainer,
     SubmitButton,
 } from '../pages/TransactionPage';
+import { TransactionSuccess } from './Deposit'
 
 export default function Transfer({ bank, show, collapse }) {
     const [transferFromId, setTransferFromId] = useState(bank.users[0].id);
@@ -48,9 +48,9 @@ export default function Transfer({ bank, show, collapse }) {
 
     return (
         <Form onSubmit={handleWithdraw}>
-            <TransactionSuccess showTransactionSuccessModal={showTransactionSuccessModal}>
+            <TransactionSuccessTransfer showTransactionSuccessModal={showTransactionSuccessModal}>
                 {showError === true ? 'Transaction Success' : showError}
-            </TransactionSuccess>
+            </TransactionSuccessTransfer>
             <Wrapper showBalance={showBalance}>
                 <DisplayUser userId={transferFromId} bank={bank} />
                 <Close
