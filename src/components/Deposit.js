@@ -80,3 +80,5 @@ const Container = styled.div`
    background-color: transparent;
    width: 100%;
 `;
+
+const TransactionSuccessDeposit = styled(TransactionSuccess)``

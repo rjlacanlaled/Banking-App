@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useFloatFormat from './hooks/useFloatFormat';
 import { displayModalForDuration } from '../utils/modal-util';
 import { Wrapper, Close, DisplayUser, ViewBalance } from './Withdraw';
+import styled from 'styled-components'
 import {
     BoxContainer,
     BoxTitle,
@@ -130,3 +131,7 @@ export default function Transfer({ bank, show, collapse }) {
         </Form>
     );
 }
+
+const TransactionSuccessTransfer = styled(TransactionSuccess)`
+    top: 87%;
+`

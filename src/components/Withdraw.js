@@ -114,6 +114,10 @@ export const DisplayUser = ({ userId, bank }) => {
    );
 };
 
+const TransactionSuccessWithdraw = styled(TransactionSuccess)`
+   top: 75%;
+`
+
 export const Wrapper = styled.div`
    width: 30%;
    height: 15%;
