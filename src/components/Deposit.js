@@ -34,9 +34,9 @@ export default function Deposit({ bank }) {
     return (
         <Container>
             <Form onSubmit={handleDeposit}>
-                <TransactionSuccessDeposit showTransactionSuccessModal={showTransactionSuccessModal}>
+                <TransactionSuccess showTransactionSuccessModal={showTransactionSuccessModal}>
                     {showError === true ? 'Transaction Success' : showError}
-                </TransactionSuccessDeposit>
+                </TransactionSuccess>
                 <BoxContainer>
                     <BoxTitle>Deposit To</BoxTitle>
                     <BoxAction>
