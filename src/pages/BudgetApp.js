@@ -1,8 +1,20 @@
-import { useState } from "react";
-import { GiReceiveMoney, GiPayMoney } from "react-icons/gi";
+import { useState, useEffect } from "react";
+import { GiReceiveMoney } from "react-icons/gi";
 import styled from "styled-components";
+import { theme } from "../components/styles/Theme";
 import BudgetBox from "../components/BudgetBox";
 import { useBudgets } from "../components/context/BudgetContext";
+import { UserTypes } from "../model/enums/user-types";
+import AddExpenseModal from "../components/AddExpenseModal";
+import DataTable from "../components/DataTable";
+import { Modal } from "../components/styles/Modal.styled";
+import AddUser from "../components/AddUser";
+import ConfirmationMessage from "../components/ConfirmationMessage";
+import { displayModalForDuration } from "../utils/modal-util";
+import {
+   TransactionNotAllowedContainer,
+   StyledPrimaryButton,
+} from "./TransactionPage";
 import {
    ButtonTitle,
    PageTitle,
@@ -12,7 +24,29 @@ import AddBudgetModal from "../components/AddBugetModal";
 
 export default function BudgetApp({ bank }) {
    const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
-   const { budgets } = useBudgets()
+   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
+   const [showAddUserConfirmationMessage, setShowAddUserConfirmationMessage] =
+      useState(false);
+   const [showViewExpenseModal, setShowViewExpenseModal] = useState(false);
+   const [showAddUserConfirmation, setShowAddUserConfirmation] =
+      useState(false);
+   const [bId, setBid] = useState();
+   const [userId, setUserId] = useState(bank.users[0].id);
+
+   const { budgets, expenses, deleteExpense, getBudgetExpenses } = useBudgets();
+
+   const handleAddUser = () => {
+      setShowAddUserConfirmation(true);
+   };
+
+   const handleConfirmAddUser = (confirmed, user) => {
+      if (!confirmed) return setShowAddUserConfirmation(false);
+      bank.createAccount(user);
+      setShowAddUserConfirmation(false);
+      displayModalForDuration(setShowAddUserConfirmationMessage, 1000);
+   };
+
+   console.log(bank.users.length);
 
    return (
       <Wrapper>
@@ -28,30 +62,140 @@ export default function BudgetApp({ bank }) {
                   />
                   <ButtonTitle>Add Budget</ButtonTitle>
                </AddBudgetButtonContainer>
-               <AddExpenseButtonContainer>
-                  <StyledGiPayMoney />
-                  <ButtonTitle>Add Expense</ButtonTitle>
-               </AddExpenseButtonContainer>
             </ButtonContainer>
          </PageTitleContainer>
-         <BudgetBoxes>
-            {budgets.map(budget => {
+         <>
+            {bank.users.length > 0 ? (
+               <>
+                  <SelectedUser>
+                     <SelectedBox>
+                        <div>
+                           <h3>Select User</h3>
+                           <select
+                              value={userId}
+                              onChange={(e) => setUserId(e.target.value)}
+                           >
+                              {bank.users
+                                 .filter(
+                                    (user) => user.type !== UserTypes.Admin
+                                 )
+                                 .map(({ id, firstName, lastName }) => {
+                                    return (
+                                       <option key={id} value={id}>
+                                          {id} - {firstName} {lastName}
+                                       </option>
+                                    );
+                                 })}
+                           </select>
+                        </div>
+                        <div>
+                           <h4>Balance </h4>
+                           <div>{bank.getAccount(userId).balance}</div>
+                        </div>
+                     </SelectedBox>
+                  </SelectedUser>
+                  <BudgetUser>
+                     {budgets
+                        .filter((budget) => budget.userId == userId)
+                        .map(({ name, amount, id }) => {
+                           const totalExpenses = getBudgetExpenses(id).reduce(
+                              (total, expense) => total + expense.amount,
+                              0
+                           );
 
-               console.log(budget)
-         
-               return (
-                  <BudgetBox bank={bank} key={budget.id} sop={budget.id} name={budget.name} amount={budget.amount} />
-               )
-            })}
-         </BudgetBoxes>
+                           return (
+                              <BudgetBox
+                                 key={id}
+                                 bank={bank}
+                                 totalExpenses={totalExpenses}
+                                 amount={amount}
+                                 name={name}
+                                 setShowAddExpenseModal={setShowAddExpenseModal}
+                                 setShowViewExpenseModal={
+                                    setShowViewExpenseModal
+                                 }
+                                 setBid={setBid}
+                                 bId={id}
+                              />
+                           );
+                        })}
+                  </BudgetUser>
+               </>
+            ) : (
+               <TransactionNotAllowedContainer>
+                  <h3>
+                     You need to have at least 1 account to use budget app!
+                  </h3>
+                  <StyledPrimaryButton onClick={handleAddUser}>
+                     Create new account
+                  </StyledPrimaryButton>
+               </TransactionNotAllowedContainer>
+            )}
+         </>
+
+         <Modal show={showAddUserConfirmation}>
+            <AddUser
+               onConfirm={handleConfirmAddUser}
+               validator={bank.inputValidator.validator}
+               users={bank.users}
+            />
+         </Modal>
+
+         <Modal show={showAddUserConfirmationMessage}>
+            <ConfirmationMessage
+               message="Successfully added user!"
+               imgUrl="./assets/checkmark.gif"
+            />
+         </Modal>
+
          <AddBudgetModal
+            userId={userId}
             bank={bank}
             show={showAddBudgetModal}
             setShowAddBudgetModal={setShowAddBudgetModal}
          />
+         <AddExpenseModal
+            setBid={setBid}
+            budgetId={bId}
+            bank={bank}
+            show={showAddExpenseModal}
+            setShowAddExpenseModal={setShowAddExpenseModal}
+         />
+         <Modal show={showViewExpenseModal}>
+            <DataTable
+               headers={["id", "budgetId", "expenseName", "amount"]}
+               data={expenses.filter((exp) => exp.budgetId == bId)}
+               onDelete={deleteExpense}
+               actions={{ hasDelete: true, hasEdit: false }}
+            />
+            <CloseButton
+               onClick={() => {
+                  setShowViewExpenseModal(false);
+               }}
+            >
+               &times;
+            </CloseButton>
+         </Modal>
       </Wrapper>
    );
 }
+
+const BudgetUser = styled.div`
+   width: 100%;
+   height: 100%;
+
+   padding: 20px;
+
+   overflow: auto;
+
+   display: flex;
+   gap: 1rem;
+`;
+
+const SelectedUser = styled.div`
+   width: 100%;
+
+`;
 
 const Wrapper = styled.div`
    width: 100vw;
@@ -59,6 +203,8 @@ const Wrapper = styled.div`
 
    display: flex;
    flex-direction: column;
+
+   background-color: ${({ theme }) => theme.colors.main.themeColor};
 `;
 
 const ButtonContainer = styled.div`
@@ -73,14 +219,6 @@ const AddBudgetButtonContainer = styled.div`
    align-items: center;
    justify-content: center;
 `;
-const AddExpenseButtonContainer = styled(AddBudgetButtonContainer)``;
-
-const StyledGiPayMoney = styled(GiPayMoney)`
-   width: 50px;
-   height: 50px;
-
-   cursor: pointer;
-`;
 
 const StyledGiReceiveMoney = styled(GiReceiveMoney)`
    width: 50px;
@@ -89,15 +227,30 @@ const StyledGiReceiveMoney = styled(GiReceiveMoney)`
    cursor: pointer;
 `;
 
-const BudgetBoxes = styled.div`
-   width: 50%;
-   height: 100%;
+const CloseButton = styled.button`
+   outline: none;
+   border: none;
+   background-color: transparent;
+   color: white;
 
-   padding: 50px 20px;
+   cursor: pointer;
 
-   display: grid;
-   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-   align-items: flex-start;
+   position: absolute;
+   top: 40%;
+   right: 23%;
+`;
 
-   overflow: auto;
+const SelectedBox = styled.div`
+   width: max-content;
+   background-color: ${({theme}) => theme.colors.mainTitleDiv.backgroundColor};
+
+   margin: 1%;
+
+   border: none;
+   border-radius: 20px;
+
+   padding: 2%;
+
+   display: flex;
+   gap: 4rem;
 `

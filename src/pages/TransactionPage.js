@@ -117,11 +117,11 @@ export const InputContainer = styled.div`
 
 export const BoxContainer = styled.div``;
 
-const StyledPrimaryButton = styled(PrimaryButton)`
+export const StyledPrimaryButton = styled(PrimaryButton)`
     padding: 10px 20px 10px 20px;
 `;
 
-const TransactionNotAllowedContainer = styled.div`
+export const TransactionNotAllowedContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
