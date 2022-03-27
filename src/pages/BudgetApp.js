@@ -31,7 +31,7 @@ export default function BudgetApp({ bank }) {
    const [showAddUserConfirmation, setShowAddUserConfirmation] =
       useState(false);
    const [bId, setBid] = useState();
-   const [userId, setUserId] = useState(bank.users[0].id);
+   const [userId, setUserId] = useState(bank.users[0].id + 1);
 
    const { budgets, expenses, deleteExpense, getBudgetExpenses } = useBudgets();
 
@@ -46,7 +46,7 @@ export default function BudgetApp({ bank }) {
       displayModalForDuration(setShowAddUserConfirmationMessage, 1000);
    };
 
-   console.log(bank.users.length);
+   console.log(bank.getAccount(2).balance);
 
    return (
       <Wrapper>
