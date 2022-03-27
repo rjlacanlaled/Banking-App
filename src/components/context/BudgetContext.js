@@ -48,7 +48,6 @@ export const BudgetProvider = ({ children }) => {
    }
 
    function deleteBudget({ id }) {
-      console.log("id", id);
 
       setBudgets((prevBudget) => {
          return prevBudget.filter((budget) => {

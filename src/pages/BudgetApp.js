@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { GiReceiveMoney } from "react-icons/gi";
 import styled from "styled-components";
 import { theme } from "../components/styles/Theme";
+import TotalBudgetBox from "../components/TotalBudgetBox";
 import BudgetBox from "../components/BudgetBox";
 import { useBudgets } from "../components/context/BudgetContext";
 import { UserTypes } from "../model/enums/user-types";
@@ -31,7 +32,10 @@ export default function BudgetApp({ bank }) {
    const [showAddUserConfirmation, setShowAddUserConfirmation] =
       useState(false);
    const [bId, setBid] = useState();
-   const [userId, setUserId] = useState(bank.users[0].id + 1);
+   const [userId, setUserId] = useState(
+      bank.users.filter((user) => user.type != UserTypes.Admin)[0].id
+   );
+   const [accountBalance, setAccountBalance] = useState(bank.getAccount(userId).balance)
 
    const { budgets, expenses, deleteExpense, getBudgetExpenses } = useBudgets();
 
@@ -46,7 +50,15 @@ export default function BudgetApp({ bank }) {
       displayModalForDuration(setShowAddUserConfirmationMessage, 1000);
    };
 
-   console.log(bank.getAccount(2).balance);
+   console.log(
+      budgets
+         .map((budget) => budget.amount)
+         .reduce((total, expense) => total + expense, 0)
+   );
+
+   useEffect(() => {
+      setAccountBalance(bank.getAccount(userId).balance)
+   }, [bank.getAccount(userId).balance])
 
    return (
       <Wrapper>
@@ -57,7 +69,6 @@ export default function BudgetApp({ bank }) {
                   <StyledGiReceiveMoney
                      onClick={() => {
                         setShowAddBudgetModal(true);
-                        console.log(showAddBudgetModal);
                      }}
                   />
                   <ButtonTitle>Add Budget</ButtonTitle>
@@ -65,62 +76,72 @@ export default function BudgetApp({ bank }) {
             </ButtonContainer>
          </PageTitleContainer>
          <>
-            {bank.users.length > 0 ? (
-               <>
-                  <SelectedUser>
-                     <SelectedBox>
-                        <div>
-                           <h3>Select User</h3>
-                           <select
-                              value={userId}
-                              onChange={(e) => setUserId(e.target.value)}
-                           >
-                              {bank.users
-                                 .filter(
-                                    (user) => user.type !== UserTypes.Admin
-                                 )
-                                 .map(({ id, firstName, lastName }) => {
-                                    return (
-                                       <option key={id} value={id}>
-                                          {id} - {firstName} {lastName}
-                                       </option>
-                                    );
-                                 })}
-                           </select>
-                        </div>
-                        <div>
-                           <h4>Balance </h4>
-                           <div>{bank.getAccount(userId).balance}</div>
-                        </div>
-                     </SelectedBox>
-                  </SelectedUser>
-                  <BudgetUser>
-                     {budgets
-                        .filter((budget) => budget.userId == userId)
-                        .map(({ name, amount, id }) => {
-                           const totalExpenses = getBudgetExpenses(id).reduce(
-                              (total, expense) => total + expense.amount,
-                              0
-                           );
+            {bank.users.filter((user) => user.type != UserTypes.Admin).length >
+            0 ? (
+               <Main>
+                  <RightSide>
+                     <SelectedUser>
+                        <SelectedBox>
+                           <div>
+                              <h3>Select User</h3>
+                              <select
+                                 value={userId}
+                                 onChange={(e) => setUserId(e.target.value)}
+                              >
+                                 {bank.users
+                                    .filter(
+                                       (user) => user.type !== UserTypes.Admin
+                                    )
+                                    .map(({ id, firstName, lastName }) => {
+                                       return (
+                                          <option key={id} value={id}>
+                                             {id} - {firstName} {lastName}
+                                          </option>
+                                       );
+                                    })}
+                              </select>
+                           </div>
+                           <div>
+                              <h4>Balance </h4>
+                              <div>{accountBalance}</div>
+                           </div>
+                        </SelectedBox>
+                     </SelectedUser>
+                     <BudgetUser>
+                        {budgets
+                           .filter((budget) => budget.userId == userId)
+                           .map(({ name, amount, id }) => {
+                              const totalExpenses = getBudgetExpenses(
+                                 id
+                              ).reduce(
+                                 (total, expense) => total + expense.amount,
+                                 0
+                              );
 
-                           return (
-                              <BudgetBox
-                                 key={id}
-                                 bank={bank}
-                                 totalExpenses={totalExpenses}
-                                 amount={amount}
-                                 name={name}
-                                 setShowAddExpenseModal={setShowAddExpenseModal}
-                                 setShowViewExpenseModal={
-                                    setShowViewExpenseModal
-                                 }
-                                 setBid={setBid}
-                                 bId={id}
-                              />
-                           );
-                        })}
-                  </BudgetUser>
-               </>
+                              return (
+                                 <BudgetBox
+                                    key={id}
+                                    bank={bank}
+                                    totalExpenses={totalExpenses}
+                                    amount={amount}
+                                    name={name}
+                                    setShowAddExpenseModal={
+                                       setShowAddExpenseModal
+                                    }
+                                    setShowViewExpenseModal={
+                                       setShowViewExpenseModal
+                                    }
+                                    setBid={setBid}
+                                    bId={id}
+                                 />
+                              );
+                           })}
+                     </BudgetUser>
+                  </RightSide>
+                  <LeftSide>
+                     <TotalBudgetBox bank={bank} userId={userId}/>
+                  </LeftSide>
+               </Main>
             ) : (
                <TransactionNotAllowedContainer>
                   <h3>
@@ -180,21 +201,26 @@ export default function BudgetApp({ bank }) {
    );
 }
 
+const Main = styled.div`
+   height: 100%;
+   width: 100%;
+
+   display: flex;
+`
+
 const BudgetUser = styled.div`
    width: 100%;
    height: 100%;
 
    padding: 20px;
 
-   overflow: auto;
-
    display: flex;
+   flex-direction: column;
    gap: 1rem;
 `;
 
 const SelectedUser = styled.div`
    width: 100%;
-
 `;
 
 const Wrapper = styled.div`
@@ -242,7 +268,8 @@ const CloseButton = styled.button`
 
 const SelectedBox = styled.div`
    width: max-content;
-   background-color: ${({theme}) => theme.colors.mainTitleDiv.backgroundColor};
+   background-color: ${({ theme }) =>
+      theme.colors.mainTitleDiv.backgroundColor};
 
    margin: 1%;
 
@@ -253,4 +280,19 @@ const SelectedBox = styled.div`
 
    display: flex;
    gap: 4rem;
-`
+`;
+
+const RightSide = styled.div`
+   height: 100%;
+   width: 50%;
+
+   overflow: auto;
+`;
+
+const LeftSide = styled(RightSide)`
+   background-color: transparent;
+
+   display: flex;
+   justify-content: center;
+   align-items: center;
+`;
