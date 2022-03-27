@@ -8,12 +8,12 @@ import {
    BoxTitle,
    BoxAction,
    BoxOptions,
-   TransactionSuccess,
    Form,
    AmountInput,
    SubmitContainer,
    SubmitButton,
 } from "../pages/TransactionPage";
+import { TransactionSuccess } from './Deposit'
 
 export default function Withdraw({ bank, show }) {
    const [userId, setUserId] = useState(bank.users[0].id);
@@ -36,11 +36,11 @@ export default function Withdraw({ bank, show }) {
 
    return (
       <Form onSubmit={handleWithdraw}>
-         <TransactionSuccess
+         <TransactionSuccessWithdraw
             showTransactionSuccessModal={showTransactionSuccessModal}
          >
             {showError === true ? "Transaction Success" : showError}
-         </TransactionSuccess>
+         </TransactionSuccessWithdraw>
          <Wrapper showBalance={showBalance}>
             <DisplayUser userId={userId} bank={bank} />
             <Close
@@ -113,6 +113,10 @@ export const DisplayUser = ({ userId, bank }) => {
 
    );
 };
+
+const TransactionSuccessWithdraw = styled(TransactionSuccess)`
+   top: 75%;
+`
 
 export const Wrapper = styled.div`
    width: 30%;

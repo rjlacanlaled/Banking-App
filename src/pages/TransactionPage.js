@@ -121,11 +121,11 @@ export const InputContainer = styled.div`
 
 export const BoxContainer = styled.div``;
 
-const StyledPrimaryButton = styled(PrimaryButton)`
+export const StyledPrimaryButton = styled(PrimaryButton)`
     padding: 10px 20px 10px 20px;
 `;
 
-const TransactionNotAllowedContainer = styled.div`
+export const TransactionNotAllowedContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -220,17 +220,4 @@ const MainContainer = styled.div`
     overflow: auto;
 
     background-color: ${({ theme }) => theme.colors.main.themeColor};
-`;
-
-export const TransactionSuccess = styled.div`
-    width: 30%;
-    height: 10%;
-
-    position: absolute;
-    left: 40%;
-    transform: translateY(-50%);
-
-    display: ${({ showTransactionSuccessModal }) => (showTransactionSuccessModal ? 'flex' : 'none')};
-    justify-content: center;
-    align-items: center;
 `;

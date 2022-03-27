@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import useFloatFormat from './hooks/useFloatFormat';
 import { displayModalForDuration } from '../utils/modal-util';
 import { Wrapper, Close, DisplayUser, ViewBalance } from './Withdraw';
+import styled from 'styled-components'
 import {
     BoxContainer,
     BoxTitle,
     BoxAction,
     BoxOptions,
-    TransactionSuccess,
     Form,
     AmountInput,
     SubmitContainer,
     SubmitButton,
 } from '../pages/TransactionPage';
+import { TransactionSuccess } from './Deposit'
 
 export default function Transfer({ bank, show, collapse }) {
     const [transferFromId, setTransferFromId] = useState(bank.users[0].id);
@@ -47,9 +48,9 @@ export default function Transfer({ bank, show, collapse }) {
 
     return (
         <Form onSubmit={handleWithdraw}>
-            <TransactionSuccess showTransactionSuccessModal={showTransactionSuccessModal}>
+            <TransactionSuccessTransfer showTransactionSuccessModal={showTransactionSuccessModal}>
                 {showError === true ? 'Transaction Success' : showError}
-            </TransactionSuccess>
+            </TransactionSuccessTransfer>
             <Wrapper showBalance={showBalance}>
                 <DisplayUser userId={transferFromId} bank={bank} />
                 <Close
@@ -130,3 +131,7 @@ export default function Transfer({ bank, show, collapse }) {
         </Form>
     );
 }
+
+const TransactionSuccessTransfer = styled(TransactionSuccess)`
+    top: 87%;
+`

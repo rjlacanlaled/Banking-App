@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import AddUser from '../components/AddUser';
+import { UserTypes } from '../model/enums/user-types';
 import ConfirmationMessage from '../components/ConfirmationMessage';
 import DataTable from '../components/DataTable';
 import { Modal } from '../components/styles/Modal.styled';
@@ -70,7 +71,7 @@ export default function BankUserManagement({ bank }) {
             <Fade right>
                 <DataTable
                     headers={bank.userDatabase.headers}
-                    data={userList}
+                    data={userList.filter(user => user.type != UserTypes.Admin)}
                     onDelete={handleDelete}
                     onEdit={handleEdit}
                     inputFormatter={bank.inputFormatter.formatter}
